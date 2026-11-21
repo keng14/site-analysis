@@ -1,0 +1,17 @@
+{
+  "name": "Site Analysis · แดด ลม ผังเมือง",
+  "short_name": "Site Analysis",
+  "description": "วิเคราะห์ไซต์ แดด ลม เงา โซลาร์ ผังเมือง และระยะร่น สำหรับสถาปนิก",
+  "lang": "th",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#15202b",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

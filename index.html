@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Analysis แดดและลม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* VOICE: a calm architect's working tool — precise, quiet, diagrammatic.
+   IDEA: a white study model on a site table, with the sun path dome and wind rose drawn over it.
+   PICTURE: the live 3D/plan model fills the stage; everything else is a side legend.
+   COLOUR and TYPE: model white on sky grey, sun orange #e8743b, wind blue #1d6fb8, ink #15202b; IBM Plex Sans Thai.
+   LAYOUT: stage left + control panel right; on phones stage on top, tabs and panel below. */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#121619);--ink:light-dark(#15202b,#e6ebef);--mut:light-dark(#5b6873,#9aa7b2);--line:light-dark(#e1e5e8,#2a3238);--soft:light-dark(#f2f4f5,#1b2126);--scene:light-dark(#dfe6ea,#262e34);--sun:#e8743b;--wind:#1d6fb8;--ok:#2e9e5b}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "IBM Plex Sans Thai",system-ui,sans-serif;overflow-x:clip}
+header.top{display:flex;align-items:center;gap:10px;padding:8px max(2vw,12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;background:var(--bg);min-height:56px}
+.brand{font-weight:600;font-size:18px;white-space:nowrap;display:flex;align-items:center;gap:8px}.brand i{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ffd27a,#e8743b);display:inline-block}
+.steps{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}.steps::-webkit-scrollbar{display:none}
+.steps a{display:flex;align-items:center;gap:6px;padding:6px 12px 6px 6px;border-radius:999px;color:var(--mut);text-decoration:none;font-size:15px;white-space:nowrap;min-height:40px}
+.steps a b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--ink);font-size:13px}
+.steps a.on{background:var(--ink);color:var(--bg)}.steps a.on b{background:var(--sun);color:#fff}
+.lang{margin-left:auto;flex:none}.lang button{min-height:36px;padding:4px 12px}
+.page[hidden]{display:none!important}
+.wrap{max-width:1200px;margin:0 auto;padding:clamp(18px,3vw,40px) max(4vw,16px) 48px}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:center}
+.hero h2{font-size:clamp(30px,4.4vw,48px);line-height:1.08;margin:0 0 12px;text-wrap:balance}.hero p{font-size:17px;color:var(--mut);margin:0;max-width:60ch}
+.hero svg{width:100%;height:auto;display:block}
+.gsteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;margin:28px 0}
+.gstep{background:var(--soft);border-radius:14px;padding:16px}.gstep b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--sun);color:#fff;margin-bottom:8px}.gstep h3{margin:0 0 4px;font-size:17px}.gstep p{margin:0;font-size:15px;color:var(--mut)}
+.choose{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.ch{border:2px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}.ch.main{border-color:var(--sun)}.ch h3{margin:0;font-size:20px}.ch p{margin:0;color:var(--mut);font-size:15px}
+.btn.big{min-height:48px;font-size:16px;padding:10px 18px}
+.zwrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);align-items:start}
+.zfig{position:sticky;top:72px;display:grid;gap:12px}.zfig svg{max-height:min(62vh,520px)}#zMap,#map{position:relative;z-index:0;isolation:isolate}.zfig .fbox{background:var(--soft);border-radius:14px;padding:10px}.zfig svg{width:100%;height:auto;display:block}
+.zbadge{display:flex;gap:14px;align-items:center;border-radius:14px;padding:14px;color:#15202b}.zbadge .code{font-size:40px;font-weight:600;line-height:1}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;margin-top:12px}.kpi{background:var(--soft);border-radius:12px;padding:12px}.kpi .v{font-size:26px;font-weight:600;line-height:1.1;white-space:nowrap}.kpi .k{font-size:13px;color:var(--mut)}
+.zchips{display:flex;flex-wrap:wrap;gap:6px}.zchips button{display:flex;align-items:center;gap:6px}.zchips i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid rgb(0 0 0/.15)}
+.sides{display:grid;gap:8px;margin-top:6px}.siderow{background:var(--soft);border-radius:10px;padding:8px 10px;display:grid;gap:6px}.siderow .hd{display:flex;justify-content:space-between;gap:8px;font-size:14px;align-items:center;flex-wrap:wrap}
+.siderow .seg button{min-height:36px;padding:4px 10px;font-size:13px}.siderow input{min-height:38px;padding:6px 8px;max-width:110px}
+ul.law{padding-left:18px;margin:8px 0}ul.law li{margin:4px 0}
+@media(max-width:900px){.hero,.zwrap{grid-template-columns:minmax(0,1fr)}.zfig{position:static}}
+h1{font-size:20px;line-height:1.2;margin:0;font-weight:600}
+.chip{font-size:13px;color:var(--mut)}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 400px;height:calc(100dvh - 57px)}
+.stage{position:relative;background:var(--scene);overflow:hidden}
+#view{position:absolute;inset:0;touch-action:none}#view canvas{display:block;width:100%;height:100%}
+.tools{position:absolute;top:10px;left:10px;right:10px;display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.tools::-webkit-scrollbar{display:none}.tools .seg{flex-wrap:nowrap}
+.tools>*:not(.sp){flex:none}.tools .sp{flex:1 0 0}
+.hud{position:absolute;left:10px;right:10px;bottom:10px;background:color-mix(in srgb,var(--bg) 92%,transparent);border-radius:12px;padding:8px 12px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;box-shadow:0 2px 12px rgb(0 0 0/.12)}
+.hud .read{grid-column:1/-1;font-size:13px;color:var(--mut);display:flex;gap:4px 14px;flex-wrap:wrap}
+.hud b{color:var(--ink);font-weight:600}
+.key{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}.key i{width:14px;height:4px;border-radius:2px;display:inline-block}
+.panel{border-left:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);flex:none}
+.tab{flex:1 0 auto;border:0;background:none;color:var(--mut);font:inherit;font-size:15px;padding:12px 12px;min-height:46px;border-bottom:2px solid transparent;cursor:pointer}
+.tab.on{color:var(--ink);border-color:var(--sun);font-weight:600}
+.pane{display:none;padding:16px;overflow-y:auto;flex:1}.pane.on{display:block}
+h2{font-size:17px;margin:0 0 4px;font-weight:600}
+p.note{font-size:13px;color:var(--mut);margin:6px 0 12px}
+label.f{display:block;font-size:14px;color:var(--mut);margin:12px 0 4px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}
+input[type=number],input[type=text],input[type=date],select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-height:44px}
+input[type=range]{width:100%;accent-color:var(--sun);min-height:32px}
+.btn,.seg button,.tg{font:inherit;font-size:14px;min-height:40px;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:focus-visible,.seg button:focus-visible,.tg:focus-visible,.tab:focus-visible,input:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg button.on,.tg.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tools .tg,.tools .btn{background:color-mix(in srgb,var(--bg) 92%,transparent);box-shadow:0 1px 6px rgb(0 0 0/.1)}
+.tools .tg.on,.tools .btn.pri{background:var(--ink);color:var(--bg)}
+.sp{flex:1}
+.mchip{position:absolute;top:62px;left:10px;background:#1d6fb8;color:#fff;border-radius:999px;padding:6px 14px;font-size:15px;font-weight:600;box-shadow:0 2px 10px rgb(0 0 0/.15)}.mchip[hidden]{display:none}
+.pass{color:var(--ok);font-weight:600}.fail{color:#c2412d;font-weight:600}
+#play{width:44px;height:44px;border-radius:50%;padding:0;font-size:16px}
+#tLbl{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+#map{height:240px;border-radius:10px;border:1px solid var(--line);margin-top:8px;background:var(--soft)}
+.msg{font-size:13px;margin-top:8px;color:var(--mut)}.msg.err{color:#c2412d}.msg.ok{color:var(--ok)}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:500;font-size:13px}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+.big{font-size:28px;font-weight:600;line-height:1.1}
+.card{background:var(--soft);border-radius:10px;padding:12px;margin-top:12px}
+.bar{height:8px;border-radius:4px;background:var(--wind)}
+a{color:var(--wind)}
+.ov{position:fixed;inset:0;background:rgb(0 0 0/.55);display:grid;place-items:center;padding:16px;z-index:50}.ov[hidden]{display:none}
+.ov .box{background:var(--bg);border-radius:14px;padding:14px;max-width:min(900px,100%);max-height:100%;overflow:auto}
+.ov img{width:100%;border-radius:8px;background:#fff;display:block}
+.gr{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.leaflet-container{font:inherit}
+@media(max-width:1100px){.app{grid-template-columns:minmax(0,1fr) 340px}}
+@media(max-width:820px){.app{grid-template-columns:minmax(0,1fr);height:auto}.stage{height:58svh;min-height:340px}.panel{border-left:0}.pane{overflow:visible}.tabs{position:sticky;top:56px;background:var(--bg);z-index:5}}
+@media(max-width:560px){#coordChip{display:none}.brand span{display:none}.steps a span{display:none}.steps a{padding:6px}.hud{padding:6px 10px;gap:6px}.hud .read{font-size:12px}.tools .btn,.tools .tg{min-height:36px;padding:6px 10px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+/* leaflet 1.9.4 core css (BSD-2) */
+ .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; } .leaflet-container { overflow: hidden; } .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-user-drag: none; } .leaflet-tile::selection { background: transparent; } .leaflet-safari .leaflet-tile { image-rendering: -webkit-optimize-contrast; } .leaflet-safari .leaflet-tile-container { width: 1600px; height: 1600px; -webkit-transform-origin: 0 0; } .leaflet-marker-icon, .leaflet-marker-shadow { display: block; } .leaflet-container .leaflet-overlay-pane svg { max-width: none !important; max-height: none !important; } .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width: none !important; max-height: none !important; width: auto; padding: 0; } .leaflet-container img.leaflet-tile { mix-blend-mode: plus-lighter; } .leaflet-container.leaflet-touch-zoom { -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; } .leaflet-container.leaflet-touch-drag { -ms-touch-action: pinch-zoom; touch-action: none; touch-action: pinch-zoom; } .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { -ms-touch-action: none; touch-action: none; } .leaflet-container { -webkit-tap-highlight-color: transparent; } .leaflet-container a { -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4); } .leaflet-tile { filter: inherit; visibility: hidden; } .leaflet-tile-loaded { visibility: inherit; } .leaflet-zoom-box { width: 0; height: 0; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 800; } .leaflet-overlay-pane svg { -moz-user-select: none; } .leaflet-pane { z-index: 400; } .leaflet-tile-pane { z-index: 200; } .leaflet-overlay-pane { z-index: 400; } .leaflet-shadow-pane { z-index: 500; } .leaflet-marker-pane { z-index: 600; } .leaflet-tooltip-pane { z-index: 650; } .leaflet-popup-pane { z-index: 700; } .leaflet-map-pane canvas { z-index: 100; } .leaflet-map-pane svg { z-index: 200; } .leaflet-vml-shape { width: 1px; height: 1px; } .leaflet-control { position: relative; z-index: 800; pointer-events: visiblePainted; pointer-events: auto; } .leaflet-top, .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; } .leaflet-top { top: 0; } .leaflet-right { right: 0; } .leaflet-bottom { bottom: 0; } .leaflet-left { left: 0; } .leaflet-control { float: left; clear: both; } .leaflet-right .leaflet-control { float: right; } .leaflet-top .leaflet-control { margin-top: 10px; } .leaflet-bottom .leaflet-control { margin-bottom: 10px; } .leaflet-left .leaflet-control { margin-left: 10px; } .leaflet-right .leaflet-control { margin-right: 10px; } .leaflet-fade-anim .leaflet-popup { opacity: 0; -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; transition: opacity 0.2s linear; } .leaflet-fade-anim .leaflet-map-pane .leaflet-popup { opacity: 1; } .leaflet-zoom-animated { -webkit-transform-origin: 0 0; -ms-transform-origin: 0 0; transform-origin: 0 0; } svg.leaflet-zoom-animated { will-change: transform; } .leaflet-zoom-anim .leaflet-zoom-animated { -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1); -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1); transition: transform 0.25s cubic-bezier(0,0,0.25,1); } .leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile { -webkit-transition: none; -moz-transition: none; transition: none; } .leaflet-zoom-anim .leaflet-zoom-hide { visibility: hidden; } .leaflet-interactive { cursor: pointer; } .leaflet-grab { cursor: -webkit-grab; cursor: -moz-grab; cursor: grab; } .leaflet-crosshair, .leaflet-crosshair .leaflet-interactive { cursor: crosshair; } .leaflet-popup-pane, .leaflet-control { cursor: auto; } .leaflet-dragging .leaflet-grab, .leaflet-dragging .leaflet-grab .leaflet-interactive, .leaflet-dragging .leaflet-marker-draggable { cursor: move; cursor: -webkit-grabbing; cursor: -moz-grabbing; cursor: grabbing; } .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-image-layer, .leaflet-pane > svg path, .leaflet-tile-container { pointer-events: none; } .leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path { pointer-events: visiblePainted; pointer-events: auto; } .leaflet-container { background: #ddd; outline-offset: 1px; } .leaflet-container a { color: #0078A8; } .leaflet-zoom-box { border: 2px dotted #38f; background: rgba(255,255,255,0.5); } .leaflet-container { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; font-size: 12px; font-size: 0.75rem; line-height: 1.5; } .leaflet-bar { box-shadow: 0 1px 5px rgba(0,0,0,0.65); border-radius: 4px; } .leaflet-bar a { background-color: #fff; border-bottom: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; display: block; text-align: center; text-decoration: none; color: black; } .leaflet-bar a, .leaflet-control-layers-toggle { background-position: 50% 50%; background-repeat: no-repeat; display: block; } .leaflet-bar a:hover, .leaflet-bar a:focus { background-color: #f4f4f4; } .leaflet-bar a:first-child { border-top-left-radius: 4px; border-top-right-radius: 4px; } .leaflet-bar a:last-child { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-bottom: none; } .leaflet-bar a.leaflet-disabled { cursor: default; background-color: #f4f4f4; color: #bbb; } .leaflet-touch .leaflet-bar a { width: 30px; height: 30px; line-height: 30px; } .leaflet-touch .leaflet-bar a:first-child { border-top-left-radius: 2px; border-top-right-radius: 2px; } .leaflet-touch .leaflet-bar a:last-child { border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } .leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; } .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out { font-size: 22px; } .leaflet-control-layers { box-shadow: 0 1px 5px rgba(0,0,0,0.4); background: #fff; border-radius: 5px; } .leaflet-touch .leaflet-control-layers-toggle { width: 44px; height: 44px; } .leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle { display: none; } .leaflet-control-layers-expanded .leaflet-control-layers-list { display: block; position: relative; } .leaflet-control-layers-expanded { padding: 6px 10px 6px 6px; color: #333; background: #fff; } .leaflet-control-layers-scrollbar { overflow-y: scroll; overflow-x: hidden; padding-right: 5px; } .leaflet-control-layers-selector { margin-top: 2px; position: relative; top: 1px; } .leaflet-control-layers label { display: block; font-size: 13px; font-size: 1.08333em; } .leaflet-control-layers-separator { height: 0; border-top: 1px solid #ddd; margin: 5px -10px 5px -6px; } .leaflet-container .leaflet-control-attribution { background: #fff; background: rgba(255, 255, 255, 0.8); margin: 0; } .leaflet-control-attribution, .leaflet-control-scale-line { padding: 0 5px; color: #333; line-height: 1.4; } .leaflet-control-attribution a { text-decoration: none; } .leaflet-control-attribution a:hover, .leaflet-control-attribution a:focus { text-decoration: underline; } .leaflet-attribution-flag { display: inline !important; vertical-align: baseline !important; width: 1em; height: 0.6669em; } .leaflet-left .leaflet-control-scale { margin-left: 5px; } .leaflet-bottom .leaflet-control-scale { margin-bottom: 5px; } .leaflet-control-scale-line { border: 2px solid #777; border-top: none; line-height: 1.1; padding: 2px 5px 1px; white-space: nowrap; -moz-box-sizing: border-box; box-sizing: border-box; background: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px #fff; } .leaflet-control-scale-line:not(:first-child) { border-top: 2px solid #777; border-bottom: none; margin-top: -2px; } .leaflet-control-scale-line:not(:first-child):not(:last-child) { border-bottom: 2px solid #777; } .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { box-shadow: none; } .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { border: 2px solid rgba(0,0,0,0.2); background-clip: padding-box; } .leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; } .leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 12px; } .leaflet-popup-content { margin: 13px 24px 13px 20px; line-height: 1.3; font-size: 13px; font-size: 1.08333em; min-height: 1px; } .leaflet-popup-content p { margin: 17px 0; margin: 1.3em 0; } .leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-top: -1px; margin-left: -20px; overflow: hidden; pointer-events: none; } .leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; pointer-events: auto; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); } .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: white; color: #333; box-shadow: 0 3px 14px rgba(0,0,0,0.4); } .leaflet-container a.leaflet-popup-close-button { position: absolute; top: 0; right: 0; border: none; text-align: center; width: 24px; height: 24px; font: 16px/24px Tahoma, Verdana, sans-serif; color: #757575; text-decoration: none; background: transparent; } .leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus { color: #585858; } .leaflet-popup-scrolled { overflow: auto; } .leaflet-oldie .leaflet-popup-content-wrapper { -ms-zoom: 1; } .leaflet-oldie .leaflet-popup-tip { width: 24px; margin: 0 auto; -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)"; filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); } .leaflet-oldie .leaflet-control-zoom, .leaflet-oldie .leaflet-control-layers, .leaflet-oldie .leaflet-popup-content-wrapper, .leaflet-oldie .leaflet-popup-tip { border: 1px solid #999; } .leaflet-div-icon { background: #fff; border: 1px solid #666; } .leaflet-tooltip { position: absolute; padding: 6px; background-color: #fff; border: 1px solid #fff; border-radius: 3px; color: #222; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.4); } .leaflet-tooltip.leaflet-interactive { cursor: pointer; pointer-events: auto; } .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { position: absolute; pointer-events: none; border: 6px solid transparent; background: transparent; content: ""; } .leaflet-tooltip-bottom { margin-top: 6px; } .leaflet-tooltip-top { margin-top: -6px; } .leaflet-tooltip-bottom:before, .leaflet-tooltip-top:before { left: 50%; margin-left: -6px; } .leaflet-tooltip-top:before { bottom: 0; margin-bottom: -12px; border-top-color: #fff; } .leaflet-tooltip-bottom:before { top: 0; margin-top: -12px; margin-left: -6px; border-bottom-color: #fff; } .leaflet-tooltip-left { margin-left: -6px; } .leaflet-tooltip-right { margin-left: 6px; } .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { top: 50%; margin-top: -6px; } .leaflet-tooltip-left:before { right: 0; margin-right: -12px; border-left-color: #fff; } .leaflet-tooltip-right:before { left: 0; margin-left: -12px; border-right-color: #fff; } @media print { .leaflet-control { -webkit-print-color-adjust: exact; print-color-adjust: exact; } } 
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><i></i><span>Site Analysis</span></div>
+ <nav class="steps" aria-label="steps"><a href="#guide" data-p="guide"><b>1</b><span>วิธีใช้</span></a><a href="#zoning" data-p="zoning"><b>2</b><span>ผังเมือง</span></a><a href="#design" data-p="design"><b>3</b><span>ออกแบบ</span></a></nav>
+ <span class="chip" id="coordChip"></span>
+ <div class="seg lang"><button data-lang="th">ไทย</button><button data-lang="en">EN</button></div>
+</header>
+<section class="page" id="pg-guide"><div class="wrap" id="guideBox"></div></section>
+<section class="page" id="pg-zoning" hidden><div class="wrap"><div class="zwrap">
+ <div class="zfig"><div class="fbox"><svg id="zPlan" role="img" aria-label="plan"></svg></div><div class="fbox"><svg id="zElev" role="img" aria-label="section"></svg></div><div id="zMap" style="height:280px;border-radius:12px;background:var(--soft)"></div></div>
+ <div id="zSide"></div></div></div></section>
+<main class="app page" id="pg-design" hidden>
+ <section class="stage">
+  <div id="view"></div>
+  <div class="tools">
+   <div class="seg" id="camSeg"><button class="tg on" data-cam="3d">3D</button><button class="tg" data-cam="2d">ผัง 2D</button></div>
+   <span class="sp"></span>
+   <button class="tg" data-k="showSun">แนวแดด</button>
+   <button class="tg" data-k="showWind">ลม</button>
+   <button class="tg" data-k="windAnim">ลมไหล</button>
+   <button class="tg" data-k="showShadow">เงา</button>
+   <button class="tg" data-k="showSolar">โซลาร์</button>
+   <button class="tg" data-k="showHeat">ชั่วโมงแดด</button>
+   <button class="tg" data-k="showWall">ผนังร้อน</button>
+   <button class="tg" data-k="showPlot">ที่ดิน</button>
+   <button class="btn pri" id="sheetBtn">แผ่นนำเสนอ</button>
+   <button class="btn" id="shotBtn">บันทึกภาพ</button>
+  </div>
+  <div class="mchip" id="mChip" hidden></div>
+  <div class="hud">
+   <button class="btn" id="play" aria-label="เล่นการเคลื่อนของดวงอาทิตย์">▶</button>
+   <input type="range" id="time" min="0" max="1435" step="5" aria-label="เวลา">
+   <span id="tLbl">10:00</span>
+   <div class="read" id="readout"></div>
+  </div>
+ </section>
+ <aside class="panel">
+  <nav class="tabs">
+   <button class="tab on" data-tab="site">ที่ตั้ง</button><button class="tab" data-tab="bld">อาคาร</button><button class="tab" data-tab="plot">ที่ดิน</button><button class="tab" data-tab="sun">แดด</button><button class="tab" data-tab="wind">ลม</button><button class="tab" data-tab="wall">ผนัง</button><button class="tab" data-tab="solar">โซลาร์</button><button class="tab" data-tab="ctx">บริบท</button>
+  </nav>
+  <div class="pane on" id="p-site">
+   <h2>ตำแหน่งที่ตั้ง</h2>
+   <label class="f" for="pname">ชื่อโครงการ (ใช้ในแผ่นนำเสนอ)</label>
+   <input type="text" id="pname" data-k="pname" data-u="none" placeholder="เช่น บ้านพักอาศัย 2 ชั้น">
+   <label class="f" for="locIn">วางลิงก์ Google Maps หรือพิกัด (lat, lng)</label>
+   <div class="row" style="grid-template-columns:minmax(0,1fr) auto"><input type="text" id="locIn" placeholder="13.7563, 100.5018"><button class="btn pri" id="locGo">ตั้งค่า</button></div>
+   <p class="note">ใน Google Maps กดค้างที่จุดบนแผนที่ แล้วคัดลอกตัวเลขพิกัดมาวาง ลิงก์ยาวที่มี @lat,lng ก็ใช้ได้ (ลิงก์ย่อ maps.app.goo.gl อ่านพิกัดไม่ได้)</p>
+   <div class="card" id="siteCard"></div>
+   <div class="seg" style="margin-top:12px"><button class="on" data-layer="osm">แผนที่</button><button data-layer="sat">ดาวเทียม</button></div>
+   <div id="map"></div>
+   <div class="msg" id="mapMsg">แตะบนแผนที่เพื่อย้ายจุดที่ตั้ง</div>
+   <label class="f" for="ctxR">รัศมีบริบทรอบที่ตั้ง</label>
+   <select id="ctxR" data-k="ctxR" data-u="none"><option value="80">80 ม.</option><option value="150">150 ม.</option><option value="250">250 ม.</option></select>
+   <div class="gr"><button class="btn pri" id="osmBtn">โหลดอาคารและต้นไม้จริง (OSM)</button></div>
+   <div class="msg" id="osmMsg"></div>
+   <label class="f" for="tz">เขตเวลา (UTC+)</label>
+   <input type="number" id="tz" data-k="tz" data-u="date" step="0.5">
+  </div>
+  <div class="pane" id="p-bld">
+   <h2>อาคารคร่าวๆ</h2>
+   <div class="seg" style="margin-top:8px" id="preset"><button data-p="house">บ้าน 2 ชั้น</button><button data-p="town">ทาวน์โฮม</button><button data-p="office">อาคาร 5 ชั้น</button></div>
+   <div class="row"><div><label class="f" for="bW">กว้าง W (ม.)</label><input type="number" id="bW" data-k="W" data-u="b" min="2" step="0.5"></div><div><label class="f" for="bL">ยาว L (ม.)</label><input type="number" id="bL" data-k="L" data-u="b" min="2" step="0.5"></div><div><label class="f" for="bH">สูงถึงชายคา (ม.)</label><input type="number" id="bH" data-k="H" data-u="b" min="2" step="0.5"></div></div>
+   <label class="f" for="rot">หมุนอาคาร <b id="rotV"></b> (ตามเข็มจากทิศเหนือ)</label>
+   <input type="range" id="rot" data-k="rot" data-u="b" min="0" max="179" step="1">
+   <label class="f">หลังคา</label>
+   <div class="seg" data-seg="roof"><button data-v="flat">Flat slab</button><button data-v="gable">จั่ว</button><button data-v="hip">ปั้นหยา</button><button data-v="shed">เพิงหมาแหงน</button></div>
+   <label class="f" for="pitch">ความลาดหลังคา <b id="pitchV"></b></label>
+   <input type="range" id="pitch" data-k="pitch" data-u="b" min="5" max="45" step="1">
+   <label class="f" for="ovh">ชายคายื่น (ม.)</label>
+   <input type="number" id="ovh" data-k="ovh" data-u="b" min="0" max="3" step="0.1">
+   <p class="note">สันหลังคาจั่ววิ่งตามแนวยาว L · หลังคาเพิงสูงด้านซ้าย (−W) ของอาคาร หมุนอาคารเพื่อเปลี่ยนทิศ</p>
+  </div>
+  <div class="pane" id="p-plot">
+   <h2>ขอบเขตที่ดินและระยะร่น</h2>
+   <p class="note">แปลงที่ดินวางขนานกับอาคาร (หมุนตามอาคาร) ตรวจเบื้องต้นตามกฎกระทรวงฉบับที่ 55 (พ.ศ. 2543) ข้อ 33, 41, 50</p>
+   <div class="row"><div><label class="f" for="pW">ที่ดิน กว้าง (แนว W, ม.)</label><input type="number" id="pW" data-k="PW" data-u="plot" min="1" step="0.5"></div><div><label class="f" for="pL">ที่ดิน ยาว (แนว L, ม.)</label><input type="number" id="pL" data-k="PL" data-u="plot" min="1" step="0.5"></div></div>
+   <div class="row"><div><label class="f" for="oX" id="oXl">เลื่อนอาคาร</label><input type="number" id="oX" data-k="offX" data-u="plot" step="0.5"></div><div><label class="f" for="oZ" id="oZl">เลื่อนอาคาร</label><input type="number" id="oZ" data-k="offZ" data-u="plot" step="0.5"></div></div>
+   <label class="f">ด้านของที่ดิน · ติดอะไร</label>
+   <div class="sides" id="sideRows"></div>
+   <div class="gr"><button class="btn" data-autoside="1">ตรวจหาถนนและแหล่งน้ำจากแผนที่</button></div><div class="msg sidemsg" id="sideMsg"></div>
+   <h2 style="margin-top:20px">ผังเมือง FAR / OSR</h2>
+   <div class="msg" id="zoneLoc"></div>
+   <label class="f" for="zone">เขตสีผังเมือง (ผังเมืองรวม กทม. พ.ศ. 2556)</label>
+   <select id="zone"></select>
+   <div class="row"><div><label class="f" for="far">FAR (เท่า)</label><input type="number" id="far" data-k="FAR" data-u="plot" min="0" step="0.5"></div><div><label class="f" for="osr">OSR (%)</label><input type="number" id="osr" data-k="OSR" data-u="plot" min="0" step="0.5"></div><div><label class="f" for="flr">จำนวนชั้น</label><input type="number" id="flr" data-k="floors" data-u="plot" min="1" step="1"></div></div>
+   <p class="note">ตรวจรหัสสีของแปลงจริงได้จากแอป “Check ผังเมือง กทม.” หรือสำนักการวางผังและพัฒนาเมือง · นอกกรุงเทพฯ ใช้ผังเมืองรวมจังหวัด/เมือง ให้เลือก “กำหนดเอง” แล้วกรอกค่าตามข้อกำหนดของพื้นที่</p>
+   <label class="f">ประเภทอาคาร</label>
+   <div class="seg" data-seg="use"><button data-v="home">อยู่อาศัย (ที่ว่าง 30%)</button><button data-v="other">พาณิชย์/อื่นๆ (10%)</button></div>
+   <div id="plotCard"></div>
+   <p class="note">ความสูงวัดถึงยอดผนัง (ชายคา) · เป็นการตรวจเบื้องต้นเท่านั้น ต้องตรวจข้อบัญญัติท้องถิ่น (เช่น ข้อบัญญัติ กทม.) ผังเมืองรวม และกฎหมายเฉพาะพื้นที่เพิ่มเติม ก่อนยื่นขออนุญาตควรให้สถาปนิก/วิศวกรผู้มีใบอนุญาตตรวจสอบ</p>
+  </div>
+  <div class="pane" id="p-sun">
+   <h2>ทางเดินดวงอาทิตย์</h2>
+   <label class="f" for="date">วันที่</label>
+   <input type="date" id="date" data-k="date" data-u="date">
+   <div class="seg" style="margin-top:8px" id="dPre"><button data-d="03-20">21 มี.ค.</button><button data-d="06-21">21 มิ.ย.</button><button data-d="09-23">23 ก.ย.</button><button data-d="12-21">21 ธ.ค.</button><button data-d="today">วันนี้</button></div>
+   <div class="gr"><button class="btn pri" id="sunView">มองจากดวงอาทิตย์</button><span class="note">ผนังที่เห็นคือด้านที่โดนแดดเวลานั้น</span></div>
+   <div class="card" id="sunCard"></div>
+   <label class="f">ชั้นข้อมูลบนแผนภาพ</label>
+   <div class="seg"><button class="tg" data-k="showHours">เส้นชั่วโมง</button><button class="tg" data-k="showSeasons">เส้นครีษมายัน/เหมายัน</button></div>
+   <h2 style="margin-top:22px">ชั่วโมงแดดบนพื้น</h2>
+   <p class="note">ระบายสีพื้นตามจำนวนชั่วโมงที่แดดส่องถึงในวันที่เลือก นับเงาจากอาคาร ต้นไม้ และอาคารข้างเคียง ลองเทียบวันที่ 21 เม.ย. (ร้อนสุด) กับ 21 ธ.ค. (เงายาวสุด)</p>
+   <div class="gr"><button class="tg" data-k="showHeat">แสดงแผนที่ชั่วโมงแดด</button></div>
+   <div class="msg" id="heatMsg"></div><div id="heatCard"></div>
+   <p class="note" style="margin-top:16px"><span class="key"><i style="background:#e4572e"></i>21 มิ.ย.</span> &nbsp;<span class="key"><i style="background:#f3a712"></i>21 มี.ค./23 ก.ย.</span> &nbsp;<span class="key"><i style="background:#2e86ab"></i>21 ธ.ค.</span> &nbsp;<span class="key"><i style="background:#15202b"></i>วันที่เลือก</span></p>
+  </div>
+  <div class="pane" id="p-wind">
+   <h2>ทิศทางลม</h2>
+   <label class="f">ช่วงฤดู</label>
+   <div class="seg" data-seg="season"><button data-v="all">ทั้งปี</button><button data-v="hot">ร้อน ก.พ.–เม.ย.</button><button data-v="rain">ฝน พ.ค.–ต.ค.</button><button data-v="cool">หนาว พ.ย.–ม.ค.</button></div>
+   <label class="f" for="wm">ลมรายเดือน: <b id="wmV"></b></label>
+   <div class="row" style="grid-template-columns:auto minmax(0,1fr)"><button class="btn" id="wmPlay">▶ เล่น ม.ค.–ธ.ค.</button><input type="range" id="wm" min="0" max="12" step="1" aria-label="เดือน"></div>
+   <p class="note">เลื่อนไปที่ 0 เพื่อกลับไปดูตามฤดู · เส้นลมจะค่อยๆ เปลี่ยนทิศตามมรสุม</p>
+   <div class="gr"><button class="btn pri" id="windBtn">โหลดข้อมูลลมจริงปีล่าสุด (Open-Meteo)</button></div>
+   <div class="msg" id="windMsg"></div>
+   <div class="card" id="windCard"></div>
+   <p class="note">กลีบยาวชี้ไปทาง “ลมพัดมาจาก” ความยาว = ความถี่ สี = ความเร็ว <span class="key"><i style="background:#bfe0f7"></i>&lt;2</span> <span class="key"><i style="background:#7cbbe8"></i>2–4</span> <span class="key"><i style="background:#3a8fd6"></i>4–6</span> <span class="key"><i style="background:#1d5fa8"></i>&gt;6 ม./วิ</span></p>
+  </div>
+  <div class="pane" id="p-wall">
+   <h2>แดดบนผนังและการบังแดด</h2>
+   <p class="note">จัดอันดับความร้อนของผนังแต่ละด้านจากแดดตลอดปี (ให้น้ำหนักแดดบ่ายมากกว่าเพราะอากาศร้อนกว่า) และคำนวณความลึกกันสาดที่ต้องใช้บังหน้าต่างช่วง 9:00–16:00 ทุกเดือน</p>
+   <div class="gr"><button class="tg" data-k="showWall">ระบายสีผนังตามความร้อน</button></div>
+   <label class="f" for="winH">ความสูงหน้าต่างที่ต้องบัง (จากใต้กันสาดถึงขอบล่าง, ม.)</label>
+   <input type="number" id="winH" data-k="winH" data-u="b" min="0.3" max="4" step="0.1">
+   <div id="wallCard"></div>
+   <p class="note">คิดกันสาดติดชิดขอบบนหน้าต่าง ยังไม่นับเงาจากอาคารข้างเคียงหรือต้นไม้ ใช้ตัวเลขเป็นค่าตั้งต้นในการออกแบบ</p>
+  </div>
+  <div class="pane" id="p-solar">
+   <h2>ทิศทางติดตั้งโซลาร์เซลล์</h2>
+   <div id="solarCard"></div>
+   <label class="f" for="pmin">ติดแผงบนด้านที่ได้แดด ≥ <b id="pminV"></b> ของค่าดีที่สุด</label>
+   <input type="range" id="pmin" data-k="panelMin" data-u="b" min="60" max="98" step="1">
+   <p class="note">คำนวณจากแดดฟ้าใสตลอดปีที่พิกัดนี้ หักเงาจากต้นไม้และอาคารข้างเคียงทีละแผง ใช้ % เปรียบเทียบแต่ละด้าน ส่วน kWh เป็นประมาณการคร่าวๆ (แผง 550 W, ขนาด 2.28×1.13 ม.)</p>
+  </div>
+  <div class="pane" id="p-ctx">
+   <h2>อาคารและต้นไม้รอบข้าง</h2>
+   <p class="note">แตะบนโมเดลเพื่อวาง/ลบ · ข้อมูลจริงโหลดได้จากแท็บ “ที่ตั้ง”</p>
+   <div class="seg" data-seg="mode"><button data-v="none">ดูอย่างเดียว</button><button data-v="box">+ กล่องอาคาร</button><button data-v="tree">+ ต้นไม้</button><button data-v="del">ลบ</button></div>
+   <div class="row"><div><label class="f" for="cW">กล่อง กว้าง</label><input type="number" id="cW" data-k="cW" data-u="none" min="1"></div><div><label class="f" for="cL">ยาว</label><input type="number" id="cL" data-k="cL" data-u="none" min="1"></div><div><label class="f" for="cH">สูง</label><input type="number" id="cH" data-k="cH" data-u="none" min="1"></div></div>
+   <div class="gr"><button class="tg" data-k="hideExisting">ซ่อนอาคารเดิมในที่ตั้ง</button></div>
+   <div class="gr"><button class="btn" id="sampleBtn">สร้างบริบทตัวอย่าง</button><button class="btn" id="clearBtn">ล้างทั้งหมด</button></div>
+   <div class="msg" id="ctxMsg"></div>
+  </div>
+ </aside>
+</main>
+<div class="ov" id="shot" hidden><div class="box"><img id="shotImg" alt="ภาพแผนภาพ site analysis"><div class="gr"><a class="btn pri" id="shotDl" download="site-analysis.png">ดาวน์โหลด PNG</a><span class="note">ถ้าดาวน์โหลดไม่ได้ ให้กดค้างที่รูปเพื่อบันทึก</span><span class="sp"></span><button class="btn" id="shotX">ปิด</button></div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const D2R=Math.PI/180,R2D=180/Math.PI;
+const DICT={"ระบายสีพื้นตามจำนวนชั่วโมงที่แดดส่องถึงในวันที่เลือก นับเงาจากอาคาร ต้นไม้ และอาคารข้างเคียง ลองเทียบวันที่": "Colours the ground by hours of direct sun on the selected date, counting shade from the building, trees and neighbours. Compare", "คิดกันสาดติดชิดขอบบนหน้าต่าง ยังไม่นับเงาจากอาคารข้างเคียงหรือต้นไม้ ใช้ตัวเลขเป็นค่าตั้งต้นในการออกแบบ": "Assumes the shade sits right above the window head; neighbours and trees are not counted. Use as a starting value for design.", "ค่าทั้งหมดเป็นการประมาณเพื่อการออกแบบเบื้องต้น ควรตรวจสอบกับข้อมูลจริงและผู้เชี่ยวชาญ": "All values are estimates for early design; verify with real data and professionals.", "คำนวณจากแดดฟ้าใสตลอดปีที่พิกัดนี้ หักเงาจากต้นไม้และอาคารข้างเคียงทีละแผง ใช้": "Clear-sky sun over a full year at this location, with shade from trees and neighbours checked per panel. Use", "ผังเมืองรวม และกฎหมายเฉพาะพื้นที่เพิ่มเติม ก่อนยื่นขออนุญาตควรให้สถาปนิก": "comprehensive plan and local laws too. Before applying for a permit, have a licensed architect", "กดค้างที่จุดบนแผนที่ แล้วคัดลอกตัวเลขพิกัดมาวาง ลิงก์ยาวที่มี": "long-press a spot on the map and copy the coordinates. Full links with", "อย่างน้อยครึ่งหนึ่งต้องเป็นพื้นที่น้ำซึมผ่านได้ปลูกต้นไม้": "at least half must be permeable planted ground", "เป็นการตรวจเบื้องต้นเท่านั้น ต้องตรวจข้อบัญญัติท้องถิ่น": "is a preliminary check only. Also check local ordinances", "ไม่ต้องบังแดดมาก เหมาะกับช่องเปิดใหญ่และรับแสงธรรมชาติ": "needs little shading; good for large openings and daylight", "และคำนวณความลึกกันสาดที่ต้องใช้บังหน้าต่างช่วง": "and works out the shade depth needed to shade windows from", "จัดอันดับความร้อนของผนังแต่ละด้านจากแดดตลอดปี": "Ranks how hot each wall gets from a full year of sun", "ตอนนี้แสดงค่าประมาณทั่วไปของภาคกลาง ประเทศไทย": "Showing typical estimates for central Thailand", "ถ้าดาวน์โหลดไม่ได้ ให้กดค้างที่รูปเพื่อบันทึก": "If download doesn't work, long-press the image to save it", "โหลดแผนที่ไม่ได้ในหน้านี้ ใช้การวางพิกัดจาก": "The map can't load on this page; paste coordinates from", "ให้น้ำหนักแดดบ่ายมากกว่าเพราะอากาศร้อนกว่า": "afternoon sun weighted higher because the air is hotter", "ปลูกไม้ยืนต้นบังด้านนี้ และลดขนาดช่องเปิด": "plant shade trees on this side and reduce openings", "สนามหญ้า ไม้พุ่ม ลานนั่งเล่นช่วงที่มีร่ม": "Lawn, shrubs, seating terrace in partial shade", "เพื่อใช้ข้อมูลจริง ตอนนี้ใช้ค่าประมาณแทน": "to use real data. Using estimates for now", "ถูกบล็อกการเชื่อมต่อภายนอก เปิดไฟล์นี้บน": "blocks outside connections. Open this file on", "ซึ่งยังมีผลบังคับ ฉบับปรับปรุงครั้งที่": "which is still in force. The 4th revision", "ถูกบล็อกการเชื่อมต่อภายนอก ให้เปิดไฟล์": "blocks outside connections. Open the file", "ลิงก์ย่ออ่านพิกัดไม่ได้ เปิดลิงก์ใน": "Short links have no coordinates. Open the link in", "ตัดแผงที่โดนเงาบังจนต่ำกว่าเกณฑ์ออก": "Panels shaded below the threshold removed:", "แล้วกดค้างที่จุดเพื่อคัดลอกพิกัดแทน": "then long-press the spot to copy its coordinates", "ผนังที่เห็นคือด้านที่โดนแดดเวลานั้น": "Walls you can see are the ones in sun at that time", "สวนผัก ไม้ดอก ลานตากผ้า สระว่ายน้ำ": "Vegetable garden, flowers, drying yard, pool", "เว้นระยะแถวกันเงาบังกันช่วงเหมายัน": "rows spaced to avoid self-shading at the winter solstice", "นอกกรุงเทพฯ ใช้ผังเมืองรวมจังหวัด": "Outside Bangkok, use the provincial", "ของอาคาร หมุนอาคารเพื่อเปลี่ยนทิศ": "of the building. Rotate the building to change direction", "ของมุมที่ดีที่สุด หลังหักเงาแล้ว": "of the best angle, after shading", "ตรวจเบื้องต้นตามกฎกระทรวงฉบับที่": "Preliminary check under Ministerial Regulation No.", "เส้นลมจะค่อยๆ เปลี่ยนทิศตามมรสุม": "wind lines turn gradually with the monsoon", "ค่าที่ตรวจสอบจากแหล่งอ้างอิงแล้ว": "values checked against sources", "แล้วกรอกค่าตามข้อกำหนดของพื้นที่": "and enter the values from the local plan", "ค่าประมาณทั่วไปภาคกลาง ประเทศไทย": "typical estimate for central Thailand", "หรือสำนักการวางผังและพัฒนาเมือง": "or the BMA City Planning Department", "แดดมุมต่ำ กันสาดอย่างเดียวไม่พอ": "Low-angle sun; a horizontal shade alone is not enough", "แตะบนแผนที่เพื่อย้ายจุดที่ตั้ง": "Tap the map to move the site", "ตรวจรหัสสีของแปลงจริงได้จากแอป": "Check your plot's actual zone code in the app", "ย้ายที่ตั้งแล้ว ล้างบริบทเดิม": "Site moved; old context cleared", "ขนาดฐานอาคารนี้สร้างได้สูงสุด": "With this footprint you can build up to", "กำลังโหลดข้อมูลลมรายชั่วโมงปี": "Loading hourly wind data for", "โหลดข้อมูลจริงเพื่อความแม่นยำ": "load real data for accuracy", "หรือเบราว์เซอร์ทั่วไป หรือใช้": "or a normal browser, or use", "พิกัดนี้น่าจะอยู่นอกกรุงเทพฯ": "This location is probably outside Bangkok", "ภาพแผนที่โหลดไม่ได้ในหน้านี้": "Map tiles can't load on this page", "แดดแทบไม่ส่องเข้าผนังนี้ช่วง": "Almost no sun reaches this wall between", "ทิศลมหลักที่พัดเข้าหาที่ตั้ง": "Prevailing wind direction toward the site", "เล่นการเคลื่อนของดวงอาทิตย์": "Play the sun's movement", "ศึกษาเงาตามมุมกล้องที่เลือก": "shadow study from the chosen camera view", "พิกัดนี้น่าจะอยู่ในกรุงเทพฯ": "This location is probably in Bangkok", "ความถี่ลมที่พัดมาจากทิศนั้น": "how often wind blows from that direction", "ใช้ระแนงหรือบานเกล็ดแนวตั้ง": "use vertical fins or louvres", "วิศวกรผู้มีใบอนุญาตตรวจสอบ": "engineer review it", "ที่อยู่อาศัยหนาแน่นปานกลาง": "Medium-density residential", "ของพื้นที่ชั้นที่มากที่สุด": "of the largest floor area", "ผังเมืองรวมกรุงเทพมหานคร พ": "Bangkok Comprehensive Plan B.E.", "สันหลังคาจั่ววิ่งตามแนวยาว": "Gable ridge runs along the length", "แปลงที่ดินวางขนานกับอาคาร": "The plot is aligned with the building", "มุมที่ดีที่สุดที่พิกัดนี้": "Best angle at this location", "ความสูงหน้าต่างที่ต้องบัง": "Window height to shade", "เปรียบเทียบแต่ละด้าน ส่วน": "to compare sides; the", "ทางเดิน ไม้ร่มรำไร เฟิร์น": "Paths, shade plants, ferns", "อ่านพิกัดไม่ได้ ลองรูปแบบ": "Couldn't read coordinates. Try", "และอาคารข้างเคียงในรัศมี": "and neighbouring buildings within", "ตามผังเมืองรวมของพื้นที่": "from the area's comprehensive plan", "โหลดข้อมูลลมจริงปีล่าสุด": "Load last year's real wind data", "อนุรักษ์ชนบทและเกษตรกรรม": "Rural & agricultural conservation", "อาคารล้นออกนอกแปลงที่ดิน": "The building extends beyond the plot", "ข้อมูลจริงโหลดได้จากแท็บ": "Real data can be loaded from the tab", "ด้านบนแทน หรือเปิดไฟล์บน": "above instead, or open the file on", "ทิศทางติดตั้งโซลาร์เซลล์": "Solar panel orientation", "ต่ำเกินไป ตรวจจำนวนชั้น": "too low; check floors", "ด้านที่ดีที่สุดหันไปทาง": "The best side faces", "ดวงอาทิตย์อยู่ใต้ขอบฟ้า": "The sun is below the horizon", "และช่องลมออกฝั่งตรงข้าม": "and outlets on the opposite side", "ข้อสังเกตเพื่อการออกแบบ": "Design notes", "ที่อยู่อาศัยหนาแน่นน้อย": "Low-density residential", "บังหน้าต่างได้ตลอดช่วง": "shades the window throughout", "โหลดอาคารและต้นไม้จริง": "Load real buildings & trees", "ซ่อนอาคารเดิมในที่ตั้ง": "Hide existing building on site", "จากใต้กันสาดถึงขอบล่าง": "from under the shade to the sill", "ที่อยู่อาศัยหนาแน่นมาก": "High-density residential", "ขอบเขตที่ดินและระยะร่น": "Plot boundary & setbacks", "ระบายสีผนังตามความร้อน": "Colour walls by heat", "ข้อมูลจริงรายชั่วโมงปี": "Real hourly data for", "ระยะร่นจากแนวเขตที่ดิน": "Setbacks from plot boundary", "วางกล่องเองในแท็บบริบท": "place boxes yourself in the Context tab", "โหลดข้อมูลภายนอกไม่ได้": "Couldn't load outside data", "แดดบนผนังและการบังแดด": "Sun on walls & shading", "สุ่ม ไม่ใช่ข้อมูลจริง": "random, not real data", "อาคารและต้นไม้รอบข้าง": "Surrounding buildings & trees", "เพื่อการระบายอากาศแบบ": "for", "หลังคาเพิงสูงด้านซ้าย": "Shed roof is high on the left", "ผนังทึบ ไม่มีหน้าต่าง": "Solid wall, no windows", "แดด ลม และการวางอาคาร": "sun, wind & building placement", "ติดแผงบนด้านที่ได้แดด": "Place panels on sides getting", "แสดงแผนที่ชั่วโมงแดด": "Show sun-hours map", "ความสูงวัดถึงยอดผนัง": "Height is measured to the top of the wall", "ประมาณการ หักเงาแล้ว": "estimate, after shading", "ยื่นเกินแนวเขตที่ดิน": "overhangs the plot boundary", "ลมหลักทั้งปีมาจากทิศ": "Year-round prevailing wind from", "รัศมีบริบทรอบที่ตั้ง": "Context radius around site", "ด้านที่ติดถนนสาธารณะ": "Side facing a public road", "ดวงอาทิตย์ยังไม่ขึ้น": "Sun not up yet", "ไม่ได้ ลองรีเฟรชหน้า": "failed; try refreshing", "เป็นประมาณการคร่าวๆ": "is a rough estimate", "เพื่อกลับไปดูตามฤดู": "to go back to seasons", "เช่น ข้อบัญญัติ กทม": "e.g. Bangkok ordinance", "ร่วมกับระแนงแนวตั้ง": "with vertical fins", "กดโหลดอาคารจริงใหม่": "reload real buildings", "มีช่องเปิด อาคารสูง": "has openings, building height", "น้ำอุ่น ตะไคร่น้อย": "warm water, less algae", "ตามเข็มจากทิศเหนือ": "clockwise from north", "ตะวันออกเฉียงเหนือ": "north-east", "แตะบนโมเดลเพื่อวาง": "Tap the model to place", "โหลดข้อมูลลมไม่ได้": "Couldn't load wind data", "ใช้ผังเมืองรวม กทม": "using the Bangkok Comprehensive Plan", "ให้เว้นว่างหรือใส่": "leave blank or enter", "ตั้งค่าที่ตั้งแล้ว": "Site set", "เปิดช่องลมเข้าด้าน": "Put air inlets on the", "สร้างบริบทตัวอย่าง": "Create sample context", "ชั้นข้อมูลบนแผนภาพ": "Diagram layers", "ของเวลาที่แดดส่อง": "of sunlit time", "วางช่องลมเข้าด้าน": "place air inlets on the", "ทางเดินดวงอาทิตย์": "Sun path", "คาดว่าประกาศใช้ปี": "expected to take effect in", "ตะวันตกเฉียงเหนือ": "north-west", "ความสูงชั้นเฉลี่ย": "average floor height", "เช่น บ้านพักอาศัย": "e.g. Family house", "ตะวันออกเฉียงใต้": "south-east", "มองจากดวงอาทิตย์": "View from the sun", "เลื่อนอาคารไปทาง": "Shift building toward", "ร่มไม้ให้แสงผ่าน": "tree canopy lets through", "ชั่วโมงแดดบนพื้น": "Sun hours on the ground", "ตลอดปีได้แดดบ่าย": "afternoon share of yearly sun", "กฎกระทรวงฉบับที่": "Ministerial Regulation No.", "หักเงาจากต้นไม้": "Shade from trees", "ความกว้างเขตทาง": "Right-of-way width", "ความสูงอาคารจาก": "building height from", "กลีบยาวชี้ไปทาง": "Long petals point to where", "ผังเมืองรวม กทม": "Bangkok Comprehensive Plan", "ใช้ในแผ่นนำเสนอ": "used on the presentation sheet", "ตะวันตกเฉียงใต้": "south-west", "อ่านพิกัดไม่ได้": "Couldn't read coordinates", "พื้นที่อาคารรวม": "Gross floor area", "มีข้อกำหนดเพิ่ม": "has extra requirements", "บางผังไม่กำหนด": "some plans have no", "ประมาณจากพิกัด": "estimated from coordinates", "เมือง ให้เลือก": "city plan; choose", "ของค่าดีที่สุด": "of the best value", "ความเร็วเฉลี่ย": "mean speed", "ตำแหน่งที่ตั้ง": "Site location", "บังหน้าต่างได้": "shades the window", "ผนังร้อนที่สุด": "Hottest wall", "พื้นที่ในวงทิศ": "Area in compass ring", "ผนังร้อนอันดับ": "Hot wall no.", "เขตสีผังเมือง": "Zoning colour", "แตะเพื่อเลือก": "tap to select", "โซลาร์ภาคพื้น": "ground-mounted solar", "บริบทตัวอย่าง": "Sample context", "แดด ลม โซลาร์": "Sun · Wind · Solar", "เส้นครีษมายัน": "Solstice lines", "ผ่านเบื้องต้น": "Passes (preliminary)", "ความลาดหลังคา": "Roof pitch", "ข้อมูลโครงการ": "Project data", "ที่ว่างไม่พอ": "not enough open space", "ที่ดิน กว้าง": "Plot width", "ผังเมือง กทม": "Bangkok plan", "หมุนตามอาคาร": "rotates with the building", "เที่ยงสุริยะ": "Solar noon", "เปิดจุดนี้ใน": "Open this point in", "ดูอย่างเดียว": "View only", "กำลังโหลดจาก": "Loading from", "เงายาวที่สุด": "longest shadows", "สูงสุดบนพื้น": "max on ground", "แดดอ้อมเหนือ": "sun swings north", "อาคารสูงเกิน": "building taller than", "ผลิตไฟได้ราว": "Produces about", "ขาวกรอบเขียว": "White w/ green border", "เพิงหมาแหงน": "Shed", "ชื่อโครงการ": "Project name", "ถ้าไม่มีใช้": "otherwise", "โหลดไลบรารี": "Loading library", "ติดแผงเอียง": "Tilt panels", "ผนังสองชั้น": "double-skin wall", "ต่างจังหวัด": "provinces", "เส้นชั่วโมง": "Hour lines", "เลื่อนไปที่": "Slide to", "ขึ้นไป เป็น": "or more is a", "กล่อง กว้าง": "Box width", "ประเภทอาคาร": "Building use", "ความยาวกลีบ": "Petal length", "อาคารคร่าวๆ": "Rough building massing", "วันที่เลือก": "Selected date", "วางพิกัดจาก": "paste coordinates from", "สูงถึงชายคา": "Eave height", "เลื่อนอาคาร": "Shift building", "การวางอาคาร": "Placement", "วันนี้มีแดด": "daylight today", "ล้างทั้งหมด": "Clear all", "จากทิศเหนือ": "from north", "หรือกันสาด": "or a shade", "ที่ดิน ยาว": "Plot length", "พื้นดาดฟ้า": "Roof deck", "ยังไม่ผ่าน": "Not passing yet", "หักเงาแล้ว": "after shading", "หน้าเว็บใน": "The page in", "กล่องอาคาร": "building box", "ที่ความสูง": "at height", "ฤดูหนาวจาก": "cool season from", "กำลังคำนวณ": "Calculating", "ลมรายเดือน": "Monthly wind", "สีบนหลังคา": "Roof colours", "ชั่วโมงแดด": "Sun hours", "แผ่นนำเสนอ": "Presentation sheet", "ที่ว่างตาม": "open space under", "พาณิชยกรรม": "Commercial", "กำลังสร้าง": "Building", "ความยาววัน": "Day length", "ความถี่ สี": "frequency, colour", "ดวงอาทิตย์": "Sun", "หลังคาคลุม": "roof coverage", "ลมพัดมาจาก": "the wind comes from", "หรือพิกัด": "or coordinates", "ไม่ติดถนน": "No road", "ชายคาเดิม": "Current eave", "หมุนอาคาร": "Rotate building", "จำนวนชั้น": "Floors", "กฎกระทรวง": "Ministerial Regulation", "รถไม่ร้อน": "cars stay cool", "ภาพแผนภาพ": "diagram image", "เงายาวสุด": "longest shadows", "กันสาดลึก": "Shade depth", "ครีษมายัน": "summer solstice", "ชายคายื่น": "Eave overhang", "บันทึกภาพ": "Save image", "อยู่อาศัย": "Residential", "ดาวน์โหลด": "Download", "ถึงชายคา": "to eave", "แล้วกรอก": "then enter", "ลิงก์ย่อ": "short links", "วางลิงก์": "Paste a", "ทุกเดือน": "every month", "แดดและลม": "Sun & Wind", "ทาวน์โฮม": "Townhouse", "ดูตามฤดู": "by season", "กำหนดเอง": "Custom", "หันไปทิศ": "facing", "มาจากทิศ": "from the", "มิถุนายน": "June", "สร้างจาก": "Made with", "ระยะจริง": "Actual", "ข้อกำหนด": "Requirement", "ช่องเปิด": "openings", "ทิศทางลม": "Wind direction", "ผังเมือง": "Zoning", "ที่จอดรถ": "Parking", "ถูกบล็อก": "blocked", "เหมาะกับ": "Suits", "อาคารสูง": "high-rise", "ฤดูฝนจาก": "rainy season from", "หันไปทาง": "Faces", "ก็ใช้ได้": "also work", "โหลดแล้ว": "Loaded", "ตะวันออก": "east", "แผงเอียง": "Tilted panels", "ผนังร้อน": "Hot walls", "ความเร็ว": "speed", "คำนวณทุก": "Computed every", "รหัสอื่น": "other codes", "ดาวเทียม": "Satellite", "มากกว่า": "more than", "ร้อนมาก": "Very hot", "ที่ว่าง": "Open space", "ร้อนสุด": "hottest", "ความยาว": "length", "เหมายัน": "winter solstice", "ปั้นหยา": "Hip", "ต้องการ": "required", "ช่วงฤดู": "Season", "แดดส่อง": "sunlit", "ผนังทึบ": "Solid wall", "ในรัศมี": "within", "ต้องลึก": "would need", "ระยะร่น": "Setbacks", "ผนังทิศ": "Wall facing", "เขตเวลา": "Time zone", "ตะวันตก": "west", "ไม่เกิน": "not over", "อะซิมุท": "Azimuth", "ที่ตั้ง": "Site", "ลมเดือน": "Wind in", "ธันวาคม": "December", "ปานกลาง": "Moderate", "ตั้งค่า": "Set", "ผลิตราว": "producing about", "ฤดูหนาว": "Cool season", "ความสูง": "height", "พาณิชย์": "Commercial", "เงาบัง": "Shade loss", "วันนี้": "Today", "เล่น": "Play", "ดาดฟ้า": "Roof deck", "แผนที่": "Map", "ร้อน": "Hot", "ที่ดิน": "Plot", "ออกแบบ": "Design", "เงายาว": "Shadow length", "ไม่ถึง": "under", "เหลือง": "Yellow", "วางเอง": "placed manually", "น้ำตาล": "Brown", "ต้นไม้": "Trees", "หันทิศ": "facing", "แนวแดด": "Sun path", "ติดถนน": "Road", "โซลาร์": "Solar", "ทั้งปี": "All year", "มุมเงย": "Altitude", "วันที่": "Date", "ได้แดด": "gets", "หลังคา": "Roof", "แนวนอน": "horizontal", "หนาว": "Cool", "สูงสุด": "max", "ฟ้าใส": "clear sky", "พิกัด": "Coordinates", "วงนอก": "outer ring", "เดือน": "month", "อาคาร": "Building", "ชายคา": "eave", "เหนือ": "north", "เอียง": "tilt", "ฤดูฝน": "Rainy season", "ที่มา": "source", "อื่นๆ": "other", "เกณฑ์": "Rule", "มรสุม": "monsoon", "บริบท": "Context", "นี้บน": "on", "ลมไหล": "Wind flow", "กว้าง": "width", "ลมสงบ": "calm", "จัดทำ": "prepared", "เลือก": "choose", "จำกัด": "limits", "แนะนำ": "Tip", "ผังลม": "Wind rose", "เวลา": "time", "หมุน": "rotated", "น้อย": "Low", "ชั้น": "floors", "หยุด": "Stop", "บ้าน": "house", "ขนาด": "size", "จั่ว": "Gable", "ผนัง": "Wall", "เกิน": "over", "เท่า": "×", "ฝน": "Rainy", "ด้าน": "Side", "นาที": "min", "ขึ้น": "Rise", "หลัง": "buildings", "แดด": "Sun", "ผัง": "Plan", "ข้อ": "Art.", "สูง": "height", "ยาว": "length", "ใต้": "south", "แทน": "instead", "ต้น": "trees", "จาก": "from", "ปิด": "Off", "ร่ม": "shade", "ลาด": "Pitch", "ทิศ": "", "กับ": "with", "แนว": "along", "แผง": "panels", "ส้ม": "Orange", "แดง": "Red", "ถนน": "Road", "เงา": "Shadows", "มี": "has", "ตก": "Set", "ปี": "year", "ลม": "Wind", "ใน": "in", "ลบ": "Delete", "แม่น้ำ": "river", "บึง": "lake", "ทะเล": "sea", "ทะเลสาบ": "lake", "วิธีใช้": "Guide", "เพื่อนบ้าน": "Neighbour", "คลอง/แม่น้ำ": "Canal/river", "บึง/ทะเล": "Lake/sea", "ด้านของที่ดิน": "Plot sides", "ติดอะไร": "what adjoins each side", "แหล่งน้ำกว้าง": "Water body", "บึง ทะเลสาบ ทะเล": "Pond, lake or sea", "คลอง": "Canal", "ตรวจหาถนนและแหล่งน้ำจากแผนที่": "Detect roads & water from map", "ตรวจพบ": "Detected", "ไม่พบถนนหรือแหล่งน้ำติดแปลง": "No road or water found next to the plot", "ถนนกว้าง": "road width", "ไม่มีถนนกว้าง": "no road at least", "อาคารสูง ต้องมีถนนกว้าง": "High-rise needs a road at least", "ด้านติด": "side on", "ไม่ได้ตรวจจากแผนที่": "not detected from map", "เส้นทาง": "roads", "แหล่งน้ำ": "water bodies"};
+const ABBR=[["ตร.ม.", "m²"], ["ตร.ว.", "sq.wa"], ["ม./วิ", "m/s"], ["ชม.", "h"], ["กทม.", "Bangkok"], ["พ.ศ.", "B.E."], ["ม.ค.", "Jan"], ["ก.พ.", "Feb"], ["มี.ค.", "Mar"], ["เม.ย.", "Apr"], ["พ.ค.", "May"], ["มิ.ย.", "Jun"], ["ก.ค.", "Jul"], ["ส.ค.", "Aug"], ["ก.ย.", "Sep"], ["ต.ค.", "Oct"], ["พ.ย.", "Nov"], ["ธ.ค.", "Dec"]];
+
+const today=new Date(Date.now()+7*36e5).toISOString().slice(0,10);
+const S={lat:13.732468,lng:100.5799,tz:7,W:10,L:16,H:6,rot:90,roof:'gable',pitch:25,ovh:0.8,date:today,min:600,
+ showSun:true,showWind:true,showShadow:true,showSolar:true,showHours:true,showSeasons:true,panelMin:85,ctxR:150,
+ hideExisting:true,showHeat:false,showPlot:true,pname:'',PW:16,PL:24,offX:0,offZ:0,sideT:{nz:'road',px:'nb',pz:'nb',nx:'nb'},sideW:{nz:6,px:6,pz:6,nx:6},lang:'th',flow:'',zone:'ย.3',FAR:2.5,OSR:12.5,floors:2,use:'home',solid:{px:false,nx:false,pz:false,nz:false},wmonth:0,showWall:true,winH:1.5,windAnim:!matchMedia('(prefers-reduced-motion: reduce)').matches,season:'all',mode:'none',cW:10,cL:12,cH:9,cam:'3d'};
+let ctx={boxes:[],trees:[],src:''};
+try{Object.assign(S,JSON.parse(localStorage.getItem('sa-state')||'{}'));const c=JSON.parse(localStorage.getItem('sa-ctx')||'null');if(c)ctx=c}catch(e){}
+S.mode='none';S.cam='3d';
+let saveT;const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem('sa-state',JSON.stringify(S));const j=JSON.stringify(ctx);if(j.length<2e6)localStorage.setItem('sa-ctx',j)}catch(e){}},400)};
+
+/* ---------- sun math ---------- */
+function sunPos(ms,lat,lng){const d=ms/864e5-0.5+2440588-2451545;const M=D2R*(357.5291+0.98560028*d);
+ const C=D2R*(1.9148*Math.sin(M)+0.02*Math.sin(2*M)+0.0003*Math.sin(3*M));const L=M+C+D2R*102.9372+Math.PI;const e=D2R*23.4397;
+ const dec=Math.asin(Math.sin(e)*Math.sin(L)),ra=Math.atan2(Math.sin(L)*Math.cos(e),Math.cos(L));
+ const H=D2R*(280.16+360.9856235*d)+D2R*lng-ra,phi=D2R*lat;
+ const alt=Math.asin(Math.sin(phi)*Math.sin(dec)+Math.cos(phi)*Math.cos(dec)*Math.cos(H));
+ let az=Math.atan2(Math.sin(H),Math.cos(H)*Math.sin(phi)-Math.tan(dec)*Math.cos(phi))+Math.PI;az=(az+2*Math.PI)%(2*Math.PI);return{alt,az}}
+const msAt=(ds,m)=>{const[y,mo,d]=ds.split('-').map(Number);return Date.UTC(y,mo-1,d)+(m-S.tz*60)*6e4};
+const sunDir=p=>new THREE.Vector3(Math.cos(p.alt)*Math.sin(p.az),Math.sin(p.alt),-Math.cos(p.alt)*Math.cos(p.az));
+const hm=m=>m==null?'—':String(Math.floor(m/60)).padStart(2,'0')+':'+String(Math.round(m%60)).padStart(2,'0');
+const N16=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+const TH8=['เหนือ','ตะวันออกเฉียงเหนือ','ตะวันออก','ตะวันออกเฉียงใต้','ใต้','ตะวันตกเฉียงใต้','ตะวันตก','ตะวันตกเฉียงเหนือ'];
+const d16=a=>N16[Math.round(((a%360)+360)%360/22.5)%16],th8=a=>TH8[Math.round(((a%360)+360)%360/45)%8];
+function sunTimes(){let rise=null,set=null,prev=null,max=-90,noon=0;for(let m=0;m<=1440;m+=2){const a=sunPos(msAt(S.date,m),S.lat,S.lng).alt*R2D;
+ if(prev!==null){if(prev<-0.833&&a>=-0.833)rise=m;if(prev>=-0.833&&a<-0.833)set=m}if(a>max){max=a;noon=m}prev=a}return{rise,set,max,noon}}
+
+if(!window.THREE){$('#view').innerHTML='<p style="padding:20px">โหลดไลบรารี 3D ไม่ได้ ลองรีเฟรชหน้า</p>';throw new Error('no three')}
+
+/* ---------- scene ---------- */
+const view=$('#view');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+view.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+const pcam=new THREE.PerspectiveCamera(42,1,0.5,4000);
+const ocam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,3000);ocam.position.set(0,800,0);ocam.up.set(0,0,-1);ocam.lookAt(0,0,0);
+const pctl=new THREE.OrbitControls(pcam,renderer.domElement);pctl.enableDamping=true;pctl.maxPolarAngle=Math.PI*0.495;
+const octl=new THREE.OrbitControls(ocam,renderer.domElement);octl.enableRotate=false;octl.screenSpacePanning=true;octl.enabled=false;
+let cam=pcam;
+scene.add(new THREE.HemisphereLight(0xffffff,0xb9b2a6,0.55));
+const amb=new THREE.AmbientLight(0xffffff,0.15);scene.add(amb);
+const sunL=new THREE.DirectionalLight(0xfff3e0,0.9);sunL.castShadow=true;sunL.shadow.mapSize.set(2048,2048);sunL.shadow.bias=-0.0004;sunL.shadow.normalBias=0.04;
+scene.add(sunL,sunL.target);
+const ground=new THREE.Mesh(new THREE.CircleGeometry(1,96).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0xeeece6,roughness:1}));
+ground.receiveShadow=true;scene.add(ground);
+const G={};['compass','sun','bld','roof','wall','pan','wind','ctx','heat','plot'].forEach(k=>{G[k]=new THREE.Group();scene.add(G[k])});
+function clear(g){while(g.children.length){const o=g.children.pop();o.traverse(x=>{x.geometry&&x.geometry.dispose();if(x.material)[].concat(x.material).forEach(m=>{m.map&&m.map.dispose();m.dispose()})})}}
+const lineM=(c,o=1)=>new THREE.LineBasicMaterial({color:c,transparent:o<1,opacity:o});
+const line=(pts,c,o)=>new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),lineM(c,o));
+function label(txt,col,h,bg=true){txt=tr(txt);const c=document.createElement('canvas'),x=c.getContext('2d'),f=60,font=`600 ${f}px "IBM Plex Sans Thai",sans-serif`;
+ x.font=font;const w=Math.ceil(x.measureText(txt).width)+28;c.width=w;c.height=f+26;x.font=font;
+ if(bg){x.fillStyle='rgba(255,255,255,.86)';x.fillRect(0,0,w,c.height)}x.fillStyle=col;x.textBaseline='middle';x.fillText(txt,14,c.height/2+2);
+ const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true}));s.scale.set(h*w/c.height,h,1);s.renderOrder=20;return s}
+let R=30; // sun-path dome radius
+const toW=(x,y,z)=>new THREE.Vector3(x,y,z).applyAxisAngle(new THREE.Vector3(0,1,0),-S.rot*D2R);
+const toL=(x,z)=>new THREE.Vector3(x,0,z).applyAxisAngle(new THREE.Vector3(0,1,0),S.rot*D2R);
+const ptAt=(b,r,y=0)=>new THREE.Vector3(r*Math.sin(b*D2R),y,-r*Math.cos(b*D2R));
+
+function buildCompass(){clear(G.compass);const g=G.compass;
+ const ring=[];for(let a=0;a<=360;a+=3)ring.push(ptAt(a,R,0.05));g.add(line(ring,0x15202b,0.55));
+ for(let a=0;a<360;a+=10){const l=a%90===0?0.09:a%30===0?0.05:0.025;g.add(line([ptAt(a,R*(1-l),0.05),ptAt(a,R,0.05)],0x15202b,0.6))}
+ [['N',0,'#c2412d'],['E',90,'#15202b'],['S',180,'#15202b'],['W',270,'#15202b']].forEach(([t,a,c])=>{const s=label(t,c,R*0.09);s.position.copy(ptAt(a,R*1.09,1));g.add(s)});
+ for(let a=30;a<360;a+=30)if(a%90){const s=label(a+'°','#5b6873',R*0.045,false);s.position.copy(ptAt(a,R*1.07,0.5));g.add(s)}
+ const nArr=new THREE.Mesh(new THREE.ConeGeometry(R*0.03,R*0.09,3).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0xc2412d}));nArr.position.copy(ptAt(0,R*0.98,0.1));g.add(nArr);
+}
+function pathPts(ds){const pts=[];for(let m=0;m<=1440;m+=8){const p=sunPos(msAt(ds,m),S.lat,S.lng);if(p.alt>-0.01)pts.push(sunDir({alt:Math.max(p.alt,0),az:p.az}).multiplyScalar(R))}return pts}
+function tube(pts,c,r){if(pts.length<2)return new THREE.Group();return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),pts.length*2,r,6,false),new THREE.MeshBasicMaterial({color:c}))}
+let sunBall,sunRay,sunGlow;
+function buildSunPath(){clear(G.sun);const g=G.sun,y=S.date.slice(0,4);
+ if(S.showSeasons)[[`${y}-06-21`,0xe4572e],[`${y}-03-20`,0xf3a712],[`${y}-12-21`,0x2e86ab]].forEach(([d,c])=>g.add(tube(pathPts(d),c,R*0.005)));
+ g.add(tube(pathPts(S.date),0x15202b,R*0.008));
+ if(S.showHours)for(let h=6;h<=18;h++){const pts=[];for(let mo=0;mo<=12;mo++){const ds=`${y}-${String(mo%12+1).padStart(2,'0')}-21`;const p=sunPos(msAt(ds,h*60),S.lat,S.lng);if(p.alt>0)pts.push(sunDir(p).multiplyScalar(R))}
+  if(pts.length>1)g.add(line(pts,0x5b6873,0.5));}
+ for(let h=6;h<=18;h++){const p=sunPos(msAt(S.date,h*60),S.lat,S.lng);if(p.alt*R2D>2){const s=label(String(h),'#15202b',R*0.04);s.position.copy(sunDir(p).multiplyScalar(R*1.05));g.add(s)}}
+ sunBall=new THREE.Mesh(new THREE.SphereGeometry(R*0.035,24,16),new THREE.MeshBasicMaterial({color:0xf6a623}));g.add(sunBall);
+ {const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),gr=x.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(255,200,90,.9)');gr.addColorStop(.35,'rgba(255,160,60,.35)');gr.addColorStop(1,'rgba(255,140,40,0)');x.fillStyle=gr;x.fillRect(0,0,128,128);
+  sunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthWrite:false,blending:THREE.AdditiveBlending,transparent:true}));sunGlow.scale.setScalar(R*0.3);g.add(sunGlow)}
+ sunRay=line([new THREE.Vector3(),new THREE.Vector3(0,1,0)],0xe8743b,0.9);g.add(sunRay);
+ g.visible=S.showSun;}
+function updateSun(){const p=sunPos(msAt(S.date,S.min),S.lat,S.lng),v=sunDir(p),up=p.alt>0;
+ sunBall.position.copy(v.clone().multiplyScalar(R));sunBall.visible=up;sunGlow.position.copy(sunBall.position);sunGlow.visible=up;
+ sunRay.geometry.setFromPoints([new THREE.Vector3(0,0,0),v.clone().multiplyScalar(R)]);sunRay.visible=up;
+ sunL.position.copy(v.clone().multiplyScalar(400));sunL.intensity=up?0.95*Math.min(1,0.25+Math.sin(p.alt)*2):0;sunL.castShadow=S.showShadow&&up;
+ amb.intensity=up?0.15:0.35;
+ $('#time').value=S.min;$('#tLbl').textContent=hm(S.min);
+ const dt=new Date(S.date+'T00:00').toLocaleDateString(LOC(),{day:'numeric',month:'short',year:'numeric'});
+ $('#readout').innerHTML=up?`<span>${dt}</span><span>มุมเงย <b>${(p.alt*R2D).toFixed(1)}°</b></span><span>อะซิมุท <b>${(p.az*R2D).toFixed(0)}° ${d16(p.az*R2D)}</b></span><span>เงายาว <b>${(1/Math.tan(p.alt)).toFixed(2)}×</b> ความสูง</span>`:`<span>${dt}</span><span>ดวงอาทิตย์อยู่ใต้ขอบฟ้า</span>`;
+}
+function sunPanel(){const t=sunTimes();const pr=sunPos(msAt(S.date,t.rise??360),S.lat,S.lng),ps=sunPos(msAt(S.date,t.set??1080),S.lat,S.lng);
+ $('#sunCard').innerHTML=`<table><tr><th>ขึ้น</th><td class="n">${hm(t.rise)} · ${(pr.az*R2D).toFixed(0)}° ${d16(pr.az*R2D)}</td></tr><tr><th>ตก</th><td class="n">${hm(t.set)} · ${(ps.az*R2D).toFixed(0)}° ${d16(ps.az*R2D)}</td></tr><tr><th>เที่ยงสุริยะ</th><td class="n">${hm(t.noon)} · สูงสุด ${t.max.toFixed(1)}°</td></tr><tr><th>ความยาววัน</th><td class="n">${t.rise!=null&&t.set!=null?hm(t.set-t.rise)+' ชม.':'—'}</td></tr></table>`}
+
+/* ---------- solar ---------- */
+const SGC={};
+function sunGrid(coarse){const sd=coarse?15:6,sm=coarse?30:20,key=[S.lat,S.lng,S.tz,S.date.slice(0,4),sd].join();if(SGC[key])return SGC[key];const y=+S.date.slice(0,4),g=[];
+ for(let d=0;d<365;d+=sd){const b=Date.UTC(y,0,1)+d*864e5;for(let m=240;m<=1200;m+=sm){const p=sunPos(b+(m-S.tz*60)*6e4,S.lat,S.lng);if(p.alt<=0.02)continue;const v=sunDir(p);g.push({x:v.x,y:v.y,z:v.z,dni:dniOf(p.alt),w:(sm/60)*sd})}}
+ return SGC[key]=g}
+function annual(n,P=null,occ=null,coarse=false){const cb=n.y;let sum=0;for(const e of sunGrid(coarse)){const ci=n.x*e.x+n.y*e.y+n.z*e.z;let beam=ci>0?ci*e.dni:0;if(beam>0&&P)beam*=trans(P,e,occ);
+  sum+=(beam+0.1*e.dni*(1+cb)/2+0.2*e.dni*(e.y+0.1)*(1-cb)/2)*e.w}return sum/1000}
+function occluders(){const fp=mainFoot(),boxes=[],trees=[];
+ ctx.boxes.forEach(b=>{if(S.hideExisting&&(pip(0,0,b.p)||fp.some(q=>pip(q[0],q[1],b.p))))return;const p=b.p.map(([e,n])=>[e,-n]),xs=p.map(q=>q[0]),zs=p.map(q=>q[1]);
+  const bb={p,h:b.h,x0:Math.min(...xs),x1:Math.max(...xs),z0:Math.min(...zs),z1:Math.max(...zs)};if(Math.hypot((bb.x0+bb.x1)/2,(bb.z0+bb.z1)/2)<130)boxes.push(bb)});
+ ctx.trees.forEach(t=>{if(Math.hypot(t.e,t.n)<60)trees.push({x:t.e,y:t.h*0.62,z:-t.n,r:t.r})});return{boxes,trees}}
+function segX(ax,az,bx,bz,cx,cz,dx,dz){const d=(bx-ax)*(dz-cz)-(bz-az)*(dx-cx);if(!d)return false;const t=((cx-ax)*(dz-cz)-(cz-az)*(dx-cx))/d,u=((cx-ax)*(bz-az)-(cz-az)*(bx-ax))/d;return t>=0&&t<=1&&u>=0&&u<=1}
+function trans(P,e,o){let tr=1;
+ for(const t of o.trees){const dx=t.x-P.x,dy=t.y-P.y,dz=t.z-P.z,b=dx*e.x+dy*e.y+dz*e.z;if(b<=0)continue;if(dx*dx+dy*dy+dz*dz-b*b<t.r*t.r*0.8){tr*=0.25;if(tr<0.07)return tr}}
+ const hx=e.x/e.y,hz=e.z/e.y;
+ for(const b of o.boxes){const tm=b.h-P.y;if(tm<=0)continue;const ex=P.x+hx*tm,ez=P.z+hz*tm;
+  if(Math.max(P.x,ex)<b.x0||Math.min(P.x,ex)>b.x1||Math.max(P.z,ez)<b.z0||Math.min(P.z,ez)>b.z1)continue;
+  if(pip(ex,ez,b.p))return 0;const p=b.p;for(let i=0,j=p.length-1;i<p.length;j=i++)if(segX(P.x,P.z,ex,ez,p[j][0],p[j][1],p[i][0],p[i][1]))return 0}
+ return tr}
+const eqN=t=>new THREE.Vector3(0,Math.cos(t*D2R),(S.lat>=0?1:-1)*Math.sin(t*D2R));
+let optC={k:'',v:0,t:0};
+function optimum(){const k=S.lat.toFixed(2)+S.lng.toFixed(2)+S.date.slice(0,4);if(optC.k===k)return optC;let best=0,bt=0;for(let t=0;t<=40;t+=2){const v=annual(eqN(t));if(v>best){best=v;bt=t}}optC={k,v:best,t:bt};return optC}
+const rampC=p=>p>=95?0x2e9e5b:p>=85?0x9cc93b:p>=75?0xf2b233:0xd9534f;
+const rampS=p=>'#'+rampC(p).toString(16).padStart(6,'0');
+function newell(pts){const n=new THREE.Vector3();for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];n.x+=(a.y-b.y)*(a.z+b.z);n.y+=(a.z-b.z)*(a.x+b.x);n.z+=(a.x-b.x)*(a.y+b.y)}const area=n.length()/2;n.normalize();if(n.y<0)n.negate();return{n,area}}
+function pip(x,y,P){let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const[xi,yi]=P[i],[xj,yj]=P[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c}
+const PW=1.134,PH=2.279,KW=0.55,REAL=0.62;
+
+const dniOf=a=>{const am=1/(Math.sin(a)+0.50572*Math.pow(a*R2D+6.07995,-1.6364));return 1353*Math.pow(0.7,Math.pow(am,0.678))};
+const hotC=p=>p>=80?'#d73027':p>=55?'#f46d43':p>=30?'#fdae61':'#74add1',hotT=p=>p>=80?'ร้อนมาก':p>=55?'ร้อน':p>=30?'ปานกลาง':'น้อย';
+function facades(){const y=+S.date.slice(0,4),hw=Math.max(0.3,S.winH);
+ const walls=[[1,0,S.L],[-1,0,S.L],[0,1,S.W],[0,-1,S.W]].map(([x,z,len])=>({n:toW(x,0,z).normalize(),c:toW(x*S.W/2,0,z*S.L/2),len}));
+ walls.forEach(w=>{w.fa=(Math.atan2(w.n.x,-w.n.z)*R2D+360)%360;let heat=0,hits=0,ok=0,maxD=0,pm=0,am=0;
+  for(let d=0;d<365;d+=6){const b=Date.UTC(y,0,1)+d*864e5;for(let m=300;m<=1170;m+=20){const p=sunPos(b+(m-S.tz*60)*6e4,S.lat,S.lng);if(p.alt<=0.03)continue;
+   const sd=sunDir(p),ci=w.n.x*sd.x+w.n.z*sd.z;if(ci<=0)continue;const e=dniOf(p.alt)*ci*(20/60)*6;heat+=e*(m>=780?1.35:1);if(m>=720)pm+=e;else am+=e}}
+  for(let mo=0;mo<12;mo++){const b=Date.UTC(y,mo,21);for(let m=540;m<=960;m+=15){const p=sunPos(b+(m-S.tz*60)*6e4,S.lat,S.lng);if(p.alt<5*D2R)continue;
+   const az=(p.az*R2D-w.fa+540)%360-180;if(Math.abs(az)>=85)continue;hits++;const D=hw/(Math.tan(p.alt)/Math.cos(az*D2R));maxD=Math.max(maxD,D);if(S.ovh>=D)ok++}}
+  let hrs=0,kwh=0;for(let m=0;m<1440;m+=10){const p=sunPos(msAt(S.date,m),S.lat,S.lng);if(p.alt<=0.02)continue;const sd=sunDir(p),ci=w.n.x*sd.x+w.n.z*sd.z;if(ci>0.02){hrs+=1/6;kwh+=dniOf(p.alt)*ci/6000}}
+  Object.assign(w,{heat,hits,maxD,cover:hits?ok/hits:1,hrs,kwh,pmShare:pm/((pm+am)||1)})});
+ const mx=Math.max(...walls.map(w=>w.heat))||1;walls.forEach(w=>w.pct=w.heat/mx*100);return walls}
+function wallRec(w){if(!w.hits)return'แดดแทบไม่ส่องเข้าผนังนี้ช่วง 9–16 น. ไม่ต้องบังแดดมาก เหมาะกับช่องเปิดใหญ่และรับแสงธรรมชาติ';const D=w.maxD;
+ if(D<=1)return`กันสาดลึก <b>${D.toFixed(2)} ม.</b> บังหน้าต่างได้ตลอดช่วง 9–16 น.`;
+ if(D<=2)return`กันสาดลึก <b>${D.toFixed(1)} ม.</b> หรือกันสาด 0.6–0.8 ม. ร่วมกับระแนงแนวตั้ง`;
+ return`แดดมุมต่ำ กันสาดอย่างเดียวไม่พอ (ต้องลึก ${D>5?'มากกว่า 5':D.toFixed(1)} ม.) — ใช้ระแนงหรือบานเกล็ดแนวตั้ง, ผนังสองชั้น (double skin), ปลูกไม้ยืนต้นบังด้านนี้ และลดขนาดช่องเปิด`}
+let walls=[];
+function buildWalls(){clear(G.wall);walls=facades();const g=G.wall;
+ walls.forEach(w=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w.len,S.H),new THREE.MeshBasicMaterial({color:hotC(w.pct),transparent:true,opacity:.6,depthWrite:false,side:THREE.DoubleSide}));
+  m.position.copy(w.c).addScaledVector(w.n,0.04);m.position.y=S.H/2;m.lookAt(m.position.clone().add(w.n));g.add(m);
+  const l=label(`${d16(w.fa)} ${hotT(w.pct)}`,hotC(w.pct),Math.max(1.2,R*0.035));l.position.copy(w.c).addScaledVector(w.n,2.2);l.position.y=S.H*0.55;g.add(l)});
+ g.visible=S.showWall;
+ $('#wallCard').innerHTML=walls.slice().sort((a,b)=>b.pct-a.pct).map(w=>`<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap">
+  <b style="font-size:17px"><span class="sw" style="background:${hotC(w.pct)}"></span>ผนังทิศ${th8(w.fa)} <span class="chip">${d16(w.fa)} ${w.fa.toFixed(0)}° · ยาว ${w.len} ม.</span></b><span style="color:${hotC(w.pct)};font-weight:600">${hotT(w.pct)}</span></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) 3em;gap:8px;align-items:center;margin:6px 0"><div class="bar" style="width:${w.pct}%;background:${hotC(w.pct)}"></div><span class="n" style="text-align:right">${w.pct.toFixed(0)}%</span></div>
+  <div class="note" style="margin:0">วันที่เลือก: แดดส่อง ${w.hrs.toFixed(1)} ชม. · ${w.kwh.toFixed(2)} kWh/m² · ตลอดปีได้แดดบ่าย ${(w.pmShare*100).toFixed(0)}%<br>ชายคาเดิม ${S.ovh} ม. บังหน้าต่างได้ ${(w.cover*100).toFixed(0)}% ของเวลาที่แดดส่อง (9–16 น.)</div>
+  <p style="margin:8px 0 0;font-size:15px">${wallRec(w)}</p></div>`).join('')}
+
+/* ---------- plot & setbacks ---------- */
+const SIDES={nz:[0,-1],px:[1,0],pz:[0,1],nx:[-1,0]};
+// ผังเมืองรวมกรุงเทพมหานคร พ.ศ. 2556 — FAR / OSR (%), ค่าที่ตรวจสอบจากแหล่งอ้างอิงแล้ว
+const ZONES=[['ย.1',1,40,'#f7e463','เหลือง · ที่อยู่อาศัยหนาแน่นน้อย'],['ย.2',1.5,20,'#f7e463','เหลือง'],['ย.3',2.5,12.5,'#f7e463','เหลือง'],['ย.4',3,10,'#f7e463','เหลือง'],
+ ['ย.5',4,7.5,'#f4a742','ส้ม · ที่อยู่อาศัยหนาแน่นปานกลาง'],['ย.6',4.5,6.5,'#f4a742','ส้ม'],['ย.7',5,6,'#f4a742','ส้ม'],
+ ['ย.8',6,5,'#a0703c','น้ำตาล · ที่อยู่อาศัยหนาแน่นมาก'],['ย.9',7,4.5,'#a0703c','น้ำตาล'],['ย.10',8,4,'#a0703c','น้ำตาล'],
+ ['พ.3',7,4.5,'#e0453a','แดง · พาณิชยกรรม'],['พ.4',8,4,'#e0453a','แดง · พาณิชยกรรม'],['ก.1',0.5,100,'#9fd08a','ขาวกรอบเขียว · อนุรักษ์ชนบทและเกษตรกรรม'],['custom',null,null,'#b8c2c8','กำหนดเอง (ต่างจังหวัด / รหัสอื่น)']];
+const inBKK=()=>S.lat>13.49&&S.lat<13.96&&S.lng>100.32&&S.lng<100.94;
+function renderZoneOptions(){$('#zone').innerHTML=ZONES.map(([c,f,o,,t])=>`<option value="${c}">${c==='custom'?t:`${c} — FAR ${f} · OSR ${o}% · ${t}`}</option>`).join('');$('#zone').value=S.zone}
+function initZone(){renderZoneOptions();
+ $('#zone').addEventListener('change',e=>{S.zone=e.target.value;const z=ZONES.find(q=>q[0]===S.zone);if(z[1]!=null){S.FAR=z[1];S.OSR=z[2]}syncUI();buildPlot();save()})}
+const sideB=k=>{const v=toW(SIDES[k][0],0,SIDES[k][1]);return(Math.atan2(v.x,-v.z)*R2D+360)%360};
+function sideReq(k,H){const t=(S.sideT||{})[k]||'nb',w=+((S.sideW||{})[k])||0,big=H>8,op=H<=9?2:3;
+ if(t==='road')return{t,w,req:big?(w<10?Math.max(0,6-w/2):w<=20?w/10:2):(w<6?Math.max(0,3-w/2):0),why:`ติดถนน ${w} ม.${big?' อาคารสูงเกิน 8 ม.':''} (ข้อ 41)`};
+ if(t==='water')return{t,w,req:w<10?3:6,why:`แหล่งน้ำกว้าง ${w} ม. (ข้อ 42)`};
+ if(t==='lake')return{t,w,req:12,why:'บึง ทะเลสาบ ทะเล (ข้อ 42)'};
+ return{t,w,req:S.solid[k]?0.5:op,why:S.solid[k]?'ผนังทึบ (ข้อ 50)':`มีช่องเปิด อาคารสูง${H<=9?'ไม่เกิน':'เกิน'} 9 ม. (ข้อ 50)`}}
+function setback(){const{W,L,H,PW:pw,PL:pl,offX:ox,offZ:oz}=S;
+ const d={px:pw/2-ox-W/2,nx:pw/2+ox-W/2,pz:pl/2-oz-L/2,nz:pl/2+oz-L/2};
+ const sides=Object.keys(SIDES).map(k=>{const q=sideReq(k,H);return{k,b:sideB(k),d:d[k],req:q.req,t:q.t,w:q.w,ok:d[k]>=q.req-1e-6,eave:d[k]-S.ovh>=-1e-6,road:q.t==='road',why:q.why}});
+ const area=pw*pl,cover=(W+2*S.ovh)*(L+2*S.ovh),open=area-cover,need=(S.use==='home'?0.3:0.1)*W*L;
+ const fl=Math.max(1,Math.round(S.floors)),gfa=W*L*fl,far=gfa/area,farOk=!S.FAR||far<=S.FAR+1e-9,osr=open/gfa*100,osrOk=!S.OSR||osr>=S.OSR-1e-9;
+ const fFar=S.FAR?Math.floor(S.FAR*area/(W*L)+1e-9):Infinity,fOsr=S.OSR?Math.floor(open/(S.OSR/100*W*L)+1e-9):Infinity,maxF=Math.min(fFar,fOsr);
+ const wide=sides.some(x=>x.t==='road'&&x.w>=10);
+ return{sides,area,cover,open,need,openOk:open>=need,hi:H>=23,wide,fl,gfa,far,farOk,osr,osrOk,maxF,fFar,fOsr,ftf:H/fl,
+  all:sides.every(x=>x.ok&&x.eave)&&open>=need&&farOk&&osrOk&&!(H>=23&&!wide)}}
+let sbRes=null;
+function buildPlot(){clear(G.plot);const g=G.plot;g.rotation.y=-S.rot*D2R;g.visible=S.showPlot;const r=sbRes=setback(),cx=-S.offX,cz=-S.offZ,a=S.PW/2,b=S.PL/2,y=0.07;
+ const V=(x,z,yy=y)=>new THREE.Vector3(x,yy,z),rq=Object.fromEntries(r.sides.map(x=>[x.k,x]));
+ g.add(tube([V(cx-a,cz-b),V(cx+a,cz-b),V(cx+a,cz+b),V(cx-a,cz+b),V(cx-a,cz-b)].flatMap((p,i,A)=>i?[A[i-1].clone().lerp(p,.5),p]:[p]),0x15202b,0.09));
+ {const z=ZONES.find(q=>q[0]===S.zone)||ZONES[ZONES.length-1];const m=new THREE.Mesh(new THREE.PlaneGeometry(2*a,2*b).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:z[3],transparent:true,opacity:.28,depthWrite:false}));m.position.set(cx,0.03,cz);g.add(m)}
+ const x0=cx-a+rq.nx.req,x1=cx+a-rq.px.req,z0=cz-b+rq.nz.req,z1=cz+b-rq.pz.req;
+ [['nz',[x0,z0],[x1,z0]],['px',[x1,z0],[x1,z1]],['pz',[x1,z1],[x0,z1]],['nx',[x0,z1],[x0,z0]]].forEach(([k,p,q])=>{const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints([V(p[0],p[1],y+.02),V(q[0],q[1],y+.02)]),new THREE.LineDashedMaterial({color:rq[k].ok?0x2e9e5b:0xd9534f,dashSize:0.6,gapSize:0.35}));l.computeLineDistances();g.add(l)});
+ const mid={nz:[0,(-S.L/2+cz-b)/2],pz:[0,(S.L/2+cz+b)/2],px:[(S.W/2+cx+a)/2,0],nx:[(-S.W/2+cx-a)/2,0]};
+ r.sides.forEach(x=>{const t=label(`${x.d.toFixed(1)} ม.${x.ok?'':' ✗'}`,x.ok?'#2e7d4f':'#c2412d',Math.max(1,R*0.032));t.position.set(mid[x.k][0],1.2,mid[x.k][1]);g.add(t)});
+ r.sides.forEach(x=>{if(x.t==='nb')return;const[sx,sz]=SIDES[x.k],w=x.t==='lake'?20:x.w,ext=Math.max(a,b)+8,col=x.t==='road'?0x8d969c:0x5aa9e6;let geo;
+  if(sx){geo=new THREE.PlaneGeometry(w,2*ext).rotateX(-Math.PI/2);geo.translate(cx+sx*(a+w/2),0.025,cz)}else{geo=new THREE.PlaneGeometry(2*ext,w).rotateX(-Math.PI/2);geo.translate(cx,0.025,cz+sz*(b+w/2))}
+  const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:col,roughness:x.t==='road'?1:.3,metalness:x.t==='road'?0:.1}));m.receiveShadow=true;g.add(m);
+  const cl=sx?[V(cx+sx*(a+w/2),cz-ext,0.05),V(cx+sx*(a+w/2),cz+ext,0.05)]:[V(cx-ext,cz+sz*(b+w/2),0.05),V(cx+ext,cz+sz*(b+w/2),0.05)];
+  if(x.t==='road'){const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(cl),new THREE.LineDashedMaterial({color:0xffffff,dashSize:2,gapSize:1.5}));l.computeLineDistances();g.add(l)}
+  const t=label(x.t==='road'?`ถนน ${x.w} ม.`:x.t==='water'?`คลอง ${x.w} ม.`:'บึง/ทะเล','#15202b',Math.max(1,R*0.035));t.position.copy(cl[0].clone().lerp(cl[1],0.2));t.position.y=1;g.add(t)});
+ // UI
+ const nm=k=>`ทิศ${th8(sideB(k))} (${d16(sideB(k))})`;
+ sideEditor($('#sideRows'));
+ $('#oXl').textContent=`เลื่อนอาคารไปทาง${th8(sideB('px'))} (ม.)`;$('#oZl').textContent=`เลื่อนอาคารไปทาง${th8(sideB('pz'))} (ม.)`;
+ $('#zoneLoc').className='msg '+(inBKK()?'ok':'err');$('#zoneLoc').textContent=inBKK()?'พิกัดนี้น่าจะอยู่ในกรุงเทพฯ (ประมาณจากพิกัด) — ใช้ผังเมืองรวม กทม. พ.ศ. 2556 ซึ่งยังมีผลบังคับ ฉบับปรับปรุงครั้งที่ 4 คาดว่าประกาศใช้ปี 2570':'พิกัดนี้น่าจะอยู่นอกกรุงเทพฯ — เลือก “กำหนดเอง” แล้วกรอก FAR/OSR ตามผังเมืองรวมของพื้นที่ (บางผังไม่กำหนด FAR ให้เว้นว่างหรือใส่ 0)';
+ const warn=[];if(r.sides.some(x=>x.d<0))warn.push('อาคารล้นออกนอกแปลงที่ดิน');if(r.sides.some(x=>!x.eave))warn.push(`ชายคา ${S.ovh} ม. ยื่นเกินแนวเขตที่ดิน`);if(r.hi)warn.push('อาคารสูง 23 ม. ขึ้นไป เป็น “อาคารสูง” มีข้อกำหนดเพิ่ม (กฎกระทรวงฉบับที่ 33)');if(r.hi&&!r.wide)warn.push('อาคารสูง ต้องมีถนนกว้าง 10 ม. ขึ้นไป — ไม่มีถนนกว้าง 10 ม. ติดแปลง (กฎกระทรวงฉบับที่ 33 ข้อ 2)');
+ $('#plotCard').innerHTML=`<div class="card"><div class="big ${r.all?'pass':'fail'}">${r.all?'ผ่านเบื้องต้น':'ยังไม่ผ่าน'}</div><div class="note" style="margin:4px 0 0">ที่ดิน ${r.area.toFixed(0)} ตร.ม. (${(r.area/4).toFixed(1)} ตร.ว.) · หลังคาคลุม ${(r.cover/r.area*100).toFixed(0)}%</div></div>
+ <table class="stack"><thead><tr><th>ด้าน</th><th>ระยะจริง</th><th>ต้องการ</th><th>เกณฑ์</th></tr></thead><tbody>${r.sides.map(x=>`<tr><td>${nm(x.k)}</td><td class="n ${x.ok?'pass':'fail'}">${x.d.toFixed(2)} ม.</td><td class="n">≥ ${x.req.toFixed(2)} ม.</td><td>${x.why}</td></tr>`).join('')}</tbody></table>
+ <table style="margin-top:12px"><thead><tr><th>ผังเมือง ${S.zone==='custom'?'(กำหนดเอง)':S.zone}</th><th>ออกแบบ</th><th>ข้อกำหนด</th></tr></thead><tbody>
+ <tr><td>พื้นที่อาคารรวม (${r.fl} ชั้น)</td><td class="n">${r.gfa.toFixed(0)} ตร.ม.</td><td class="n">${S.FAR?'≤ '+(S.FAR*r.area).toFixed(0)+' ตร.ม.':'—'}</td></tr>
+ <tr><td>FAR</td><td class="n ${r.farOk?'pass':'fail'}">${r.far.toFixed(2)}</td><td class="n">${S.FAR?'≤ '+S.FAR:'—'}</td></tr>
+ <tr><td>OSR (ที่ว่าง ÷ พื้นที่อาคารรวม)</td><td class="n ${r.osrOk?'pass':'fail'}">${r.osr.toFixed(1)}%</td><td class="n">${S.OSR?'≥ '+S.OSR+'%':'—'}</td></tr></tbody></table>
+ <p class="note" style="margin:6px 0 0">ขนาดฐานอาคารนี้สร้างได้สูงสุด <b>${isFinite(r.maxF)?r.maxF+' ชั้น':'—'}</b>${isFinite(r.maxF)?` (FAR จำกัด ${r.fFar} ชั้น · OSR จำกัด ${r.fOsr} ชั้น)`:''} · ความสูงชั้นเฉลี่ย ${r.ftf.toFixed(2)} ม.${r.ftf<2.6?' <span class="fail">— ต่ำเกินไป ตรวจจำนวนชั้น/ความสูง</span>':''}${S.OSR?' · ที่ว่างตาม OSR อย่างน้อยครึ่งหนึ่งต้องเป็นพื้นที่น้ำซึมผ่านได้ปลูกต้นไม้':''}</p>
+ <p style="margin:10px 0 0" class="${r.openOk?'pass':'fail'}">ที่ว่าง ${r.open.toFixed(0)} ตร.ม. ต้องการ ≥ ${r.need.toFixed(0)} ตร.ม. (${S.use==='home'?30:10}% ของพื้นที่ชั้นที่มากที่สุด, ข้อ 33)</p>
+ ${warn.map(w=>`<p class="fail" style="margin:6px 0 0">⚠ ${w}</p>`).join('')}`;
+ if(map&&pp)pp.setLatLngs([[cx-a,cz-b],[cx+a,cz-b],[cx+a,cz+b],[cx-a,cz+b]].map(([x,z])=>{const v=toW(x,0,z);return[S.lat-v.z/110540,S.lng+v.x/mPerLng()]}))}
+
+/* ---------- sun-hours heatmap ---------- */
+function hull(P){P=P.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);if(P.length<3)return P;const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);const lo=[],up=[];
+ for(const p of P){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}for(let i=P.length-1;i>=0;i--){const p=P[i];while(up.length>1&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}lo.pop();up.pop();return lo.concat(up)}
+const HST=[[0,[49,54,149]],[2,[69,117,180]],[4,[116,173,209]],[6,[254,224,144]],[8,[253,174,97]],[10,[244,109,67]],[12,[215,48,39]]];
+function heatRGB(h){h=Math.min(12,Math.max(0,h));for(let i=1;i<HST.length;i++)if(h<=HST[i][0]){const[a0,c0]=HST[i-1],[a1,c1]=HST[i],t=(h-a0)/(a1-a0);return c0.map((c,k)=>Math.round(c+(c1[k]-c)*t))}return HST[6][1]}
+let heatT;
+function computeHeat(){G.heat.visible=S.showHeat;if(!S.showHeat){$('#heatMsg').textContent='';return}$('#heatMsg').className='msg';$('#heatMsg').textContent='กำลังคำนวณ…';clearTimeout(heatT);heatT=setTimeout(()=>{
+ const N=120,E=Math.max(R*1.3,40),cs=2*E/N,lit=new Float32Array(N*N),sh=new Uint8Array(N*N),fp=mainFoot(),fx=fp.map(([e,n])=>[e,-n]);
+ const bp=[];[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b])=>bp.push(toW(a*S.W/2,0,b*S.L/2),toW(a*S.W/2,S.H,b*S.L/2)));faces.forEach(f=>f.pts.forEach(q=>bp.push(q)));
+ const occ=[];ctx.boxes.forEach(b=>{if(S.hideExisting&&(pip(0,0,b.p)||fp.some(q=>pip(q[0],q[1],b.p))))return;occ.push({p:b.p.map(([e,n])=>[e,-n]),h:b.h})});
+ let steps=0;
+ for(let m=0;m<1440;m+=15){const p=sunPos(msAt(S.date,m),S.lat,S.lng);if(p.alt<2*D2R)continue;steps++;const sd=sunDir(p),ox=-sd.x/sd.y,oz=-sd.z/sd.y,ol=Math.hypot(ox,oz)||1;sh.fill(0);
+  const polys=[hull(bp.map(v=>[v.x+v.y*ox,v.z+v.y*oz]))];
+  occ.forEach(o=>polys.push(hull(o.p.concat(o.p.map(([x,z])=>[x+o.h*ox,z+o.h*oz])))));
+  const st=Math.max(Math.sin(p.alt),0.25),dx=ox/ol,dz=oz/ol;
+  ctx.trees.forEach(t=>{const hc=t.h*0.62,cx=t.e+hc*ox,cz=-t.n+hc*oz,P=[];for(let k=0;k<12;k++){const a=k/12*6.2832,u=Math.cos(a)*t.r/st,v=Math.sin(a)*t.r;P.push([cx+dx*u-dz*v,cz+dz*u+dx*v])}polys.push(P)});
+  for(const P of polys){let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;for(const[x,z]of P){if(x<x0)x0=x;if(x>x1)x1=x;if(z<z0)z0=z;if(z>z1)z1=z}
+   if(x1<-E||x0>E||z1<-E||z0>E)continue;const i0=Math.max(0,Math.floor((x0+E)/cs)),i1=Math.min(N-1,Math.floor((x1+E)/cs)),j0=Math.max(0,Math.floor((z0+E)/cs)),j1=Math.min(N-1,Math.floor((z1+E)/cs));
+   for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){const k=j*N+i;if(!sh[k]&&pip(-E+(i+.5)*cs,-E+(j+.5)*cs,P))sh[k]=1}}
+  for(let k=0;k<N*N;k++)if(!sh[k])lit[k]+=0.25}
+ const cv=document.createElement('canvas');cv.width=cv.height=N;const cx2=cv.getContext('2d'),img=cx2.createImageData(N,N);let c6=0,c3=0,c0=0,mx=0;
+ for(let j=0;j<N;j++)for(let i=0;i<N;i++){const k=j*N+i,x=-E+(i+.5)*cs,z=-E+(j+.5)*cs,o=k*4;if(pip(x,z,fx)){img.data[o+3]=0;continue}
+  const h=lit[k],c=heatRGB(h);img.data[o]=c[0];img.data[o+1]=c[1];img.data[o+2]=c[2];img.data[o+3]=255;mx=Math.max(mx,h);
+  if(x*x+z*z<=R*R){if(h>=6)c6++;else if(h>=3)c3++;else c0++}}
+ cx2.putImageData(img,0,0);clear(G.heat);const tex=new THREE.CanvasTexture(cv);
+ const hm=new THREE.Mesh(new THREE.PlaneGeometry(2*E,2*E).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:.82,depthWrite:false}));hm.position.y=0.04;hm.renderOrder=1;G.heat.add(hm);
+ const tot=c6+c3+c0||1,pc=v=>Math.round(v/tot*100);
+ $('#heatMsg').className='msg ok';$('#heatMsg').textContent=`คำนวณทุก 15 นาที · วันนี้มีแดด ${(steps/4).toFixed(1)} ชม. · สูงสุดบนพื้น ${mx.toFixed(1)} ชม.`;
+ $('#heatCard').innerHTML=`<div style="height:12px;border-radius:6px;margin-top:10px;background:linear-gradient(90deg,${HST.map(([h,c])=>`rgb(${c}) ${h/12*100}%`).join(',')})"></div>
+  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--mut)"><span>0 ชม. (ร่ม)</span><span>6</span><span>12 ชม.</span></div>
+  <table><thead><tr><th>ชั่วโมงแดด</th><th>พื้นที่ในวงทิศ</th><th>เหมาะกับ</th></tr></thead><tbody>
+  <tr><td><span class="sw" style="background:rgb(${heatRGB(9)})"></span>≥ 6 ชม.</td><td class="n">${pc(c6)}%</td><td>สวนผัก ไม้ดอก ลานตากผ้า สระว่ายน้ำ (น้ำอุ่น ตะไคร่น้อย) โซลาร์ภาคพื้น</td></tr>
+  <tr><td><span class="sw" style="background:rgb(${heatRGB(4.5)})"></span>3–6 ชม.</td><td class="n">${pc(c3)}%</td><td>สนามหญ้า ไม้พุ่ม ลานนั่งเล่นช่วงที่มีร่ม</td></tr>
+  <tr><td><span class="sw" style="background:rgb(${heatRGB(1)})"></span>&lt; 3 ชม.</td><td class="n">${pc(c0)}%</td><td>ที่จอดรถ (รถไม่ร้อน) ทางเดิน ไม้ร่มรำไร เฟิร์น</td></tr></tbody></table>`},60)}
+
+/* ---------- building ---------- */
+let faces=[];
+function buildBuilding(){clear(G.bld);clear(G.roof);clear(G.pan);
+ const{W,L,H,ovh:o}=S,t=Math.tan(S.pitch*D2R);G.bld.rotation.y=-S.rot*D2R;
+ const wallM=new THREE.MeshStandardMaterial({color:0xfbfbf9,roughness:.85}),edgeM=lineM(0x15202b,0.75);
+ let geo;
+ if(S.roof==='gable'||S.roof==='shed'){const sh=new THREE.Shape();sh.moveTo(-W/2,0);sh.lineTo(W/2,0);sh.lineTo(W/2,H);
+  if(S.roof==='gable'){sh.lineTo(0,H+W/2*t);sh.lineTo(-W/2,H)}else sh.lineTo(-W/2,H+W*t);sh.lineTo(-W/2,0);
+  geo=new THREE.ExtrudeGeometry(sh,{depth:L,bevelEnabled:false});geo.translate(0,0,-L/2)}
+ else{geo=new THREE.BoxGeometry(W,H,L);geo.translate(0,H/2,0)}
+ const wm=new THREE.Mesh(geo,wallM);wm.castShadow=wm.receiveShadow=true;G.bld.add(wm,new THREE.LineSegments(new THREE.EdgesGeometry(geo,20),edgeM));
+ const a=W/2+o,b=L/2+o,ye=H-o*t,V=(x,y,z)=>toW(x,y,z);let F=[];
+ if(S.roof==='flat'){const sl=new THREE.BoxGeometry(W+2*o,0.25,L+2*o);sl.translate(0,H+0.125,0);const m=new THREE.Mesh(sl,new THREE.MeshStandardMaterial({color:0xd9d9d6}));m.castShadow=m.receiveShadow=true;G.bld.add(m,new THREE.LineSegments(new THREE.EdgesGeometry(sl),edgeM));
+  F=[{name:'พื้นดาดฟ้า',pts:[V(-a,H+0.26,-b),V(a,H+0.26,-b),V(a,H+0.26,b),V(-a,H+0.26,b)]}]}
+ else if(S.roof==='gable'){const yr=ye+a*t;F=[{pts:[V(a,ye,-b),V(a,ye,b),V(0,yr,b),V(0,yr,-b)]},{pts:[V(-a,ye,b),V(-a,ye,-b),V(0,yr,-b),V(0,yr,b)]}]}
+ else if(S.roof==='shed'){F=[{pts:[V(a,ye,-b),V(a,ye,b),V(-a,ye+2*a*t,b),V(-a,ye+2*a*t,-b)]}]}
+ else{if(b>=a){const r=b-a,yr=ye+a*t;F=[{pts:[V(a,ye,-b),V(a,ye,b),V(0,yr,r),V(0,yr,-r)]},{pts:[V(-a,ye,b),V(-a,ye,-b),V(0,yr,-r),V(0,yr,r)]},{pts:[V(a,ye,b),V(-a,ye,b),V(0,yr,r)]},{pts:[V(-a,ye,-b),V(a,ye,-b),V(0,yr,-r)]}]}
+  else{const r=a-b,yr=ye+b*t;F=[{pts:[V(a,ye,-b),V(a,ye,b),V(r,yr,0)]},{pts:[V(-a,ye,b),V(-a,ye,-b),V(-r,yr,0)]},{pts:[V(a,ye,b),V(-a,ye,b),V(-r,yr,0),V(r,yr,0)]},{pts:[V(-a,ye,-b),V(a,ye,-b),V(r,yr,0),V(-r,yr,0)]}]}}
+ const opt=optimum(),occ=occluders();
+ faces=F.map(f=>{const{n,area}=newell(f.pts);const tilt=Math.acos(Math.min(1,n.y))*R2D,az=(Math.atan2(n.x,-n.z)*R2D+360)%360,y=annual(n);
+  const c=f.pts.reduce((a,q)=>a.add(q),new THREE.Vector3()).multiplyScalar(1/f.pts.length);
+  const smp=[c,...f.pts.map(q=>c.clone().lerp(q,0.6))].map(q=>q.addScaledVector(n,0.15)),base=annual(n,null,null,true);
+  const sr=smp.reduce((a,q)=>a+annual(n,q,occ,true),0)/smp.length/base;
+  return{...f,n,area,tilt,az,y,ys:y*sr,loss:1-sr,pct:y*sr/opt.v*100,count:0,kwh:0,cut:0}});
+ if(S.roof!=='flat')faces.forEach(f=>{const pos=[];for(let i=1;i<f.pts.length-1;i++)pos.push(f.pts[0],f.pts[i],f.pts[i+1]);
+  const g=new THREE.BufferGeometry().setFromPoints(pos);g.computeVertexNormals();
+  const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:S.showSolar?rampC(f.pct):0xa8553a,side:THREE.DoubleSide,roughness:.8,polygonOffset:true,polygonOffsetFactor:1}));
+  m.castShadow=m.receiveShadow=true;G.roof.add(m,line([...f.pts,f.pts[0]],0x15202b,0.8))});
+ // panels (each panel checked against shade from trees and neighbours)
+ const mats=[];
+ if(S.roof!=='flat'){faces.forEach(f=>{if(f.y/opt.v*100<S.panelMin)return;const n=f.n,u=new THREE.Vector3(0,1,0).cross(n).normalize(),v=n.clone().cross(u),p0=f.pts[0],base=annual(n,null,null,true);
+  const P=f.pts.map(p=>{const d=p.clone().sub(p0);return[d.dot(u),d.dot(v)]});const us=P.map(p=>p[0]),vs=P.map(p=>p[1]),mg=0.35,gp=0.02;
+  const inside=(x,y)=>[[x-mg,y-mg],[x+PW+mg,y-mg],[x+PW+mg,y+PH+mg],[x-mg,y+PH+mg]].every(q=>pip(q[0],q[1],P));
+  for(let cu=Math.min(...us);cu<Math.max(...us);cu+=PW+gp)for(let cv=Math.min(...vs);cv<Math.max(...vs);cv+=PH+gp)if(inside(cu,cv)){
+   const c=p0.clone().addScaledVector(u,cu+PW/2).addScaledVector(v,cv+PH/2).addScaledVector(n,0.1),yy=f.y*annual(n,c,occ,true)/base;
+   if(yy/opt.v*100<S.panelMin){f.cut++;continue}mats.push(new THREE.Matrix4().makeBasis(u,n,v.clone().negate()).setPosition(c));f.count++;f.kwh+=yy*KW*REAL}})}
+ else{const f=faces[0],tt=Math.max(10,Math.round(Math.abs(S.lat))),n=eqN(tt),sg=S.lat>=0?1:-1,u=new THREE.Vector3(1,0,0),v=n.clone().cross(u);
+  f.ptilt=tt;f.py=annual(n);f.pdir=sg>0?'ใต้':'เหนือ';const base=annual(n,null,null,true);
+  const altW=Math.max(15,90-Math.abs(S.lat)-23.44)*D2R,dep=PH*Math.cos(tt*D2R),pitchR=(dep+PH*Math.sin(tt*D2R)/Math.tan(altW))*1.15,ext=Math.hypot(W,L)/2+2,hw=W/2-0.6,hl=L/2-0.6;
+  const ok=(x,z)=>{const l=toL(x,z);return Math.abs(l.x)<=hw&&Math.abs(l.z)<=hl};let ys=0;
+  for(let x=-ext;x<ext;x+=PW+0.02)for(let z=-ext;z<ext;z+=pitchR){if([[x,z],[x+PW,z],[x+PW,z+dep],[x,z+dep]].every(q=>ok(q[0],q[1]))){
+   const c=new THREE.Vector3(x+PW/2,H+0.55+PH/2*Math.sin(tt*D2R),z+dep/2),yy=f.py*annual(n,c,occ,true)/base;
+   if(yy/opt.v*100<S.panelMin){f.cut++;continue}mats.push(new THREE.Matrix4().makeBasis(u,n,v.clone().negate()).setPosition(c));f.count++;f.kwh+=yy*KW*REAL;ys+=yy}}
+  f.pys=f.count?ys/f.count:f.py}
+ if(mats.length&&S.showSolar){const im=new THREE.InstancedMesh(new THREE.BoxGeometry(PW,0.05,PH),new THREE.MeshStandardMaterial({color:0x1f3a5f,metalness:.4,roughness:.35}),mats.length);
+  mats.forEach((m,i)=>im.setMatrixAt(i,m));im.castShadow=true;G.pan.add(im)}
+ solarPanel(opt);buildWalls();
+}
+function solarPanel(opt){const flat=S.roof==='flat';let rows='',tot=0,kwh=0,cut=0;const L=x=>x>0.005?`<span class="fail">−${(x*100).toFixed(0)}%</span>`:'—';
+ faces.forEach((f,i)=>{tot+=f.count;kwh+=f.kwh;cut+=f.cut;
+  rows+=flat?`<tr><td>ดาดฟ้า (แนวนอน)</td><td>—</td><td class="n">0°</td><td class="n">${f.ys.toFixed(0)}</td><td class="n">${L(f.loss)}</td><td class="n">${f.pct.toFixed(0)}%</td></tr><tr><td><span class="sw" style="background:#1f3a5f"></span>แผงเอียง</td><td>${f.pdir}</td><td class="n">${f.ptilt}°</td><td class="n">${f.pys.toFixed(0)}</td><td class="n">${L(1-f.pys/f.py)}</td><td class="n">${(f.pys/opt.v*100).toFixed(0)}%</td></tr>`
+  :`<tr><td><span class="sw" style="background:${rampS(f.pct)}"></span>ด้าน ${i+1}</td><td>${th8(f.az)} <span class="chip">${d16(f.az)}</span></td><td class="n">${f.tilt.toFixed(0)}°</td><td class="n">${f.ys.toFixed(0)}</td><td class="n">${L(f.loss)}</td><td class="n"><b>${f.pct.toFixed(0)}%</b></td></tr>`});
+ const best=flat?null:faces.reduce((a,b)=>b.pct>a.pct?b:a);
+ const head=flat?`ติดแผงเอียง <b>${faces[0].ptilt}°</b> หันไปทิศ<b>${faces[0].pdir}</b> เว้นระยะแถวกันเงาบังกันช่วงเหมายัน`
+  :`ด้านที่ดีที่สุดหันไปทาง<b>${th8(best.az)}</b> (${d16(best.az)}) ได้แดด <b>${best.pct.toFixed(0)}%</b> ของมุมที่ดีที่สุด หลังหักเงาแล้ว`;
+ solarSum={tot,kwp:tot*KW,kwh,head:head.replace(/<[^>]+>/g,'')};
+ $('#solarCard').innerHTML=`<div class="card"><div class="big">${tot} แผง · ${(tot*KW).toFixed(1)} kWp</div><div class="note" style="margin:4px 0 0">${head}<br>ผลิตไฟได้ราว <b>${(Math.round(kwh/100)*100).toLocaleString()} kWh/ปี</b> (ประมาณการ หักเงาแล้ว)${cut?`<br>ตัดแผงที่โดนเงาบังจนต่ำกว่าเกณฑ์ออก <b>${cut} แผง</b>`:''}</div></div>
+ <table><thead><tr><th>หลังคา</th><th>หันไปทาง</th><th>ลาด</th><th>kWh/m²·ปี</th><th>เงาบัง</th><th>%</th></tr></thead><tbody>${rows}</tbody></table>
+ <p class="note">หักเงาจากต้นไม้ (ร่มไม้ให้แสงผ่าน 25%) ในรัศมี 60 ม. และอาคารข้างเคียงในรัศมี 130 ม. · มุมที่ดีที่สุดที่พิกัดนี้: เอียง ${opt.t}° หันทิศ${S.lat>=0?'ใต้':'เหนือ'} ≈ ${opt.v.toFixed(0)} kWh/m²·ปี (ฟ้าใส) · สีบนหลังคา: <span class="key"><i style="background:#2e9e5b"></i>≥95%</span> <span class="key"><i style="background:#9cc93b"></i>85–95</span> <span class="key"><i style="background:#f2b233"></i>75–85</span> <span class="key"><i style="background:#d9534f"></i>&lt;75</span></p>`}
+let solarSum={};
+
+/* ---------- wind ---------- */
+let windRows=null,windSrc='preset';
+function presetRows(){let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;const gs=()=>{let a=0;for(let i=0;i<4;i++)a+=rnd();return(a-2)*1.2};
+ const M=[[1,40,3.2],[2,150,2.6],[3,180,3],[4,195,3],[5,225,3],[6,235,4],[7,240,4.2],[8,245,4],[9,235,3.2],[10,70,2.4],[11,45,3],[12,40,3.4]];const r=[];
+ M.forEach(([m,c,v])=>{for(let i=0;i<240;i++)r.push({m,d:(c+gs()*28+360)%360,v:Math.max(0,v*(0.35+rnd()*1.3))})});return r}
+const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const SEASON={all:[1,2,3,4,5,6,7,8,9,10,11,12],hot:[2,3,4],rain:[5,6,7,8,9,10],cool:[11,12,1]};
+const BANDS=[2,4,6,1e9],BC=[0xbfe0f7,0x7cbbe8,0x3a8fd6,0x1d5fa8];
+const curMonths=()=>S.wmonth?[S.wmonth]:SEASON[S.season];
+function rose(months=curMonths()){const rows=(windRows||presetRows()).filter(r=>months.includes(r.m));const f=Array.from({length:16},()=>[0,0,0,0]);let calm=0,sp=0;
+ rows.forEach(r=>{sp+=r.v;if(r.v<0.5){calm++;return}const i=Math.round(r.d/22.5)%16;f[i][BANDS.findIndex(b=>r.v<b)]++});const n=rows.length||1;
+ return{f:f.map(a=>a.map(x=>x/n*100)),calm:calm/n*100,mean:sp/n}}
+function buildWind(){windSamples();clear(G.wind);const g=G.wind,w=rose();const tot=w.f.map(a=>a.reduce((x,y)=>x+y,0)),mx=Math.max(...tot,1),Rw=R*0.85,k=Rw/mx;
+ w.f.forEach((bands,i)=>{let r0=R*0.04;bands.forEach((p,j)=>{if(p<=0)return;const r1=r0+p*k;const b=i*22.5;
+  const m=new THREE.Mesh(new THREE.RingGeometry(r0,r1,4,1,(90-b-9)*D2R,18*D2R).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:BC[j],transparent:true,opacity:.85,side:THREE.DoubleSide,depthWrite:false}));
+  m.position.y=0.08+j*0.01;g.add(m);r0=r1})});
+ [10,20,30].forEach(p=>{if(p*k>Rw*1.05)return;const pts=[];for(let a=0;a<=360;a+=6)pts.push(ptAt(a,p*k+R*0.04,0.1));g.add(line(pts,0x1d6fb8,0.35));const s=label(p+'%','#1d6fb8',R*0.035,false);s.position.copy(ptAt(112,p*k+R*0.04,0.3));g.add(s)});
+ const ti=tot.indexOf(Math.max(...tot)),b=ti*22.5,arrow=new THREE.Group(),am=new THREE.MeshBasicMaterial({color:0x1d6fb8}),Lr=R*0.22;
+ const sh=new THREE.Mesh(new THREE.CylinderGeometry(R*0.012,R*0.012,Lr,10).rotateX(Math.PI/2),am);sh.position.z=Lr/2;
+ const hd=new THREE.Mesh(new THREE.ConeGeometry(R*0.035,R*0.07,14).rotateX(Math.PI/2),am);hd.position.z=Lr+R*0.03;arrow.add(sh,hd);
+ arrow.position.copy(ptAt(b,R*1.22,S.H*0.5+1));arrow.lookAt(0,S.H*0.5+1,0);g.add(arrow);
+ const s=label('ลม '+N16[ti],'#1d6fb8',R*0.05);s.position.copy(ptAt(b,R*1.3,S.H*0.5+R*0.07));g.add(s);
+ g.visible=S.showWind;
+ const order=tot.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]).slice(0,4);
+ $('#windCard').innerHTML=`<div class="big">${TH8[Math.round(ti/2)%8]} <span class="chip">${N16[ti]}</span></div><div class="note" style="margin:2px 0 8px">ทิศลมหลักที่พัดเข้าหาที่ตั้ง · ความเร็วเฉลี่ย ${w.mean.toFixed(1)} ม./วิ · ลมสงบ ${w.calm.toFixed(0)}%</div>`+
+  order.map(([v,i])=>`<div style="display:grid;grid-template-columns:3.2em minmax(0,1fr) 3em;gap:8px;align-items:center;font-size:14px;margin:4px 0"><span>${N16[i]}</span><div class="bar" style="width:${v/order[0][0]*100}%"></div><span class="n" style="text-align:right">${v.toFixed(0)}%</span></div>`).join('')+
+  `<p class="note">แนะนำ: เปิดช่องลมเข้าด้าน ${N16[ti]} และช่องลมออกฝั่งตรงข้าม (${N16[(ti+8)%16]}) เพื่อการระบายอากาศแบบ cross ventilation</p>`;
+ const mc=$('#mChip');mc.hidden=!S.wmonth;if(S.wmonth)mc.textContent=`ลมเดือน ${TH_M[S.wmonth-1]} · มาจากทิศ${TH8[Math.round(ti/2)%8]} (${N16[ti]})`;
+ $('#windMsg').textContent=windRows?windSrc:'ตอนนี้แสดงค่าประมาณทั่วไปของภาคกลาง ประเทศไทย (มรสุม SW ฤดูฝน / NE ฤดูหนาว) — โหลดข้อมูลจริงเพื่อความแม่นยำ';
+ $('#windMsg').className='msg'+(windRows?' ok':'');
+}
+
+/* ---------- wind particles ---------- */
+const WN=650,WK=18,SEGS=WN*(WK-1);
+const wPos=new Float32Array(SEGS*6),wA=new Float32Array(SEGS*2),wC=new Float32Array(SEGS*6);
+const wGeo=new THREE.BufferGeometry();wGeo.setAttribute('position',new THREE.BufferAttribute(wPos,3));wGeo.setAttribute('a',new THREE.BufferAttribute(wA,1));wGeo.setAttribute('col',new THREE.BufferAttribute(wC,3));
+const wMat=new THREE.ShaderMaterial({vertexShader:'attribute float a;attribute vec3 col;varying float v;varying vec3 c;void main(){v=a;c=col;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+ fragmentShader:'varying float v;varying vec3 c;void main(){gl_FragColor=vec4(c,v);}',transparent:true,depthWrite:false});
+const wLines=new THREE.LineSegments(wGeo,wMat);wLines.frustumCulled=false;wLines.renderOrder=5;scene.add(wLines);
+const WCOL=[0x7cbbe8,0x3a8fd6,0x1d6fb8,0x0f4c8a].map(h=>new THREE.Color(h));
+let wSamples=[],wTick=0;const PT=[];
+let wDom=225;function windSamples(){const rows=(windRows||presetRows()).filter(r=>curMonths().includes(r.m)&&r.v>=0.5);const c=new Array(16).fill(0);rows.forEach(r=>c[Math.round(r.d/22.5)%16]++);
+ wDom=c.indexOf(Math.max(...c))*22.5;const near=(a,b)=>Math.abs(((a-b+540)%360)-180)<=34;wSamples=rows.filter(r=>near(r.d,wDom))}
+function spawn(p,first){const r=wSamples[Math.floor(Math.random()*wSamples.length)]||{d:wDom,v:3};const b=(wDom+((r.d-wDom+540)%360-180)*0.35+180)*D2R,dx=Math.sin(b),dz=-Math.cos(b),Rs=R*1.3;
+ const off=(Math.random()*2-1)*Rs,back=first?(Math.random()*2-1)*Rs:Rs*(0.9+Math.random()*0.3);
+ const x=-dx*back-dz*off,z=-dz*back+dx*off,y=0.4+Math.random()*(roofTop()+5);
+ p.d=[dx,dz];p.s=0.5+Math.min(r.v,9)*0.22;p.c=WCOL[BANDS.findIndex(q=>r.v<q)];p.age=0;p.life=260+Math.random()*260;
+ p.h=p.h||Array.from({length:WK},()=>new THREE.Vector3());p.h.forEach(v=>v.set(x,y,z))}
+const roofTop=()=>S.roof==='flat'?S.H+0.3:S.roof==='shed'?S.H+S.W*Math.tan(S.pitch*D2R):S.H+Math.min(S.W,S.L)/2*Math.tan(S.pitch*D2R);
+function flowV(x,y,z,dx,dz){const a=Math.hypot(S.W,S.L)/2*0.9,top=roofTop();const u=x*dx+z*dz,w=-x*dz+z*dx,r2=u*u+w*w;
+ const f=y>top+2?0:y>top?1-(y-top)/2:1;if(f<=0)return[dx,0,dz];if(r2<a*a*0.9&&y<top)return null;
+ const r=Math.sqrt(r2),c=u/r,sn=w/r,k=f*a*a/r2,ur=(1-k)*c,ut=-(1+k)*sn,vu=ur*c-ut*sn,vw=ur*sn+ut*c;
+ const lift=f>0&&u<0&&r<a*1.8?0.25*(1-r/(a*1.8)):0; // air rising over the building on the windward side
+ return[vu*dx-vw*dz,lift,vu*dz+vw*dx]}
+function stepWind(){const on=S.windAnim&&S.showWind;wLines.visible=on;if(!on)return;if(!PT.length)for(let i=0;i<WN;i++){const p={};spawn(p,true);PT.push(p)}
+ const shift=(wTick++%3)===0,lim=(R*1.45)**2;let o=0,q=0;
+ for(const p of PT){let h=p.h[0];let v=flowV(h.x,h.y,h.z,p.d[0],p.d[1]);if(!v||p.age>p.life){spawn(p);h=p.h[0];v=[p.d[0],0,p.d[1]]}
+  if(shift)for(let i=WK-1;i>0;i--)p.h[i].copy(p.h[i-1]);
+  const sp=p.s*R*0.006,t=Math.sin(p.age*0.05+p.life)*0.08;h.x+=(v[0]-v[2]*t)*sp;h.z+=(v[2]+v[0]*t)*sp;h.y=Math.min(h.y+v[1]*sp,roofTop()+8);
+  p.age++;if(h.x*h.x+h.z*h.z>lim&&p.age>40&&(h.x*p.d[0]+h.z*p.d[1])>0)p.age=p.life+1;
+  const fade=Math.min(1,p.age/25)*Math.max(0,Math.min(1,(p.life-p.age)/40));
+  for(let i=0;i<WK-1;i++){const A=p.h[i],B=p.h[i+1];wPos[o]=A.x;wPos[o+1]=A.y;wPos[o+2]=A.z;wPos[o+3]=B.x;wPos[o+4]=B.y;wPos[o+5]=B.z;
+   wC[o]=wC[o+3]=p.c.r;wC[o+1]=wC[o+4]=p.c.g;wC[o+2]=wC[o+5]=p.c.b;o+=6;
+   wA[q++]=(1-i/(WK-1))*0.7*fade;wA[q++]=(1-(i+1)/(WK-1))*0.7*fade}}
+ wGeo.attributes.position.needsUpdate=wGeo.attributes.a.needsUpdate=wGeo.attributes.col.needsUpdate=true}
+
+/* ---------- context ---------- */
+const treeGeoT=new THREE.CylinderGeometry(0.12,0.18,1,6).translate(0,0.5,0),treeGeoC=new THREE.IcosahedronGeometry(1,1);
+const mainFoot=()=>[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,z])=>{const v=toW(x*S.W/2,0,z*S.L/2);return[v.x,-v.z]});
+function buildCtx(){clear(G.ctx);const g=G.ctx,bm=new THREE.MeshStandardMaterial({color:0xd8dcdf,roughness:.9}),em=lineM(0x5b6873,0.5);const foot=mainFoot();
+ ctx.boxes.forEach((b,i)=>{if(S.hideExisting&&(pip(0,0,b.p)||foot.some(q=>pip(q[0],q[1],b.p))))return;
+  const sh=new THREE.Shape(b.p.map(([e,n])=>new THREE.Vector2(e,n)));const geo=new THREE.ExtrudeGeometry(sh,{depth:b.h,bevelEnabled:false}).rotateX(-Math.PI/2);
+  const m=new THREE.Mesh(geo,bm);m.castShadow=m.receiveShadow=true;m.userData={kind:'box',i};g.add(m,new THREE.LineSegments(new THREE.EdgesGeometry(geo,25),em))});
+ if(ctx.trees.length){const n=ctx.trees.length,tr=new THREE.InstancedMesh(treeGeoT,new THREE.MeshStandardMaterial({color:0x7a5c45}),n),cn=new THREE.InstancedMesh(treeGeoC,new THREE.MeshStandardMaterial({color:0x82b366,roughness:.9,flatShading:true}),n);
+  const o=new THREE.Object3D();ctx.trees.forEach((t,i)=>{o.position.set(t.e,0,-t.n);o.scale.set(1,t.h*0.45,1);o.updateMatrix();tr.setMatrixAt(i,o.matrix);
+   o.position.set(t.e,t.h*0.62,-t.n);o.scale.set(t.r,t.r*0.85,t.r);o.updateMatrix();cn.setMatrixAt(i,o.matrix)});
+  tr.castShadow=cn.castShadow=true;cn.receiveShadow=true;cn.userData={kind:'tree'};g.add(tr,cn)}
+ const rib=(list,col,y)=>{const pos=[];list.forEach(o=>{if(o.poly){if(o.p.length<3)return;const sh=new THREE.Shape(o.p.map(([e,n])=>new THREE.Vector2(e,n)));const gg=new THREE.ShapeGeometry(sh).rotateX(-Math.PI/2);gg.translate(0,y,0);const m=new THREE.Mesh(gg,new THREE.MeshStandardMaterial({color:col,roughness:.3}));m.receiveShadow=true;g.add(m);return}
+   for(let i=0;i<o.p.length-1;i++){const[a1,b1]=o.p[i],[a2,b2]=o.p[i+1],dx=a2-a1,dy=b2-b1,l=Math.hypot(dx,dy)||1,nx=-dy/l*o.w/2,ny=dx/l*o.w/2;
+    const A=[a1+nx,y,-(b1+ny)],B=[a2+nx,y,-(b2+ny)],C=[a2-nx,y,-(b2-ny)],Dd=[a1-nx,y,-(b1-ny)];pos.push(...A,...B,...C,...A,...C,...Dd)}});
+  if(pos.length){const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));gg.computeVertexNormals();const m=new THREE.Mesh(gg,new THREE.MeshStandardMaterial({color:col,roughness:.9,side:THREE.DoubleSide}));m.receiveShadow=true;g.add(m)}};
+ rib(ctx.roads||[],0x9aa3a8,0.015);rib(ctx.water||[],0x5aa9e6,0.02);
+ $('#ctxMsg').textContent=`อาคาร ${ctx.boxes.length} หลัง · ต้นไม้ ${ctx.trees.length} ต้น${ctx.src?' · ที่มา: '+ctx.src:''}`;}
+function sample(){let s=11;const r=()=>(s=(s*16807)%2147483647)/2147483647;ctx={boxes:[],trees:[],src:'บริบทตัวอย่าง (สุ่ม ไม่ใช่ข้อมูลจริง)'};
+ for(let e=-90;e<=90;e+=24)for(let n=-90;n<=90;n+=22){if(Math.hypot(e,n)<26||r()<0.18)continue;const w=7+r()*6,l=8+r()*8,h=3.5+Math.floor(r()*3)*3,ce=e+(r()-.5)*6,cn=n+(r()-.5)*6;
+  ctx.boxes.push({p:[[ce-w/2,cn-l/2],[ce+w/2,cn-l/2],[ce+w/2,cn+l/2],[ce-w/2,cn+l/2]],h})}
+ for(let i=0;i<70;i++){const a=r()*6.283,d=18+r()*90;ctx.trees.push({e:Math.cos(a)*d,n:Math.sin(a)*d,h:5+r()*7,r:1.8+r()*2})}buildCtx();computeHeat();save()}
+
+/* ---------- OSM / Overpass ---------- */
+const mPerLng=()=>111320*Math.cos(S.lat*D2R);
+const toEN=(la,lo)=>[(lo-S.lng)*mPerLng(),(la-S.lat)*110540];
+const area=P=>Math.abs(P.reduce((s,[x,y],i)=>{const[x2,y2]=P[(i+1)%P.length];return s+x*y2-x2*y},0))/2;
+async function loadOSM(){const r=+S.ctxR,msg=$('#osmMsg');$$('.sidemsg').forEach(m=>{m.className='msg sidemsg';m.textContent='กำลังโหลดจาก OpenStreetMap…'});msg.className='msg';msg.textContent='กำลังโหลดจาก OpenStreetMap…';
+ const q=`[out:json][timeout:25];(way["building"](around:${r},${S.lat},${S.lng});node["natural"="tree"](around:${r},${S.lat},${S.lng});way["natural"~"wood|tree_row|scrub"](around:${r},${S.lat},${S.lng});way["landuse"~"forest|orchard"](around:${r},${S.lat},${S.lng});way["leisure"~"park|garden"](around:${r},${S.lat},${S.lng});way["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|living_street|road)$"](around:${r},${S.lat},${S.lng});way["waterway"~"river|canal|stream|drain|ditch"](around:${r},${S.lat},${S.lng});way["natural"="water"](around:${r},${S.lat},${S.lng}););out geom;`;
+ try{const res=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}});if(!res.ok)throw new Error(res.status);
+  const js=await res.json();const boxes=[],trees=[],roads=[],water=[];let s=3;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+  js.elements.forEach(el=>{const t=el.tags||{};
+   if(el.type==='node'){const[e,n]=toEN(el.lat,el.lon);trees.push({e,n,h:+t.height||7,r:2.2});return}
+   if(!el.geometry)return;let P=el.geometry.map(g=>toEN(g.lat,g.lon));
+   if(t.highway){const RW={motorway:30,trunk:24,primary:20,secondary:16,tertiary:12,unclassified:8,residential:6,living_street:5,service:4,road:6};roads.push({p:P,w:parseFloat(t.width)||(+t.lanes?(+t.lanes)*3.5+2:RW[t.highway]||6),name:t.name||'',tag:!!t.width});return}
+   if(t.waterway){const WW={river:30,canal:12,stream:4,drain:3,ditch:2};water.push({p:P,w:parseFloat(t.width)||WW[t.waterway]||6,kind:t.waterway,name:t.name||''});return}
+   if(t.natural==='water'){water.push({p:P,poly:true,w:20,kind:area(P)>3000?'lake':'pond',name:t.name||''});return}
+   if(t.building){if(P.length>3&&P[0][0]===P[P.length-1][0]&&P[0][1]===P[P.length-1][1])P.pop();if(P.length<3)return;
+    const h=parseFloat(t.height)||(parseFloat(t['building:levels'])?parseFloat(t['building:levels'])*3.2:6);boxes.push({p:P,h:Math.min(h,300)});return}
+   if(t.natural==='tree_row'){for(let i=0;i<P.length-1;i++){const[a,b]=[P[i],P[i+1]],L=Math.hypot(b[0]-a[0],b[1]-a[1]);for(let d=0;d<L;d+=7)trees.push({e:a[0]+(b[0]-a[0])*d/L,n:a[1]+(b[1]-a[1])*d/L,h:7,r:2.2})}return}
+   const A=area(P),dens=t.leisure?160:70,cnt=Math.min(250,Math.round(A/dens));const xs=P.map(p=>p[0]),ys=P.map(p=>p[1]);
+   for(let i=0,k=0;i<cnt&&k<cnt*6;k++){const x=Math.min(...xs)+rnd()*(Math.max(...xs)-Math.min(...xs)),y=Math.min(...ys)+rnd()*(Math.max(...ys)-Math.min(...ys));if(pip(x,y,P)&&Math.hypot(x,y)<r*1.1){trees.push({e:x,n:y,h:5+rnd()*8,r:1.8+rnd()*2});i++}}});
+  ctx={boxes,trees:trees.slice(0,1500),roads,water,src:'OpenStreetMap'};const as=autoSides();buildCtx();buildPlot();computeHeat();save();if(location.hash==='#zoning')renderZoning();
+  msg.className='msg ok';msg.textContent=`โหลดแล้ว: อาคาร ${boxes.length} หลัง, ต้นไม้ ${Math.min(trees.length,1500)} ต้น, ${roads.length} เส้นทาง, ${water.length} แหล่งน้ำ · ${as}`;$$('.sidemsg').forEach(m=>{m.className='msg ok sidemsg';m.textContent=as})}
+ catch(e){$$('.sidemsg').forEach(m=>{m.className='msg err sidemsg';m.textContent='โหลดข้อมูลภายนอกไม่ได้ — หน้าเว็บใน Claude ถูกบล็อกการเชื่อมต่อภายนอก เปิดไฟล์นี้บน GitHub Pages'});msg.className='msg err';msg.textContent='โหลดข้อมูลภายนอกไม่ได้ — หน้าเว็บใน Claude ถูกบล็อกการเชื่อมต่อภายนอก ให้เปิดไฟล์ HTML นี้บน GitHub Pages หรือเบราว์เซอร์ทั่วไป หรือใช้ “บริบทตัวอย่าง”/วางกล่องเองในแท็บบริบท'}}
+async function loadWind(){const y=new Date().getFullYear()-1,msg=$('#windMsg');msg.className='msg';msg.textContent='กำลังโหลดข้อมูลลมรายชั่วโมงปี '+y+'…';
+ try{const u=`https://archive-api.open-meteo.com/v1/archive?latitude=${S.lat}&longitude=${S.lng}&start_date=${y}-01-01&end_date=${y}-12-31&hourly=wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto`;
+  const js=await(await fetch(u)).json();const h=js.hourly;windRows=h.time.map((t,i)=>({m:+t.slice(5,7),d:h.wind_direction_10m[i],v:h.wind_speed_10m[i]})).filter(r=>r.d!=null&&r.v!=null);
+  windSrc=`ข้อมูลจริงรายชั่วโมงปี ${y} (${windRows.length.toLocaleString()} ชม.) จาก Open-Meteo ที่ความสูง 10 ม.`;buildWind()}
+ catch(e){msg.className='msg err';msg.textContent='โหลดข้อมูลลมไม่ได้ — หน้าเว็บใน Claude ถูกบล็อกการเชื่อมต่อภายนอก เปิดไฟล์นี้บน GitHub Pages เพื่อใช้ข้อมูลจริง ตอนนี้ใช้ค่าประมาณแทน'}}
+
+/* ---------- map ---------- */
+let map,mk,fp,pp,layers;
+function initMap(){if(map||!window.L){if(!window.L)$('#mapMsg').textContent='โหลดแผนที่ไม่ได้ในหน้านี้ ใช้การวางพิกัดจาก Google Maps แทน';return}
+ map=L.map('map',{zoomControl:true}).setView([S.lat,S.lng],18);map.attributionControl.setPrefix('Leaflet');
+ layers={osm:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}),sat:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri World Imagery'})};
+ layers.osm.addTo(map);let warned=false;Object.values(layers).forEach(l=>l.on('tileerror',()=>{if(warned)return;warned=true;$('#mapMsg').className='msg err';$('#mapMsg').textContent='ภาพแผนที่โหลดไม่ได้ในหน้านี้ (ถูกบล็อก) — วางพิกัดจาก Google Maps ด้านบนแทน หรือเปิดไฟล์บน GitHub Pages'}));
+ mk=L.circleMarker([S.lat,S.lng],{radius:6,color:'#e8743b',fillOpacity:1}).addTo(map);fp=L.polygon([],{color:'#15202b',weight:2,fillOpacity:.15}).addTo(map);pp=L.polygon([],{color:'#e8743b',weight:2,dashArray:'6 4',fillOpacity:0}).addTo(map);
+ map.on('click',e=>setSite(e.latlng.lat,e.latlng.lng,false));updateMap();buildPlot()}
+function updateMap(){if(!map)return;mk.setLatLng([S.lat,S.lng]);fp.setLatLngs(mainFoot().map(([e,n])=>[S.lat+n/110540,S.lng+e/mPerLng()]))}
+function siteCard(){$('#coordChip').textContent=`${S.lat.toFixed(5)}, ${S.lng.toFixed(5)}`;
+ $('#siteCard').innerHTML=`<b>${S.lat.toFixed(6)}, ${S.lng.toFixed(6)}</b><br><a href="https://www.google.com/maps/@${S.lat},${S.lng},19z" target="_blank" rel="noopener">เปิดจุดนี้ใน Google Maps ↗</a>`}
+function setSite(lat,lng,pan=true){if(window.zmap){zmap.setView([lat,lng],18)}const moved=Math.hypot(lat-S.lat,lng-S.lng)>2e-5;S.lat=lat;S.lng=lng;if(!$('#tz').matches(':focus')&&Math.abs(S.tz-Math.round(lng/15))>1.5){S.tz=Math.round(lng/15);$('#tz').value=S.tz}
+ if(moved&&ctx.boxes.length+ctx.trees.length+(ctx.roads||[]).length){ctx={boxes:[],trees:[],roads:[],water:[],src:''};$('#osmMsg').className='msg';$('#osmMsg').textContent='ย้ายที่ตั้งแล้ว ล้างบริบทเดิม — กดโหลดอาคารจริงใหม่'}
+ windRows=null;if(!inBKK()&&S.zone!=='custom'){S.zone='custom';$('#zone').value='custom'}siteCard();if(map&&pan)map.setView([lat,lng],18);rebuild()}
+function parseLoc(s){s=s.trim();let m=s.match(/(\d+)°\s*(\d+)'\s*([\d.]+)"?\s*([NS])[\s,]+(\d+)°\s*(\d+)'\s*([\d.]+)"?\s*([EW])/i);
+ if(m){const f=(d,mi,se,h)=>(+d+mi/60+se/3600)*(/[SW]/i.test(h)?-1:1);return{lat:f(m[1],m[2],m[3],m[4]),lng:f(m[5],m[6],m[7],m[8])}}
+ m=s.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)||s.match(/@(-?\d+\.\d+),\s*(-?\d+\.\d+)/)||s.match(/[?&](?:q|query|ll|center|destination)=(-?\d+\.\d+)(?:,|%2C)\s*(-?\d+\.\d+)/)||s.match(/(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/);
+ return m?{lat:+m[1],lng:+m[2]}:null}
+
+/* ---------- i18n ---------- */
+const isEN=()=>S.lang==='en',TL=(th,en)=>isEN()?en:th,LOC=()=>isEN()?'en-GB':'th-TH';
+const RUN=/[\u0E00-\u0E7F]+(?:[ \u0E00-\u0E7F]*[\u0E00-\u0E7F])?/g,HASTH=/[\u0E00-\u0E7F]/;
+function trWord(w){if(DICT[w]!=null)return DICT[w];const out=[];let i=0,buf='';
+ while(i<w.length){let hit=0;for(let l=Math.min(28,w.length-i);l>1;l--){const sub=w.substr(i,l);if(DICT[sub]!=null){if(buf){out.push(buf);buf=''}out.push(DICT[sub]);i+=l;hit=1;break}}if(!hit){buf+=w[i];i++}}
+ if(buf)out.push(buf);return out.join(' ')}
+function tr(s){if(!isEN()||!s||!HASTH.test(s))return s;s=String(s);for(const[a,b]of ABBR)s=s.split(a).join(b);
+ s=s.replace(/(\d)\s*ม\./g,'$1 m').replace(/,\s*ม\.\)/g,', m)').replace(/\(ม\.\)/g,'(m)').replace(/(\d\d:\d\d)\s*น\./g,'$1').replace(/(^|\s)ม\.(?=\s|$|\))/g,'$1m');
+ s=s.replace(RUN,r=>DICT[r]!=null?DICT[r]:r.split(' ').map(trWord).join(' '));
+ return s.replace(/[ \t]{2,}/g,' ').replace(/ ([,.;:)%])/g,'$1')}
+const ORIG=new WeakMap();
+function trNode(root){if(!isEN()||!root)return;if(root.nodeType===3){const v=root.nodeValue;if(HASTH.test(v)){ORIG.set(root,v);const t=tr(v);if(t!==v)root.nodeValue=t}return}
+ if(root.nodeType!==1||/^(SCRIPT|STYLE)$/.test(root.nodeName))return;
+ const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;const list=[];while(n=w.nextNode())if(HASTH.test(n.nodeValue)&&!/^(SCRIPT|STYLE)$/.test(n.parentNode.nodeName))list.push(n);
+ list.forEach(n=>{ORIG.set(n,n.nodeValue);const t=tr(n.nodeValue);if(t!==n.nodeValue)n.nodeValue=t});
+ (root.querySelectorAll?[root,...root.querySelectorAll('[placeholder],[aria-label]')]:[]).forEach(el=>['placeholder','aria-label'].forEach(a=>{const v=el.getAttribute&&el.getAttribute(a);if(v&&HASTH.test(v)){el.setAttribute('data-o-'+a,v);el.setAttribute(a,tr(v))}}))}
+function untr(){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())if(ORIG.has(n))n.nodeValue=ORIG.get(n);
+ document.querySelectorAll('[data-o-placeholder],[data-o-aria-label]').forEach(el=>['placeholder','aria-label'].forEach(a=>{const v=el.getAttribute('data-o-'+a);if(v){el.setAttribute(a,v);el.removeAttribute('data-o-'+a)}}))}
+new MutationObserver(ms=>{if(!isEN())return;for(const m of ms){if(m.type==='characterData')trNode(m.target);else m.addedNodes.forEach(trNode)}}).observe(document.body,{childList:true,subtree:true,characterData:true});
+
+/* ---------- plot side editor & auto detection ---------- */
+const STYPES=[['nb','เพื่อนบ้าน'],['road','ถนน'],['water','คลอง/แม่น้ำ'],['lake','บึง/ทะเล']];
+function sideEditor(box){if(!box||box.contains(document.activeElement)&&document.activeElement.tagName==='INPUT')return;
+ box.innerHTML=Object.keys(SIDES).map(k=>{const t=S.sideT[k]||'nb',b=sideB(k);return`<div class="siderow" data-side="${k}"><div class="hd"><b>ทิศ${th8(b)} (${d16(b)})</b>${t==='road'||t==='water'?`<label style="display:flex;gap:6px;align-items:center">กว้าง <input type="number" min="1" step="0.5" data-sw="${k}" value="${S.sideW[k]}"> ม.</label>`:''}${t==='nb'?`<button class="tg${S.solid[k]?' on':''}" data-solid="${k}">ผนังทึบ</button>`:''}</div>
+ <div class="seg">${STYPES.map(([v,n])=>`<button data-st="${v}" class="${t===v?'on':''}">${n}</button>`).join('')}</div></div>`}).join('')}
+document.addEventListener('click',e=>{const st=e.target.closest('[data-st]'),so=e.target.closest('[data-solid]'),as=e.target.closest('[data-autoside]');
+ if(st){const k=st.closest('[data-side]').dataset.side;S.sideT={...S.sideT,[k]:st.dataset.st};afterPlot()}
+ else if(so){const k=so.dataset.solid;S.solid={...S.solid,[k]:!S.solid[k]};afterPlot()}
+ else if(as){if((ctx.roads||[]).length||(ctx.water||[]).length){const r=autoSides();$$('.sidemsg').forEach(m=>{m.className='msg ok sidemsg';m.textContent=r});afterPlot()}else loadOSM()}});
+document.addEventListener('change',e=>{const el=e.target;if(el.dataset.sw){S.sideW={...S.sideW,[el.dataset.sw]:+el.value};afterPlot()}
+ else if(el.dataset.k&&el.closest('#pg-zoning')){S[el.dataset.k]=+el.value;syncUI();rebuild();renderZoning()}});
+function afterPlot(){buildPlot();save();if(location.hash==='#zoning')renderZoning()}
+const segD=(px,pz,ax,az,bx,bz)=>{const dx=bx-ax,dz=bz-az,l2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((px-ax)*dx+(pz-az)*dz)/l2));return Math.hypot(px-ax-t*dx,pz-az-t*dz)};
+const polyD=(x,y,P)=>{let m=1e9;for(let i=0;i<P.length-1;i++)m=Math.min(m,segD(x,y,P[i][0],P[i][1],P[i+1][0],P[i+1][1]));return m};
+function autoSides(){const a=S.PW/2,b=S.PL/2,cx=-S.offX,cz=-S.offZ,found=[];const T={...S.sideT},Wd={...S.sideW};
+ Object.keys(SIDES).forEach(k=>{const[sx,sz]=SIDES[k];let best=null;
+  for(const off of[3,7,12]){const v=toW(cx+sx*(a+off),0,cz+sz*(b+off)),e=v.x,n=-v.z;
+   for(const r of ctx.roads||[]){const d=polyD(e,n,r.p);if(d<=r.w/2+1.5&&(!best||d<best.d))best={d,t:'road',w:Math.round(r.w*2)/2,name:r.name}}
+   for(const w of ctx.water||[]){const d=w.poly?(pip(e,n,w.p)?0:polyD(e,n,[...w.p,w.p[0]])):polyD(e,n,w.p);if(d<=(w.poly?2:w.w/2+2)&&(!best||d<best.d))best={d,t:w.kind==='lake'?'lake':'water',w:Math.round(w.w),name:w.name}}
+   if(best)break}
+  if(best){T[k]=best.t;Wd[k]=best.w;found.push(`ทิศ${th8(sideB(k))}: ${best.t==='road'?'ถนน':best.t==='lake'?'บึง/ทะเล':'คลอง'} ${best.t==='lake'?'':best.w+' ม.'}${best.name?' ('+best.name+')':''}`)}else if(T[k]!=='nb'&&(ctx.roads||[]).length){T[k]='nb'}});
+ S.sideT=T;S.sideW=Wd;return found.length?'ตรวจพบ: '+found.join(' · '):'ไม่พบถนนหรือแหล่งน้ำติดแปลง'}
+
+/* ---------- buildable envelope ---------- */
+function envelope(){const area=S.PW*S.PL,res=[],ftf=3.2,wide=Object.keys(SIDES).some(k=>S.sideT[k]==='road'&&+S.sideW[k]>=10);
+ for(let n=1;n<=60;n++){const H=n*ftf;if(H>=23&&!wide)break;const q=Object.fromEntries(Object.keys(SIDES).map(k=>[k,sideReq(k,H)]));
+  const ew=S.PW-q.nx.req-q.px.req,el=S.PL-q.nz.req-q.pz.req;if(ew<=1||el<=1)break;let fp=Math.min(ew*el,area/(S.use==='home'?1.3:1.1));
+  if(S.OSR)fp=Math.min(fp,area/(1+S.OSR/100*n));if(S.FAR)fp=Math.min(fp,S.FAR*area/n);res.push({n,H,fp,gfa:fp*n,ew,el,q})}
+ if(!res.length)return{res,area,wide};const mx=Math.max(...res.map(r=>r.gfa)),best=res.find(r=>r.gfa>=mx*0.98),tall=res.filter(r=>r.fp>=Math.min(36,best.fp)).pop();
+ return{res,best,tall,area,wide,mx}}
+
+/* ---------- page 2: zoning ---------- */
+const ZFAM=c=>{if(c==='custom')return['#b8c2c8',TL('กำหนดเอง','Custom'),TL('ใช้ข้อกำหนดของผังเมืองรวมในพื้นที่นั้น','Use the rules of the local comprehensive plan')];const n=parseInt(c.split('.')[1]);
+ if(c[0]==='ย'){if(n<=4)return['#f7e463',TL('เหลือง · ที่อยู่อาศัยหนาแน่นน้อย','Yellow · Low-density residential'),TL('เน้นบ้านเดี่ยว บ้านแฝด ทาวน์เฮาส์ ความหนาแน่นต่ำ อาคารขนาดใหญ่และบางกิจการถูกจำกัดตามขนาดและความกว้างถนน','Mainly detached and semi-detached houses and townhouses at low density; large buildings and some uses are limited by size and road width')];
+  if(n<=7)return['#f4a742',TL('ส้ม · ที่อยู่อาศัยหนาแน่นปานกลาง','Orange · Medium-density residential'),TL('บ้าน ทาวน์เฮาส์ อาคารชุดหรืออพาร์ตเมนต์ขนาดกลาง ร้านค้าชุมชน โดยขนาดอาคารขึ้นกับความกว้างถนน','Houses, townhouses, mid-size condos/apartments and local shops, with building size tied to road width')];
+  return['#a0703c',TL('น้ำตาล · ที่อยู่อาศัยหนาแน่นมาก','Brown · High-density residential'),TL('เมืองชั้นในและแนวระบบขนส่งมวลชน: อาคารชุด อาคารสูง โครงการผสม','Inner city and transit corridors: condominiums, high-rises, mixed-use')]}
+ if(c[0]==='พ')return['#e0453a',TL('แดง · พาณิชยกรรม','Red · Commercial'),TL('สำนักงาน ร้านค้า โรงแรม ศูนย์การค้า และที่อยู่อาศัย','Offices, shops, hotels, malls and housing')];
+ return['#9fd08a',TL('ขาวกรอบเขียว · อนุรักษ์ชนบทและเกษตรกรรม','White/green · Rural & agricultural conservation'),TL('เกษตรกรรมและที่อยู่อาศัยความหนาแน่นต่ำมาก บางส่วนเป็นทางระบายน้ำหลาก','Farming and very low-density housing; parts are flood ways')]};
+let zmap=null,zmk=null,zpp=null,zOv=null,zAuto={st:''};
+// ระบบแผนที่ผังเมืองรวม กทม. (ArcGIS REST ของสำนักการวางผังและพัฒนาเมือง)
+const ZSRC=[['https://cityplangis.bangkok.go.th/arcgis/rest/services/bma/ComprehensivePlan/MapServer','all'],['https://3d-cpd.bangkok.go.th/ArcGIS/rest/services/DOL/LupDolWms/MapServer','all:1']];
+async function detectZone(){if(!inBKK()){zAuto={st:'out'};if(location.hash==='#zoning')renderZoning();return}
+ zAuto={st:'loading'};if(location.hash==='#zoning')renderZoning();let reached=false;
+ for(const[u,layers]of ZSRC){try{const d=0.002,ext=[S.lng-d,S.lat-d,S.lng+d,S.lat+d].join(',');
+  const url=`${u}/identify?geometry=${S.lng},${S.lat}&geometryType=esriGeometryPoint&sr=4326&layers=${layers}&tolerance=1&mapExtent=${ext}&imageDisplay=400,400,96&returnGeometry=false&f=json`;
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),9000);const js=await(await fetch(url,{signal:ac.signal})).json();clearTimeout(tm);reached=true;
+  const res=(js.results||[]).sort((a,b)=>(/ผังเมือง|การใช้ประโยชน์|landuse|zone/i.test(b.layerName)?1:0)-(/ผังเมือง|การใช้ประโยชน์|landuse|zone/i.test(a.layerName)?1:0));
+  for(const r of res)for(const v of Object.values(r.attributes||{})){const m=String(v).match(/(ย|พ|อ|ก|ศ)\s?\.\s?(\d{1,2})(?!\d)/);
+   if(m){const code=`${m[1]}.${m[2]}`,z=ZONES.find(q=>q[0]===code);zAuto={st:'ok',code,known:!!z,layer:r.layerName,src:new URL(u).hostname};
+    if(z){S.zone=code;S.FAR=z[1];S.OSR=z[2]}else S.zone='custom';syncUI();buildPlot();save();if(location.hash==='#zoning')renderZoning();return}}
+ }catch(e){}}
+ zAuto={st:reached?'none':'err'};if(location.hash==='#zoning')renderZoning()}
+function zOverlay(){if(!zmap||!window.L)return;const b=zmap.getBounds(),sz=zmap.getSize();
+ const url=`${ZSRC[0][0]}/export?bbox=${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}&bboxSR=4326&imageSR=3857&size=${sz.x},${sz.y}&format=png32&transparent=true&f=image`;
+ if(zOv){zOv.setUrl(url);zOv.setBounds(b)}else zOv=window.L.imageOverlay(url,b,{opacity:.55}).addTo(zmap)}
+function zPlanSVG(env){const a=S.PW/2,b=S.PL/2,ext=Math.max(8,Math.min(16,Math.max(a,b)*0.6)),fs=Math.max(S.PW,S.PL)/24,z=ZFAM(S.zone),B=env.best;
+ const q=B?B.q:Object.fromEntries(Object.keys(SIDES).map(k=>[k,sideReq(k,S.H)]));let o='';
+ Object.keys(SIDES).forEach(k=>{const t=S.sideT[k];if(t==='nb')return;const[sx,sz]=SIDES[k],w=Math.min(t==='lake'?ext:+S.sideW[k]||6,ext),col=t==='road'?'#9aa3a8':'#7cc0ec';
+  const x=sx>0?a:sx<0?-a-w:-a-ext,y=sz>0?b:sz<0?-b-w:-b-ext,W=sx?w:2*a+2*ext,H=sz?w:2*b+2*ext;
+  o+=`<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="${col}"/>`;const tx=sx?x+w/2:0,ty=sz?y+w/2:b+ext*0.55;
+  o+=`<text x="${sx?tx:-a+fs}" y="${sz?ty+fs*0.35:-b+fs*1.6}" font-size="${fs}" fill="#15202b" ${sx?`transform="rotate(-90 ${tx} ${0})"`:''}>${t==='road'?TL('ถนน','Road')+' '+S.sideW[k]+' m':t==='lake'?TL('บึง/ทะเล','Lake/sea'):TL('คลอง','Canal')+' '+S.sideW[k]+' m'}</text>`});
+ o+=`<rect x="${-a}" y="${-b}" width="${2*a}" height="${2*b}" fill="${z[0]}" fill-opacity=".45" stroke="#15202b" stroke-width="${fs*0.12}"/>`;
+ const x0=-a+q.nx.req,x1=a-q.px.req,y0=-b+q.nz.req,y1=b-q.pz.req;
+ if(x1>x0&&y1>y0)o+=`<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="none" stroke="#2e7d4f" stroke-dasharray="${fs*0.5} ${fs*0.3}" stroke-width="${fs*0.1}"/>`;
+ if(B){const k=Math.sqrt(B.fp/(B.ew*B.el)),bw=B.ew*k,bl=B.el*k,cx=(x0+x1)/2,cy=(y0+y1)/2;o+=`<rect x="${cx-bw/2}" y="${cy-bl/2}" width="${bw}" height="${bl}" fill="#15202b" fill-opacity=".82"/><text x="${cx}" y="${cy+fs*0.35}" text-anchor="middle" font-size="${fs*1.1}" fill="#fff" font-weight="600">${B.n} ${TL('ชั้น','fl')}</text>`}
+ [['nz',0,-b+q.nz.req/2],['pz',0,b-q.pz.req/2],['px',a-q.px.req/2,0],['nx',-a+q.nx.req/2,0]].forEach(([k,x,y])=>{if(q[k].req>0.01)o+=`<text x="${x}" y="${y+fs*0.3}" text-anchor="middle" font-size="${fs*0.8}" fill="#2e7d4f" font-weight="600">${q[k].req.toFixed(1)}</text>`});
+ const na=-S.rot,nx=a+ext-fs*1.6,ny=-b-ext+fs*1.8;o+=`<g transform="translate(${nx} ${ny}) rotate(${na})"><path d="M0 ${-fs*1.2} L${fs*0.5} ${fs*0.6} L0 ${fs*0.25} L${-fs*0.5} ${fs*0.6}Z" fill="#c2412d"/><text y="${-fs*1.4}" text-anchor="middle" font-size="${fs*0.9}" fill="#c2412d" font-weight="600">N</text></g>`;
+ $('#zPlan').setAttribute('viewBox',`${-a-ext} ${-b-ext} ${2*a+2*ext} ${2*b+2*ext}`);$('#zPlan').innerHTML=o}
+function zElevSVG(env){const B=env.best,T=env.tall,Hm=Math.max(26,(T?T.H:0)+4,B?B.H+4:0),Wd=Math.max(S.PW+6,Hm*0.9),fs=Hm/28;let o='';const gy=Hm;
+ o+=`<rect x="0" y="0" width="${Wd}" height="${Hm+fs*2}" fill="none"/><line x1="0" y1="${gy}" x2="${Wd}" y2="${gy}" stroke="#15202b" stroke-width="${fs*0.12}"/>`;
+ o+=`<rect x="${(Wd-S.PW)/2}" y="${gy}" width="${S.PW}" height="${fs*0.5}" fill="${ZFAM(S.zone)[0]}"/>`;
+ [[9,TL('9 ม. · ระยะร่น 2→3 ม.','9 m · setback 2→3 m'),'#5b6873'],[23,TL('23 ม. · อาคารสูง','23 m · high-rise'),env.wide?'#5b6873':'#c2412d']].forEach(([h,t,c])=>{o+=`<line x1="0" x2="${Wd}" y1="${gy-h}" y2="${gy-h}" stroke="${c}" stroke-dasharray="${fs*0.6} ${fs*0.4}" stroke-width="${fs*0.08}"/><text x="${fs*0.3}" y="${gy-h-fs*0.3}" font-size="${fs*0.75}" fill="${c}">${t}</text>`});
+ const draw=(r,op,lab)=>{if(!r)return;const k=Math.sqrt(r.fp/(r.ew*r.el)),bw=r.ew*k,x=(Wd-S.PW)/2+r.q.nx.req+(r.ew-bw)/2;o+=`<rect x="${x}" y="${gy-r.H}" width="${bw}" height="${r.H}" fill="#15202b" fill-opacity="${op}"/>`;for(let i=1;i<r.n;i++)o+=`<line x1="${x}" x2="${x+bw}" y1="${gy-i*3.2}" y2="${gy-i*3.2}" stroke="#fff" stroke-opacity=".35" stroke-width="${fs*0.05}"/>`;o+=`<text x="${x+bw/2}" y="${gy-r.H+fs*1.4}" text-anchor="middle" font-size="${fs*1.1}" fill="#fff" font-weight="600">${lab}</text>`};
+ if(T&&B&&T.n!==B.n)draw(T,.18,`${T.n} ${TL('ชั้น','fl')} · ${T.H.toFixed(0)} m`);draw(B,.85,`${B.n} ${TL('ชั้น','fl')} · ${B.H.toFixed(0)} m`);
+ $('#zElev').setAttribute('viewBox',`0 0 ${Wd} ${Hm+fs*1.2}`);$('#zElev').innerHTML=o}
+function renderZoning(){const env=envelope(),z=ZFAM(S.zone),B=env.best,T=env.tall,f0=n=>Math.round(n).toLocaleString();
+ const chips=ZONES.map(([c,f,o2])=>`<button class="tg${S.zone===c?' on':''}" data-zone="${c}"><i style="background:${ZFAM(c)[0]}"></i>${c==='custom'?TL('กำหนดเอง','Custom'):c}</button>`).join('');
+ const q=B?B.q:null,law=[];
+ if(q)Object.keys(SIDES).forEach(k=>law.push(`<li>${TL('ทิศ','Side ')}${th8(sideB(k))}: ${TL('ร่นอย่างน้อย','set back at least')} <b>${q[k].req.toFixed(1)} m</b> — ${tr(q[k].why)}</li>`));
+ law.push(`<li>${TL(`ที่ว่างไม่น้อยกว่า ${S.use==='home'?30:10}% ของพื้นที่ชั้นที่มากที่สุด (กฎกระทรวง 55 ข้อ 33)`,`Open space at least ${S.use==='home'?30:10}% of the largest floor (MR 55 art. 33)`)}</li>`);
+ if(S.FAR)law.push(`<li>FAR ≤ ${S.FAR} → ${TL('พื้นที่อาคารรวมไม่เกิน','gross floor area up to')} <b>${f0(S.FAR*env.area)} m²</b></li>`);
+ if(S.OSR)law.push(`<li>OSR ≥ ${S.OSR}% ${TL('ของพื้นที่อาคารรวม โดยอย่างน้อยครึ่งหนึ่งต้องเป็นพื้นที่น้ำซึมผ่านได้ปลูกต้นไม้','of gross floor area; at least half must be permeable planted ground')}</li>`);
+ law.push(`<li>${TL('สูงเกิน 9 ม. ระยะร่นผนังที่มีช่องเปิดเพิ่มจาก 2 เป็น 3 ม. · สูง 23 ม. ขึ้นไปเป็นอาคารสูง ต้องมีถนนกว้างอย่างน้อย 10 ม.','Above 9 m the setback for walls with openings rises from 2 to 3 m · 23 m and up is a high-rise and needs a road at least 10 m wide')}${env.wide?'':` — <b class="fail">${TL('แปลงนี้ไม่มีถนนกว้าง 10 ม. จึงต้องต่ำกว่า 23 ม.','this plot has no 10 m road, so stay under 23 m')}</b>`}</li>`);
+ $('#zSide').innerHTML=`<div class="zbadge" style="background:${z[0]}"><div class="code">${S.zone==='custom'?'—':S.zone}</div><div><b>${z[1]}</b><div style="font-size:14px">${S.FAR?`FAR ${S.FAR} · `:''}${S.OSR?`OSR ${S.OSR}%`:''}</div></div></div>
+ <div class="msg ${inBKK()?'ok':'err'}">${inBKK()?TL('พิกัดอยู่ในกรุงเทพฯ (ประมาณ) — ผังเมืองรวม กทม. พ.ศ. 2556 · เลือกรหัสสีของแปลงด้านล่าง','Location appears to be in Bangkok — Bangkok Comprehensive Plan 2013 · pick the plot\'s zone below'):TL('พิกัดอยู่นอกกรุงเทพฯ — เลือก “กำหนดเอง” แล้วกรอก FAR/OSR ของพื้นที่','Location appears outside Bangkok — choose “Custom” and enter the local FAR/OSR')}</div>
+ <p class="note">${S.lat.toFixed(5)}, ${S.lng.toFixed(5)} · <a href="https://www.google.com/maps/@${S.lat},${S.lng},19z" target="_blank" rel="noopener">Google Maps ↗</a></p>
+ <div class="msg ${zAuto.st==='ok'?'ok':zAuto.st==='err'||zAuto.st==='none'?'err':''}">${
+  zAuto.st==='loading'?TL('กำลังอ่านเขตสีจากระบบแผนที่ผังเมือง กทม.…','Reading the zone from the BMA zoning map…'):
+  zAuto.st==='ok'?TL(`อ่านจากแผนที่ผังเมือง กทม.: <b>${zAuto.code}</b> (${zAuto.layer})${zAuto.known?'':' — รหัสนี้ยังไม่มีค่า FAR/OSR ในแอป ให้กรอกเอง'}`,`From the BMA zoning map: <b>${zAuto.code}</b> (${zAuto.layer})${zAuto.known?'':' — no FAR/OSR stored for this code yet; enter them'}`):
+  zAuto.st==='none'?TL('ระบบแผนที่ตอบกลับ แต่ไม่พบรหัสสีที่จุดนี้ — เลือกเอง','The map service answered but found no zone at this point — pick it yourself'):
+  zAuto.st==='err'?TL('ติดต่อระบบแผนที่ผังเมือง กทม. ไม่ได้ (ในหน้า Claude จะถูกบล็อกเสมอ) — เลือกรหัสสีเอง หรือเช็กจากแอป “Check ผังเมือง กทม.”','Couldn\'t reach the BMA zoning map (always blocked inside Claude) — pick the zone yourself or check the “Check ผังเมือง กทม.” app'):
+  zAuto.st==='out'?TL('นอกกรุงเทพฯ ระบบนี้ใช้ไม่ได้','Outside Bangkok this service does not apply'):''}</div>
+ <div class="gr"><button class="btn" id="zDetect">${TL('อ่านเขตสีจากแผนที่ผังเมือง กทม.','Read zone from BMA zoning map')}</button></div>
+ <label class="f">${TL('เขตสีผังเมืองของแปลง','Zone of the plot')}</label><div class="zchips">${chips}</div>
+ ${S.zone==='custom'?`<div class="row"><div><label class="f">FAR</label><input type="number" data-k="FAR" min="0" step="0.5" value="${S.FAR}"></div><div><label class="f">OSR (%)</label><input type="number" data-k="OSR" min="0" step="0.5" value="${S.OSR}"></div></div>`:''}
+ <h2 style="margin-top:18px">${TL('สร้างอะไรได้','What can be built')}</h2><p style="margin:4px 0">${z[2]}</p><p class="note">${TL('สรุปทั่วไปเท่านั้น ประเภทอาคารที่ห้ามหรืออนุญาตของแต่ละรหัสต้องดูในข้อกำหนดผังเมืองรวม','General summary only; check the plan\'s rules for uses allowed or banned in each code')}</p>
+ <div class="kpis"><div class="kpi"><div class="v">${S.FAR?f0(S.FAR*env.area):'—'}</div><div class="k">${TL('พื้นที่อาคารรวมสูงสุด (ตร.ม.)','Max gross floor area (m²)')}</div></div>
+  <div class="kpi"><div class="v">${B?`${B.n} ${TL('ชั้น','fl')}`:'—'}</div><div class="k">${B?TL(`ใช้ FAR เต็มที่ ฐาน ${f0(B.fp)} ตร.ม. สูง ~${B.H.toFixed(0)} ม.`,`Uses full FAR · ${f0(B.fp)} m² footprint · ~${B.H.toFixed(0)} m`):TL('ที่ดินเล็กเกินระยะร่น','Plot too small for setbacks')}</div></div>
+  <div class="kpi"><div class="v">${T?`~${T.H.toFixed(0)} m`:'—'}</div><div class="k">${T?TL(`สูงสุดประมาณ ${T.n} ชั้น ถ้าลดฐานเหลือ ${f0(T.fp)} ตร.ม.${env.wide?'':' (ต่ำกว่า 23 ม.)'}`,`Tallest ≈ ${T.n} floors with a ${f0(T.fp)} m² footprint${env.wide?'':' (under 23 m)'}`):''}</div></div></div>
+ <h2 style="margin-top:18px">${TL('ที่ดินและบริบทรอบข้าง','Plot & surroundings')}</h2>
+ <div class="row"><div><label class="f">${TL('ที่ดิน กว้าง (ม.)','Plot width (m)')}</label><input type="number" data-k="PW" min="2" step="0.5" value="${S.PW}"></div><div><label class="f">${TL('ที่ดิน ยาว (ม.)','Plot length (m)')}</label><input type="number" data-k="PL" min="2" step="0.5" value="${S.PL}"></div><div><label class="f">${TL('หมุน (°)','Rotation (°)')}</label><input type="number" data-k="rot" min="0" max="179" step="1" value="${S.rot}"></div></div>
+ <div class="sides" id="zSides"></div>
+ <div class="gr"><button class="btn" data-autoside="1">${TL('ตรวจหาถนนและแหล่งน้ำจากแผนที่','Detect roads & water from map')}</button></div><div class="msg sidemsg"></div>
+ <h2 style="margin-top:18px">${TL('กฎหมายที่เกี่ยวข้องคร่าวๆ','Key rules (summary)')}</h2><ul class="law">${law.join('')}</ul>
+ <p class="note">${TL('ตรวจเบื้องต้นตาม พ.ร.บ.ควบคุมอาคาร (กฎกระทรวง 33, 55) และผังเมืองรวม กทม. 2556 · ผังเมืองฉบับปรับปรุงครั้งที่ 4 คาดประกาศใช้ปี 2570 · ก่อนขออนุญาตควรให้สถาปนิกผู้มีใบอนุญาตตรวจ','Preliminary check under the Building Control Act (MR 33, 55) and the 2013 Bangkok plan · the 4th revision is expected in 2027 · have a licensed architect verify before applying')}</p>
+ <div class="gr"><button class="btn big" id="zApply">${TL('ใช้มวลอาคารนี้','Use this massing')}</button><a class="btn big pri" href="#design" style="text-decoration:none">${TL('ไปออกแบบ →','Go to design →')}</a></div>`;
+ sideEditor($('#zSides'));zPlanSVG(env);zElevSVG(env);$('#zDetect').onclick=detectZone;
+ const ap=$('#zApply');if(ap)ap.onclick=()=>{if(!B)return;const k=Math.sqrt(B.fp/(B.ew*B.el));Object.assign(S,{W:Math.round(B.ew*k*2)/2,L:Math.round(B.el*k*2)/2,floors:B.n,H:+(B.n*3.2).toFixed(1),offX:(B.q.nx.req-B.q.px.req)/2,offZ:(B.q.nz.req-B.q.pz.req)/2});if(B.n>3)S.roof='flat';syncUI();rebuild();location.hash='design'};
+ if(window.L&&!zmap){zmap=window.L.map('zMap',{zoomControl:false,attributionControl:true}).setView([S.lat,S.lng],18);zmap.attributionControl.setPrefix('Leaflet');zmap.attributionControl.addAttribution('ผังเมือง © สำนักการวางผังและพัฒนาเมือง กทม.');zmap.on('moveend',zOverlay);zmap.on('click',e=>{setSite(e.latlng.lat,e.latlng.lng,false);detectZone()});zOverlay();window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(zmap);zmk=window.L.circleMarker([S.lat,S.lng],{radius:6,color:'#e8743b',fillOpacity:1}).addTo(zmap);zpp=window.L.polygon([],{color:'#15202b',weight:2}).addTo(zmap)}
+ if(zmap){zmap.invalidateSize();zmk.setLatLng([S.lat,S.lng]);const a=S.PW/2,b=S.PL/2,cx=-S.offX,cz=-S.offZ;zpp.setLatLngs([[cx-a,cz-b],[cx+a,cz-b],[cx+a,cz+b],[cx-a,cz+b]].map(([x,zz])=>{const v=toW(x,0,zz);return[S.lat-v.z/110540,S.lng+v.x/mPerLng()]}));zpp.setStyle({fillColor:z[0],fillOpacity:.45})}}
+document.addEventListener('click',e=>{const zb=e.target.closest('[data-zone]');if(!zb)return;S.zone=zb.dataset.zone;const zz=ZONES.find(q=>q[0]===S.zone);if(zz&&zz[1]!=null){S.FAR=zz[1];S.OSR=zz[2]}syncUI();afterPlot()});
+
+/* ---------- page 1: guide ---------- */
+function heroSVG(){return`<svg viewBox="0 0 520 380" aria-hidden="true"><defs><linearGradient id="gsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde7d2"/><stop offset="1" stop-color="#dfe6ea"/></linearGradient><radialGradient id="gsun"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e8743b"/></radialGradient></defs>
+ <rect width="520" height="380" rx="22" fill="url(#gsky)"/><path d="M40 300 Q260 20 480 300" fill="none" stroke="#e8743b" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+ <circle cx="372" cy="118" r="26" fill="url(#gsun)"><animate attributeName="cx" values="120;372;420" dur="9s" repeatCount="indefinite"/><animate attributeName="cy" values="160;118;190" dur="9s" repeatCount="indefinite"/></circle>
+ <path d="M60 300 L260 230 L460 300 L260 370Z" fill="#eeece6"/><path d="M150 290 L240 258 L330 290 L240 322Z" fill="#f7e463" opacity=".7" stroke="#15202b" stroke-width="1.5"/>
+ <path d="M200 286 L200 230 L240 216 L240 272Z" fill="#fff" stroke="#15202b" stroke-width="1.5"/><path d="M240 272 L240 216 L290 232 L290 288Z" fill="#e9eef1" stroke="#15202b" stroke-width="1.5"/><path d="M200 286 L240 272 L290 288 L250 302Z" fill="#c9d1d6" opacity=".6"/>
+ <path d="M196 232 L238 196 L294 234 L240 216Z" fill="#a8553a"/><path d="M238 196 L294 234 L290 232Z" fill="#8a4430"/>
+ <g stroke="#1d6fb8" stroke-width="3" stroke-linecap="round" fill="none" opacity=".85"><path d="M40 210 q40 -12 90 0 t90 0"><animate attributeName="stroke-dashoffset" from="0" to="-60" dur="2.5s" repeatCount="indefinite"/></path><path d="M30 250 q50 -12 100 0" stroke-dasharray="14 10"><animate attributeName="stroke-dashoffset" from="0" to="-48" dur="2s" repeatCount="indefinite"/></path></g>
+ <circle cx="390" cy="292" r="16" fill="#82b366"/><rect x="388" y="300" width="4" height="14" fill="#7a5c45"/><circle cx="120" cy="300" r="12" fill="#82b366"/>
+ <g transform="translate(470 40)"><path d="M0 -16 L7 8 L0 3 L-7 8Z" fill="#c2412d"/><text y="-20" text-anchor="middle" font-size="14" font-weight="600" fill="#c2412d">N</text></g></svg>`}
+function renderGuide(){const st=[[TL('เลือกที่ตั้ง','Choose a site'),TL('วางลิงก์หรือพิกัดจาก Google Maps หรือเริ่มแบบกำหนดเองโดยไม่อ้างอิงตำแหน่ง','Paste a Google Maps link or coordinates, or start a custom model without a location')],
+ [TL('ดูผังเมืองและกฎหมาย','Check zoning & law'),TL('เขตสี FAR/OSR สร้างอะไรได้ สูงได้แค่ไหน ระยะร่นจากถนนและแหล่งน้ำ','Zone colour, FAR/OSR, what you can build, how tall, setbacks from roads and water')],
+ [TL('ออกแบบและวิเคราะห์','Design & analyse'),TL('ทางเดินแดด เงา ลมรายเดือน ผนังร้อน โซลาร์เซลล์ แล้วส่งออกแผ่นนำเสนอ','Sun path, shadows, monthly wind, hot walls, solar panels, then export a presentation sheet')]];
+ $('#guideBox').innerHTML=`<div class="hero"><div><h2>${TL('วิเคราะห์ไซต์ แดด ลม และกฎหมาย ในไม่กี่นาที','Site analysis — sun, wind and zoning in minutes')}</h2><p>${TL('เครื่องมือสำหรับสถาปนิกและเจ้าของบ้าน ใช้ได้ทั้งคอมพิวเตอร์ แท็บเล็ต และมือถือ','A tool for architects and home owners on desktop, tablet and phone')}</p></div>${heroSVG()}</div>
+ <div class="gsteps">${st.map(([h,p],i)=>`<div class="gstep"><b>${i+1}</b><h3>${h}</h3><p>${p}</p></div>`).join('')}</div>
+ <div class="choose"><div class="ch main"><h3>${TL('ใช้ตำแหน่งจาก Google Maps','Use a Google Maps location')}</h3><p>${TL('ใน Google Maps กดค้างที่แปลงที่ดิน แล้วคัดลอกพิกัด หรือคัดลอกลิงก์ยาวที่มี @lat,lng มาวาง','In Google Maps, long-press the plot and copy the coordinates, or copy a full link with @lat,lng')}</p>
+  <input type="text" id="gLoc" placeholder="13.7563, 100.5018" value="${S.lat.toFixed(6)}, ${S.lng.toFixed(6)}"><div class="msg" id="gMsg"></div>
+  <div class="gr"><button class="btn big pri" id="gGo">${TL('ไปดูผังเมือง →','See zoning →')}</button><a class="btn" href="https://www.google.com/maps" target="_blank" rel="noopener" style="text-decoration:none">${TL('เปิด Google Maps ↗','Open Google Maps ↗')}</a></div></div>
+  <div class="ch"><h3>${TL('สร้างรูปแบบเอง','Build a custom model')}</h3><p>${TL('ไม่อ้างอิงตำแหน่งจริง ใช้พิกัดตั้งต้นกรุงเทพฯ สำหรับแดดและลม และบริบทตัวอย่าง ไปที่หน้าออกแบบได้ทันที','No real location; uses Bangkok as the default for sun and wind with a sample context, and goes straight to design')}</p>
+  <div class="gr" style="margin-top:auto"><button class="btn big" id="gCustom">${TL('เริ่มออกแบบ →','Start designing →')}</button></div></div></div>`;
+ $('#gGo').onclick=()=>{const v=$('#gLoc').value,p=parseLoc(v);if(!p||Math.abs(p.lat)>90||Math.abs(p.lng)>180){$('#gMsg').className='msg err';$('#gMsg').textContent=/goo\.gl/.test(v)?TL('ลิงก์ย่ออ่านพิกัดไม่ได้ เปิดลิงก์ใน Google Maps แล้วกดค้างที่จุดเพื่อคัดลอกพิกัดแทน','Short links have no coordinates. Open it in Google Maps and long-press the spot to copy coordinates'):TL('อ่านพิกัดไม่ได้ ลองรูปแบบ 13.7563, 100.5018','Couldn\'t read coordinates. Try 13.7563, 100.5018');return}
+  S.flow='maps';setSite(p.lat,p.lng);location.hash='zoning';detectZone()};
+ $('#gLoc').onkeydown=e=>{if(e.key==='Enter')$('#gGo').click()};
+ $('#gCustom').onclick=()=>{S.flow='custom';if(!ctx.boxes.length)sample();save();location.hash='design'}}
+
+/* ---------- router & language ---------- */
+const PAGES=['guide','zoning','design'];
+function route(){let h=location.hash.slice(1);if(!PAGES.includes(h))h='guide';PAGES.forEach(p=>{$('#pg-'+p).hidden=p!==h});$$('.steps a').forEach(a=>a.classList.toggle('on',a.dataset.p===h));
+ if(h==='guide')renderGuide();if(h==='zoning')renderZoning();if(h==='design'){requestAnimationFrame(()=>{resize();map&&map.invalidateSize()})}window.scrollTo(0,0)}
+function setLang(l){S.lang=l;document.documentElement.lang=l;$$('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));save();
+ if(l==='en')trNode(document.body);else untr();renderZoneOptions();renderGuide();if(location.hash==='#zoning')renderZoning();siteCard();rebuild();sunPanel();updWM();if(l==='en')trNode(document.body)}
+$$('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+addEventListener('hashchange',route);
+
+/* ---------- orchestration ---------- */
+function shadowCam(){const c=sunL.shadow.camera,e=Math.max(R*1.6,70);c.left=c.bottom=-e;c.right=c.top=e;c.near=1;c.far=900;c.updateProjectionMatrix()}
+function rebuild(){R=Math.min(70,Math.max(24,Math.max(S.W,S.L,S.H)*1.9));ground.scale.setScalar(Math.max(+S.ctxR*1.4,R*3,220));
+ buildCompass();buildSunPath();updateSun();sunPanel();buildBuilding();buildWind();buildCtx();buildPlot();shadowCam();updateMap();computeHeat();save()}
+function vis(){G.sun.visible=S.showSun;G.wind.visible=S.showWind;G.pan.visible=S.showSolar;G.wall.visible=S.showWall;G.plot.visible=S.showPlot;G.heat.visible=S.showHeat;sunL.castShadow=S.showShadow;
+ $$('.tg[data-k]').forEach(b=>b.classList.toggle('on',!!S[b.dataset.k]))}
+function syncUI(){$$('[data-k]').forEach(el=>{if(el.tagName==='INPUT'||el.tagName==='SELECT')el.value=S[el.dataset.k]});
+ $$('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',S[g.dataset.seg]===b.dataset.v)));
+ $('#rotV').textContent=S.rot+'°';$('#pitchV').textContent=S.pitch+'°';$('#pminV').textContent=S.panelMin+'%';$('#pitch').disabled=S.roof==='flat';if($('#zone').options.length)$('#zone').value=S.zone;vis();if(window.__wm)updWM()}
+$$('input[data-k],select[data-k]').forEach(el=>el.addEventListener(el.type==='range'?'input':'change',()=>{const k=el.dataset.k;S[k]=el.type==='date'||el.type==='text'?el.value:+el.value;
+ if(k==='date'&&!S.date)S.date=today;syncUI();const u=el.dataset.u;if(u==='b')rebuild();else if(u==='plot'){buildPlot();save()}else if(u==='date'){buildSunPath();updateSun();sunPanel();buildBuilding();computeHeat();save()}else save()}));
+$$('[data-seg]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[g.dataset.seg]=b.dataset.v;syncUI();
+ if(g.dataset.seg==='roof')rebuild();else if(g.dataset.seg==='season'){S.wmonth=0;updWM();buildWind();save()}else if(g.dataset.seg==='roadSide'||g.dataset.seg==='use'){buildPlot();save()}}));
+$$('.tg[data-k]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;S[k]=!S[k];vis();if(k==='showSolar')buildBuilding();if(k==='showHours'||k==='showSeasons'){buildSunPath();updateSun()}if(k==='hideExisting')buildCtx();if(k==='showHeat'||k==='hideExisting')computeHeat();save()}));
+$$('.tab').forEach(t=>t.addEventListener('click',()=>{$$('.tab').forEach(x=>x.classList.toggle('on',x===t));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t.dataset.tab));if(t.dataset.tab==='site'){initMap();map&&map.invalidateSize()}}));
+$$('[data-layer]').forEach(b=>b.addEventListener('click',()=>{$$('[data-layer]').forEach(x=>x.classList.toggle('on',x===b));if(!map)return;Object.values(layers).forEach(l=>map.removeLayer(l));layers[b.dataset.layer].addTo(map)}));
+$('#locGo').addEventListener('click',()=>{const v=$('#locIn').value,p=parseLoc(v);if(!p||Math.abs(p.lat)>90||Math.abs(p.lng)>180){$('#mapMsg').className='msg err';$('#mapMsg').textContent=/goo\.gl/.test(v)?'ลิงก์ย่ออ่านพิกัดไม่ได้ เปิดลิงก์ใน Google Maps แล้วกดค้างที่จุดเพื่อคัดลอกพิกัดแทน':'อ่านพิกัดไม่ได้ ลองรูปแบบ 13.7563, 100.5018';return}
+ $('#mapMsg').className='msg ok';$('#mapMsg').textContent='ตั้งค่าที่ตั้งแล้ว';setSite(p.lat,p.lng);detectZone()});
+$('#locIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('#locGo').click()});
+$('#osmBtn').addEventListener('click',loadOSM);$('#windBtn').addEventListener('click',loadWind);
+$('#sampleBtn').addEventListener('click',sample);$('#clearBtn').addEventListener('click',()=>{ctx={boxes:[],trees:[],src:''};buildCtx();computeHeat();save()});
+const PRE={house:{W:9,L:12,H:6,roof:'hip',pitch:30,ovh:1,floors:2},town:{W:5,L:14,H:9,roof:'gable',pitch:20,ovh:0.5,floors:3},office:{W:18,L:36,H:18,roof:'flat',pitch:10,ovh:0.5,floors:5}};
+$('#preset').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;Object.assign(S,PRE[b.dataset.p]);syncUI();rebuild()});
+$('#dPre').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.date=b.dataset.d==='today'?today:S.date.slice(0,4)+'-'+b.dataset.d;syncUI();buildSunPath();updateSun();sunPanel();buildBuilding();computeHeat();save()});
+$('#sunView').addEventListener('click',()=>{const p=sunPos(msAt(S.date,S.min),S.lat,S.lng);if(p.alt<=0.05){$('#sunView').textContent='ดวงอาทิตย์ยังไม่ขึ้น';setTimeout(()=>$('#sunView').textContent='มองจากดวงอาทิตย์',1500);return}
+ if(S.cam==='2d')$('#camSeg [data-cam="3d"]').click();pcam.position.copy(sunDir(p).multiplyScalar(R*2.4));pctl.target.set(0,S.H*0.5,0)});
+function updWM(){$('#wm').value=S.wmonth;$('#wmV').textContent=S.wmonth?TH_M[S.wmonth-1]:'ปิด (ดูตามฤดู)';
+ $$('[data-seg=season] button').forEach(b=>b.classList.toggle('on',!S.wmonth&&S.season===b.dataset.v));$('#mChip').hidden=!S.wmonth}
+let wmT=null;
+$('#wm').addEventListener('input',e=>{S.wmonth=+e.target.value;updWM();buildWind();save()});
+$('#wmPlay').addEventListener('click',()=>{if(wmT){clearInterval(wmT);wmT=null;$('#wmPlay').textContent='▶ เล่น ม.ค.–ธ.ค.';return}
+ if(!S.wmonth)S.wmonth=1;S.showWind=true;S.windAnim=true;vis();updWM();buildWind();$('#wmPlay').textContent='❚❚ หยุด';
+ wmT=setInterval(()=>{S.wmonth=S.wmonth%12+1;updWM();buildWind()},1800)});
+/* ---------- presentation sheet ---------- */
+const loadImg=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=u});
+function setCams(w,h){pcam.aspect=w/h;pcam.updateProjectionMatrix();const half=R*1.5,a=w/h;ocam.left=-half*a;ocam.right=half*a;ocam.top=half;ocam.bottom=-half;ocam.updateProjectionMatrix()}
+function wrapT(c,t,x,y,mw,lh){t=tr(t);let line='';for(const ch of t.split(/(?<=\s)|(?=\s)/)){/* break by words, then by characters for Thai */
+  for(const piece of (c.measureText(ch).width>mw?[...ch]:[ch])){const test=line+piece;if(c.measureText(test).width>mw&&line){c.fillText(line.trim(),x,y);y+=lh;line=piece}else line=test}}
+ if(line.trim()){c.fillText(line.trim(),x,y);y+=lh}return y}
+async function exportSheet(){const btn=$('#sheetBtn');btn.disabled=true;btn.textContent='กำลังสร้าง…';
+ const keep={date:S.date,min:S.min,showSun:S.showSun,showWind:S.showWind,showHeat:S.showHeat,showWall:S.showWall,windAnim:S.windAnim,showShadow:S.showShadow,season:S.season,wmonth:S.wmonth};
+ try{await document.fonts.ready;Object.assign(S,{showSun:false,showWind:false,showHeat:false,showWall:false,windAnim:false,showShadow:true});vis();wLines.visible=false;
+ const y=S.date.slice(0,4),rowsD=[[`${y}-06-21`,'21 มิถุนายน · ครีษมายัน (แดดอ้อมเหนือ)'],[`${y}-12-21`,'21 ธันวาคม · เหมายัน (เงายาวที่สุด)']],times=[540,720,900],IW=960,IH=680,shots=[];
+ renderer.setPixelRatio(1);renderer.setSize(IW,IH,false);setCams(IW,IH);
+ for(const[d,lab]of rowsD){const row=[];for(const m of times){S.date=d;S.min=m;updateSun();renderer.render(scene,cam);const p=sunPos(msAt(d,m),S.lat,S.lng);
+  row.push({img:await loadImg(renderer.domElement.toDataURL('image/png')),cap:`${hm(m)} น. · มุมเงย ${(p.alt*R2D).toFixed(0)}° · ทิศ ${(p.az*R2D).toFixed(0)}° ${d16(p.az*R2D)}`})}shots.push({lab,row})}
+ const sumD=d=>{const o=S.date;S.date=d;const t=sunTimes();S.date=o;return t},tJ=sumD(`${y}-06-21`),tD=sumD(`${y}-12-21`);
+ S.wmonth=0;const rAll=rose(SEASON.all),rRain=rose(SEASON.rain),rCool=rose(SEASON.cool);
+ const domOf=r=>{const t=r.f.map(a=>a.reduce((x,y)=>x+y,0));return t.indexOf(Math.max(...t))};
+ // compose
+ const CW=3000,CH=2121,cv=document.createElement('canvas');cv.width=CW;cv.height=CH;const c=cv.getContext('2d'),_ft=c.fillText.bind(c);c.fillText=(t,...q)=>_ft(tr(String(t)),...q);const F=(w,sz)=>`${w} ${sz}px "IBM Plex Sans Thai",sans-serif`;
+ c.fillStyle='#fff';c.fillRect(0,0,CW,CH);c.fillStyle='#e8743b';c.fillRect(0,0,CW,14);
+ c.fillStyle='#15202b';c.font=F(600,68);c.fillText(S.pname||'Site Analysis — แดด ลม และการวางอาคาร',80,130);
+ c.font=F(400,30);c.fillStyle='#5b6873';c.fillText(`พิกัด ${S.lat.toFixed(5)}, ${S.lng.toFixed(5)} · เขตเวลา UTC+${S.tz} · ศึกษาเงาตามมุมกล้องที่เลือก · จัดทำ ${new Date().toLocaleDateString(LOC(),{day:'numeric',month:'long',year:'numeric'})}`,80,185);
+ c.fillStyle='#e1e5e8';c.fillRect(80,225,CW-160,3);
+ const gx=80,gw=2000,iw=(gw-2*30)/3,ih=iw*IH/IW;let gy=280;
+ shots.forEach(({lab,row})=>{c.fillStyle='#15202b';c.font=F(600,36);c.fillText(lab,gx,gy+30);gy+=56;
+  row.forEach((s2,i)=>{const x=gx+i*(iw+30);c.fillStyle='#dfe6ea';c.fillRect(x,gy,iw,ih);c.drawImage(s2.img,x,gy,iw,ih);c.strokeStyle='#cfd6da';c.lineWidth=2;c.strokeRect(x,gy,iw,ih);
+   c.fillStyle='#15202b';c.font=F(500,26);c.fillText(s2.cap,x,gy+ih+38)});gy+=ih+80});
+ // notes under images
+ c.fillStyle='#15202b';c.font=F(600,34);c.fillText('ข้อสังเกตเพื่อการออกแบบ',gx,gy+10);gy+=58;c.font=F(400,27);
+ const hot=walls.slice().sort((a,b)=>b.pct-a.pct),strip=t=>t.replace(/<[^>]+>/g,''),iA=domOf(rAll),iR=domOf(rRain),iC=domOf(rCool);
+ const notes=[`ลมหลักทั้งปีมาจากทิศ${TH8[Math.round(iA/2)%8]} (${N16[iA]}) · ฤดูฝนจาก ${N16[iR]} · ฤดูหนาวจาก ${N16[iC]} — วางช่องลมเข้าด้าน ${N16[iR]} และช่องลมออกฝั่งตรงข้าม`,
+  `ผนังร้อนที่สุด: ทิศ${th8(hot[0].fa)} — ${strip(wallRec(hot[0]))}`,`ผนังร้อนอันดับ 2: ทิศ${th8(hot[1].fa)} — ${strip(wallRec(hot[1]))}`,
+  `โซลาร์: ${solarSum.tot} แผง ≈ ${solarSum.kwp.toFixed(1)} kWp ผลิตราว ${(Math.round(solarSum.kwh/100)*100).toLocaleString()} kWh/ปี (หักเงาแล้ว) · ${solarSum.head}`];
+ notes.forEach(t=>{c.fillStyle='#e8743b';c.fillRect(gx,gy-20,10,10);c.fillStyle='#15202b';gy=wrapT(c,t,gx+28,gy,gw-28,38)+10});
+ // right column
+ const rx=2180,rw=CW-80-rx;let ry=300;c.fillStyle='#f2f4f5';c.fillRect(rx-30,260,rw+60,CH-260-120);
+ const kv=(k,v)=>{c.font=F(400,25);c.fillStyle='#5b6873';c.fillText(k,rx,ry);c.font=F(500,27);c.fillStyle='#15202b';ry=wrapT(c,v,rx+250,ry,rw-250,36)+6};
+ const head=t=>{c.font=F(600,32);c.fillStyle='#15202b';c.fillText(t,rx,ry+6);ry+=52};
+ head('ข้อมูลโครงการ');
+ kv('อาคาร',`${S.W} × ${S.L} ม. สูง ${S.H} ม. (ถึงชายคา)`);kv('หลังคา',`${{flat:'Flat slab',gable:'จั่ว',hip:'ปั้นหยา',shed:'เพิงหมาแหงน'}[S.roof]}${S.roof==='flat'?'':` ลาด ${S.pitch}°`} · ชายคา ${S.ovh} ม.`);
+ kv('การวางอาคาร',`หมุน ${S.rot}° จากทิศเหนือ`);kv('ที่ดิน',`${S.PW} × ${S.PL} ม. (${(S.PW*S.PL/4).toFixed(1)} ตร.ว.)`);
+ if(sbRes)kv('ผังเมือง',`${S.zone==='custom'?'กำหนดเอง':S.zone} · FAR ${sbRes.far.toFixed(2)}${S.FAR?'/'+S.FAR:''} ${sbRes.farOk?'✓':'✗'} · OSR ${sbRes.osr.toFixed(1)}%${S.OSR?'/'+S.OSR+'%':''} ${sbRes.osrOk?'✓':'✗'} · ${sbRes.fl} ชั้น ${sbRes.gfa.toFixed(0)} ตร.ม.`);
+ kv('ระยะร่น',sbRes?(sbRes.all?'ผ่านเบื้องต้น (กฎกระทรวง 55)':'ยังไม่ผ่าน: '+sbRes.sides.filter(x=>!x.ok).map(x=>`ทิศ${th8(x.b)} ${x.d.toFixed(1)}/${x.req.toFixed(1)} ม.`).join(', ')+(sbRes.openOk?'':' · ที่ว่างไม่พอ')+(sbRes.farOk?'':' · FAR เกิน')+(sbRes.osrOk?'':' · OSR ไม่ถึง')):'—');
+ ry+=16;head('ดวงอาทิตย์');
+ kv('21 มิ.ย.',`ขึ้น ${hm(tJ.rise)} ตก ${hm(tJ.set)} · สูงสุด ${tJ.max.toFixed(0)}°`);kv('21 ธ.ค.',`ขึ้น ${hm(tD.rise)} ตก ${hm(tD.set)} · สูงสุด ${tD.max.toFixed(0)}°`);
+ ry+=16;head('ผังลม (ทั้งปี)');
+ const rcx=rx+rw/2,rcy=ry+230,rr=200,tot=rAll.f.map(a=>a.reduce((x,y)=>x+y,0)),mx=Math.max(...tot,1);
+ c.strokeStyle='#c9d1d6';c.lineWidth=2;[0.5,1].forEach(f=>{c.beginPath();c.arc(rcx,rcy,rr*f,0,7);c.stroke()});
+ const BCs=['#bfe0f7','#7cbbe8','#3a8fd6','#1d5fa8'];
+ rAll.f.forEach((bands,i)=>{let r0=12;bands.forEach((pv,j)=>{if(pv<=0)return;const r1=r0+pv/mx*(rr-12),b=(i*22.5-90)*D2R;c.fillStyle=BCs[j];c.beginPath();c.arc(rcx,rcy,r1,b-9*D2R,b+9*D2R);c.arc(rcx,rcy,r0,b+9*D2R,b-9*D2R,true);c.closePath();c.fill();r0=r1})});
+ c.fillStyle='#c2412d';c.font=F(600,30);c.textAlign='center';c.fillText('N',rcx,rcy-rr-14);c.fillStyle='#15202b';c.fillText('S',rcx,rcy+rr+38);c.fillText('E',rcx+rr+24,rcy+10);c.fillText('W',rcx-rr-26,rcy+10);c.textAlign='left';
+ ry=rcy+rr+70;c.font=F(400,23);c.fillStyle='#5b6873';ry=wrapT(c,`ความยาวกลีบ = ความถี่ลมที่พัดมาจากทิศนั้น · วงนอก ${mx.toFixed(0)}% · ${windRows?windSrc:'ค่าประมาณทั่วไปภาคกลาง ประเทศไทย'}`,rx,ry,rw,32);
+ if(sbRes){ry+=20;head('ระยะร่นจากแนวเขตที่ดิน');sbRes.sides.forEach(x=>{c.font=F(400,25);c.fillStyle='#5b6873';c.fillText(`ทิศ${th8(x.b)}${x.road?' (ถนน)':''}`,rx,ry);
+  c.font=F(600,27);c.fillStyle=x.ok?'#2e7d4f':'#c2412d';c.fillText(`${x.d.toFixed(2)} ม. / ต้องการ ${x.req.toFixed(2)} ม. ${x.ok?'✓':'✗'}`,rx+250,ry);ry+=40});
+  c.font=F(600,27);c.fillStyle=sbRes.openOk?'#2e7d4f':'#c2412d';c.fillText(`ที่ว่าง ${sbRes.open.toFixed(0)} / ต้องการ ${sbRes.need.toFixed(0)} ตร.ม. ${sbRes.openOk?'✓':'✗'}`,rx,ry);ry+=40}
+ c.font=F(400,22);c.fillStyle='#5b6873';c.fillText('สร้างจาก Site Analysis · ค่าทั้งหมดเป็นการประมาณเพื่อการออกแบบเบื้องต้น ควรตรวจสอบกับข้อมูลจริงและผู้เชี่ยวชาญ',80,CH-50);
+ const url=cv.toDataURL('image/png');$('#shotImg').src=url;$('#shotDl').href=url;$('#shotDl').download=(S.pname||'site-analysis')+'-sheet.png';$('#shot').hidden=false}
+ finally{Object.assign(S,keep);renderer.setPixelRatio(Math.min(devicePixelRatio,2));resize();updateSun();vis();updWM();btn.disabled=false;btn.textContent='แผ่นนำเสนอ'}}
+$('#sheetBtn').addEventListener('click',exportSheet);
+$('#time').addEventListener('input',e=>{S.min=+e.target.value;updateSun();save()});
+let playing=false;$('#play').addEventListener('click',()=>{playing=!playing;$('#play').textContent=playing?'❚❚':'▶'});
+$('#camSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.cam=b.dataset.cam;$$('#camSeg button').forEach(x=>x.classList.toggle('on',x===b));
+ cam=S.cam==='2d'?ocam:pcam;pctl.enabled=S.cam==='3d';octl.enabled=S.cam==='2d';if(S.cam==='2d'){ocam.zoom=1;ocam.position.set(0,800,0);octl.target.set(0,0,0)}resize()});
+// tap to edit context
+const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let down=null;
+renderer.domElement.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY]});
+renderer.domElement.addEventListener('pointerup',e=>{if(!down||S.mode==='none')return;if(Math.hypot(e.clientX-down[0],e.clientY-down[1])>6)return;
+ const r=renderer.domElement.getBoundingClientRect();ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ptr,cam);
+ if(S.mode==='del'){const h=ray.intersectObjects(G.ctx.children,false).find(x=>x.object.userData.kind);if(!h)return;
+  if(h.object.userData.kind==='box')ctx.boxes.splice(h.object.userData.i,1);else ctx.trees.splice(h.instanceId,1);buildCtx();computeHeat();save();return}
+ const h=ray.intersectObject(ground);if(!h.length)return;const e2=h[0].point.x,n=-h[0].point.z;
+ if(S.mode==='box'){const w=S.cW/2,l=S.cL/2;ctx.boxes.push({p:[[e2-w,n-l],[e2+w,n-l],[e2+w,n+l],[e2-w,n+l]],h:S.cH})}else ctx.trees.push({e:e2,n,h:7,r:2.4});
+ if(!ctx.src)ctx.src='วางเอง';buildCtx();computeHeat();save()});
+// screenshot
+$('#shotBtn').addEventListener('click',()=>{renderer.render(scene,cam);const u=renderer.domElement.toDataURL('image/png');$('#shotImg').src=u;$('#shotDl').href=u;$('#shotDl').download='site-analysis.png';$('#shot').hidden=false});
+$('#shotX').addEventListener('click',()=>{$('#shot').hidden=true});
+function resize(){const w=view.clientWidth,h=view.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);pcam.aspect=w/h;pcam.updateProjectionMatrix();
+ const half=R*1.5,a=w/h;ocam.left=-half*a;ocam.right=half*a;ocam.top=half;ocam.bottom=-half;ocam.updateProjectionMatrix()}
+const ro=new ResizeObserver(resize);ro.observe(view);
+function frame(){requestAnimationFrame(frame);if(playing){const t=sunTimes._c||(sunTimes._c=sunTimes());S.min+=2;if(S.min>(t.set??1140)+20||S.min<(t.rise??300)-20)S.min=(t.rise??300)-20;updateSun()}
+ stepWind();(S.cam==='2d'?octl:pctl).update();renderer.render(scene,cam)}
+$('#date').addEventListener('change',()=>{sunTimes._c=null});$('#dPre').addEventListener('click',()=>{sunTimes._c=null});
+
+window.__wm=1;initZone();syncUI();siteCard();rebuild();let had=false;try{had=!!localStorage.getItem('sa-ctx')}catch(e){}if(!ctx.boxes.length&&!ctx.trees.length&&!had)sample();
+pcam.position.set(R*1.7,R*1.25,R*2.1);pctl.target.set(0,S.H*0.4,0);resize();initMap();frame();
+S.sideT=S.sideT||{nz:'road',px:'nb',pz:'nb',nx:'nb'};S.sideW=S.sideW||{nz:6,px:6,pz:6,nx:6};ctx.roads=ctx.roads||[];ctx.water=ctx.water||[];
+$$('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===S.lang));document.documentElement.lang=S.lang;route();if(S.lang==='en'){rebuild();trNode(document.body)}
+}
+</script>
+</body>

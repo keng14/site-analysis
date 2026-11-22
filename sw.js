@@ -1,5 +1,5 @@
 // Site Analysis — service worker (offline app shell + libraries)
-const V = 'sa-v4';
+const V = 'sa-v6';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 const LIBS = [
   'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',

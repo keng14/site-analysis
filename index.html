@@ -160,7 +160,7 @@ a{color:var(--wind)}
 <body>
 <header class="top">
  <div class="brand"><i></i><span>Site Analysis</span></div>
- <nav class="steps" aria-label="steps"><a href="#guide" data-p="guide"><b>1</b><span>วิธีใช้</span></a><a href="#design" data-p="design"><b>2</b><span>ออกแบบ</span></a></nav>
+ <nav class="steps" aria-label="steps"><a href="#guide" data-p="guide"><b>1</b><span>วิธีใช้งาน</span></a><a href="#design" data-p="design"><b>2</b><span>ออกแบบ</span></a></nav>
  <span class="chip" id="coordChip"></span>
  <span class="chip" id="offChip" hidden style="color:#c2412d">ออฟไลน์</span>
  <button class="btn" id="installBtn" hidden style="margin-left:auto">ติดตั้งแอป</button>
@@ -184,7 +184,7 @@ a{color:var(--wind)}
    <button class="tg" data-k="showShadow">เงา</button>
    <button class="tg" data-k="showCtx">บริบท</button>
    <button class="tg" data-k="showSolar">โซลาร์</button>
-   <button class="tg" data-k="showHeat">ชั่วโมงแดด</button>
+   
    <button class="tg" data-k="showWall">ผนังร้อน</button>
    <button class="tg" data-k="showPlot">ที่ดิน</button>
    <button class="btn pri" id="sheetBtn">แผ่นนำเสนอ</button>
@@ -220,6 +220,7 @@ a{color:var(--wind)}
   </div>
   <div class="pane on" id="p-bld">
    <div class="rstbar"><button class="btn" data-reset="bld">↺ คืนค่าเริ่มต้น</button></div>
+   <div style="display:none">
    <h2>โครงการ</h2>
    <label class="f" for="pname">ชื่อโครงการ (ใช้ในแผ่นนำเสนอ)</label>
    <input type="text" id="pname" data-k="pname" data-u="none" placeholder="เช่น บ้านพักอาศัย 2 ชั้น">
@@ -229,7 +230,7 @@ a{color:var(--wind)}
     <div class="gr"><button class="btn" id="projExport">ส่งออกไฟล์</button><button class="btn" id="projCopy">คัดลอกข้อมูล</button><label class="btn" for="projImp" style="display:inline-flex;align-items:center">นำเข้าไฟล์</label><input type="file" id="projImp" accept=".json,application/json" hidden></div>
     <details style="margin-top:8px"><summary class="note" style="cursor:pointer">วางข้อมูลโครงการที่ได้รับมา</summary><textarea id="projPaste" rows="3" style="width:100%;font:inherit;font-size:14px;margin-top:6px;border-radius:8px;border:1px solid var(--line);background:var(--soft);color:var(--ink);padding:8px"></textarea><button class="btn" id="projPasteGo">เปิดจากข้อมูลที่วาง</button></details>
     <div class="msg" id="projMsg"></div></div>
-   
+   </div>
    <h2 style="margin-top:18px">อาคารคร่าวๆ</h2>
    <div class="seg" style="margin-top:8px" id="preset"><button data-p="house">บ้าน 2 ชั้น</button><button data-p="town">ทาวน์โฮม</button><button data-p="office">อาคาร 5 ชั้น</button></div>
    <div class="row"><div><label class="f" for="bW">กว้าง W (ม.)</label><input type="number" id="bW" data-k="W" data-u="b" min="2" step="0.5"></div><div><label class="f" for="bL">ยาว L (ม.)</label><input type="number" id="bL" data-k="L" data-u="b" min="2" step="0.5"></div><div><label class="f" for="bH">สูงถึงชายคา (ม.) <span class="chip" id="flHint"></span></label><input type="number" id="bH" data-k="H" data-u="b" min="2" step="0.5"></div></div>
@@ -285,17 +286,17 @@ a{color:var(--wind)}
    <div class="seg" style="margin-top:8px" id="dPre"><button data-d="03-20">21 มี.ค.</button><button data-d="06-21">21 มิ.ย.</button><button data-d="09-23">23 ก.ย.</button><button data-d="12-21">21 ธ.ค.</button><button data-d="today">วันนี้</button></div>
    <div class="gr"><button class="btn pri" id="sunView">มองจากดวงอาทิตย์</button><span class="note">ผนังที่เห็นคือด้านที่โดนแดดเวลานั้น</span></div>
    <div class="card" id="sunCard"></div>
-   <label class="f">ชั้นข้อมูลบนแผนภาพ</label>
-   <div class="seg"><button class="tg" data-k="showHours">เส้นชั่วโมง</button><button class="tg" data-k="showSeasons">เส้นครีษมายัน/เหมายัน</button></div>
-   <h2 style="margin-top:22px">ชั่วโมงแดดบนพื้น</h2>
+   <div style="display:none"><h2 style="margin-top:22px">ชั่วโมงแดดบนพื้น</h2>
    <p class="note">ระบายสีพื้นตามจำนวนชั่วโมงที่แดดส่องถึงในวันที่เลือก นับเงาจากอาคาร ต้นไม้ และอาคารข้างเคียง ลองเทียบวันที่ 21 เม.ย. (ร้อนสุด) กับ 21 ธ.ค. (เงายาวสุด)</p>
    <div class="gr"><button class="tg" data-k="showHeat">แสดงแผนที่ชั่วโมงแดด</button></div>
-   <div class="msg" id="heatMsg"></div><div id="heatCard"></div>
+   <div class="msg" id="heatMsg"></div><div id="heatCard"></div></div>
+   <div style="display:none">
    <h2 style="margin-top:22px">เงาตกบ้านข้างเคียง</h2>
    <p class="note">บอกว่าอาคารที่ออกแบบทำให้บ้านรอบๆ เสียแดดกี่ชั่วโมง ในวันที่เลือกและวันที่ 21 ธ.ค. (เงายาวที่สุด) ตรวจที่ผนังชั้นล่างและหลังคาของบ้านแต่ละหลังในรัศมี 90 ม. แล้วระบายสีบ้านที่โดนเงา</p>
    <div class="gr"><button class="tg" data-k="showImpact">คำนวณเงาตกบ้านข้างเคียง</button></div>
    <div class="msg" id="impMsg"></div><div id="impCard"></div>
-   <p class="note">คิดเฉพาะเงาจากอาคารนี้ ไม่หักเงาจากต้นไม้หรือบ้านหลังอื่นที่บังอยู่แล้ว ตัวเลขจริงจึงอาจน้อยกว่านี้</p>
+   </div>
+   <div style="display:none"><p class="note">คิดเฉพาะเงาจากอาคารนี้ ไม่หักเงาจากต้นไม้หรือบ้านหลังอื่นที่บังอยู่แล้ว ตัวเลขจริงจึงอาจน้อยกว่านี้</p></div>
    <p class="note" style="margin-top:16px"><span class="key"><i style="background:#e4572e"></i>21 มิ.ย.</span> &nbsp;<span class="key"><i style="background:#f3a712"></i>21 มี.ค./23 ก.ย.</span> &nbsp;<span class="key"><i style="background:#2e86ab"></i>21 ธ.ค.</span> &nbsp;<span class="key"><i style="background:#15202b"></i>วันที่เลือก</span></p>
   </div>
   <div class="pane" id="p-wind">
@@ -526,9 +527,9 @@ const SIDES={nz:[0,-1],px:[1,0],pz:[0,1],nx:[-1,0]};
 const ZONES=[['ย.1',1,40,'#f7e463','เหลือง · ที่อยู่อาศัยหนาแน่นน้อย'],['ย.2',1.5,20,'#f7e463','เหลือง'],['ย.3',2.5,12.5,'#f7e463','เหลือง'],['ย.4',3,10,'#f7e463','เหลือง'],
  ['ย.5',4,7.5,'#f4a742','ส้ม · ที่อยู่อาศัยหนาแน่นปานกลาง'],['ย.6',4.5,6.5,'#f4a742','ส้ม'],['ย.7',5,6,'#f4a742','ส้ม'],
  ['ย.8',6,5,'#a0703c','น้ำตาล · ที่อยู่อาศัยหนาแน่นมาก'],['ย.9',7,4.5,'#a0703c','น้ำตาล'],['ย.10',8,4,'#a0703c','น้ำตาล'],
- ['พ.3',7,4.5,'#e0453a','แดง · พาณิชยกรรม'],['พ.4',8,4,'#e0453a','แดง · พาณิชยกรรม'],['ก.1',0.5,100,'#9fd08a','ขาวกรอบเขียว · อนุรักษ์ชนบทและเกษตรกรรม'],['custom',null,null,'#b8c2c8','กำหนดเอง (ต่างจังหวัด / รหัสอื่น)']];
+ ['พ.3',7,4.5,'#e0453a','แดง · พาณิชยกรรม'],['พ.4',8,4,'#e0453a','แดง · พาณิชยกรรม'],['ก.1',0.5,100,'#9fd08a','ขาวกรอบเขียว · อนุรักษ์ชนบทและเกษตรกรรม'],['นอก',0,0,'#e8e4dc','นอกผังเมือง — ไม่มี FAR/OSR (OSR 30%/10% ตามประเภท และสูงไม่เกิน 2 เท่าของความกว้างถนน)'],['custom',null,null,'#b8c2c8','กำหนดเอง (ต่างจังหวัด / รหัสอื่น)']];
 const inBKK=()=>S.lat>13.49&&S.lat<13.96&&S.lng>100.32&&S.lng<100.94;
-function renderZoneOptions(){$('#zone').innerHTML=ZONES.map(([c,f,o,,t])=>`<option value="${c}">${c==='custom'?t:`${c} — FAR ${f} · OSR ${o}% · ${t}`}</option>`).join('');$('#zone').value=S.zone}
+function renderZoneOptions(){$('#zone').innerHTML=ZONES.map(([c,f,o,,t])=>`<option value="${c}">${(c==='custom'||c==='นอก')?t:`${c} — FAR ${f} · OSR ${o}% · ${t}`}</option>`).join('');$('#zone').value=S.zone}
 function initZone(){renderZoneOptions();
  $('#zone').addEventListener('change',e=>{S.zone=e.target.value;const z=ZONES.find(q=>q[0]===S.zone);if(z[1]!=null){S.FAR=z[1];S.OSR=z[2]}syncUI();buildPlot();save()})}
 const isPoly=()=>Array.isArray(S.poly)&&S.poly.length>=3;
@@ -564,6 +565,7 @@ function lawIssues(r){const out=[],f1=v=>v.toFixed(1),nm=k=>`${k[0]==='e'?TL('�
  if(r.sides.some(x=>x.d<0))out.push(TL('อาคารล้นออกนอกแนวเขตที่ดิน — ลดขนาดหรือย้ายอาคาร','The building extends past the plot boundary — shrink or move it'));
  r.sides.filter(x=>!x.ok&&x.d>=0).forEach(x=>out.push(TL(`ระยะร่น${nm(x.k)} ${f1(x.d)} ม. ต้องไม่น้อยกว่า ${f1(x.req)} ม. — ขาด ${f1(x.req-x.d)} ม. (${x.why})`,`Setback ${tr(nm(x.k))} ${f1(x.d)} m, needs ≥ ${f1(x.req)} m — short by ${f1(x.req-x.d)} m (${tr(x.why)})`)));
  if(r.sides.some(x=>x.d>=0&&!x.eave))out.push(TL(`ชายคา ${S.ovh} ม. ยื่นเกินแนวเขตที่ดิน`,`The ${S.ovh} m eave overhangs the boundary`));
+ if(S.zone==='นอก'){const rw=Math.max(0,...sideKeys().filter(k=>S.sideT[k]==='road').map(k=>+S.sideW[k]));if(rw>0&&S.H>2*rw)out.push(TL(`ความสูง ${f1(S.H)} ม. เกิน 2 เท่าของความกว้างถนน (${rw} ม.)`,`Height ${f1(S.H)} m exceeds 2× the road width (${rw} m)`))}
  if(!r.farOk)out.push(TL(`FAR ${r.far.toFixed(2)} เกิน ${S.FAR} (${S.zone==='custom'?'กำหนดเอง':S.zone}) — ที่ฐานนี้สร้างได้ไม่เกิน ${r.fFar} ชั้น หรือพื้นที่รวม ${Math.floor(S.FAR*r.area)} ตร.ม.`,`FAR ${r.far.toFixed(2)} exceeds ${S.FAR} (${S.zone}) — at this footprint, max ${r.fFar} floors or ${Math.floor(S.FAR*r.area)} m² in total`));
  if(!r.osrOk)out.push(TL(`OSR ${r.osr.toFixed(1)}% ต่ำกว่า ${S.OSR}% — ที่ว่างไม่พอ ลดเหลือไม่เกิน ${r.fOsr} ชั้น หรือลดขนาดฐาน`,`OSR ${r.osr.toFixed(1)}% is below ${S.OSR}% — not enough open space; go down to ${r.fOsr} floors or a smaller footprint`));
  if(!r.openOk)out.push(TL(`ที่ว่าง ${r.open.toFixed(0)} ตร.ม. น้อยกว่า ${r.need.toFixed(0)} ตร.ม. ที่ต้องมี (ข้อ 33)`,`Open space ${r.open.toFixed(0)} m² is below the required ${r.need.toFixed(0)} m² (art. 33)`));
@@ -952,7 +954,7 @@ function autoSides(){const a=S.PW/2,b=S.PL/2,cx=-S.offX,cz=-S.offZ,found=[];cons
 
 /* ---------- buildable envelope ---------- */
 function envelope(){const poly=isPoly(),area=poly?Math.abs(sarea(S.poly)):S.PW*S.PL,res=[],ftf=3.2,wide=sideKeys().some(k=>S.sideT[k]==='road'&&+S.sideW[k]>=10);
- for(let n=1;n<=60;n++){const H=n*ftf;if(H>=23&&!wide)break;let q,ew,el,ip=null;
+ for(let n=1;n<=60;n++){const H=n*ftf;if(H>=23&&!wide)break;if(S.zone==='นอก'){const rw=Math.max(0,...sideKeys().filter(k=>S.sideT[k]==='road').map(k=>+S.sideW[k]));if(rw>0&&H>2*rw)break}let q,ew,el,ip=null;
   if(poly){const I=insetPoly(H);q=I.q;ip=I.P;const ea=ip.length>2?Math.abs(sarea(ip)):0;if(ea<2)break;ew=el=Math.sqrt(ea*0.8)}
   else{q=Object.fromEntries(Object.keys(SIDES).map(k=>[k,sideReq(k,H)]));ew=S.PW-q.nx.req-q.px.req;el=S.PL-q.nz.req-q.pz.req;if(ew<=1||el<=1)break}let fp=Math.min(ew*el,area/(S.use==='home'?1.3:1.1));
   if(S.OSR)fp=Math.min(fp,area/(1+S.OSR/100*n));if(S.FAR)fp=Math.min(fp,S.FAR*area/n);res.push({n,H,fp,gfa:fp*n,ew,el,q,ip})}
@@ -1070,15 +1072,13 @@ function heroSVG(){return`<svg viewBox="0 0 520 380" aria-hidden="true"><defs><l
 const HICON={"site": "<path d=\"M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "plot": "<path d=\"M4 6l7-2 9 4-2 12-14-2z\"/>", "bld": "<path d=\"M4 21V9l8-5 8 5v12\"/><path d=\"M9 21v-6h6v6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "save": "<path d=\"M5 3h11l3 3v15H5z\"/><path d=\"M8 3v6h8V3M8 21v-7h8v7\"/>"};
 function renderLang(){$('#langBox').innerHTML=`<div class="langpick"><div><div style="width:min(260px,70vw);margin:0 auto">${heroSVG()}</div><h1>Site Analysis</h1><p>เลือกภาษา · Choose your language</p>
  <div class="lgrid"><button class="lbtn${S.lang==='th'?' on':''}" data-pick-lang="th"><b>ไทย</b><span>ภาษาไทย</span></button><button class="lbtn${S.lang==='en'?' on':''}" data-pick-lang="en"><b>English</b><span>อังกฤษ</span></button></div></div></div>`}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-pick-lang]');if(!b)return;if(S.lang!==b.dataset.pickLang)setLang(b.dataset.pickLang);location.hash='guide'});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pick-lang]');if(!b)return;if(S.lang!==b.dataset.pickLang)setLang(b.dataset.pickLang);location.hash='design'});
 function renderGuide(){const H=[
- ['#0e7c86','site',TL('ดูตัวอย่างก่อน','See the preview'),TL('เข้าสู่โหมดเต็มจอ เห็นอาคาร แดด เงา ลม และบริบท แล้วกด “เริ่มใช้งาน”','Full-screen preview of the building, sun, shadows, wind and context. Press “Start”')],
- ['#b7860b','plot',TL('ตรวจผังเมือง','Check zoning'),TL('เปิดแท็บที่ดิน ดูเขตสี FAR/OSR ระยะร่น และกฎหมาย ระบบอ่านเขตจากแผนที่ กทม. ให้ได้','Open the plot tab for colour zone, FAR/OSR, setbacks and rules. The zone can be read from the BMA map')],
- ['#2e7d4f','bld',TL('กำหนดอาคาร','Set the building'),TL('ใส่กว้าง ยาว สูง หลังคา และเลือกว่าหน้าอาคารหันไปทิศไหนในแท็บออกแบบ','Enter width, length, height and roof, then choose which way the front faces in the design tab')],
- ['#e0702f','sun',TL('ดูแดด ลม เงา','Read sun, wind & shade'),TL('กด ▶ หรือลากแถบเวลา · เปิดปิดชั้นข้อมูลด้านบน เช่น บริบท เงา ลม','Press ▶ or drag the time bar · toggle layers at the top, such as context, shadow and wind')]];
- $('#guideBox').innerHTML=`<div class="hero"><div><h2>${TL('วิธีใช้งานแบบสั้น','Quick guide')}</h2><p>${TL('4 ขั้นตอนเพื่อวิเคราะห์ไซต์ แดด ลม และกฎหมายอาคาร','Four steps to analyse sun, wind and building law')}</p><div class="gr" style="margin-top:16px"><button class="btn big pri" id="guideGo">${TL('ดูตัวอย่างและเริ่มใช้งาน →','Preview and start →')}</button><a class="btn big" href="#lang" style="text-decoration:none">${TL('← เปลี่ยนภาษา','← Change language')}</a></div></div>${heroSVG()}</div>
- <div class="howto">${H.map(([c,ic,h,t],i)=>`<div class="hstep" style="--acc:${c}"><div class="hi"><svg viewBox="0 0 24 24">${HICON[ic]}</svg></div><div><h3><small>${TL('ขั้นที่','Step')} ${i+1}</small>${h}</h3><p style="margin:4px 0 0;color:var(--mut);font-size:15px">${t}</p></div></div>`).join('')}</div>`;
- $('#guideGo').onclick=()=>{wantIntro=true;location.hash='design'}}
+ ['#2e7d4f','bld',TL('กรอกอาคาร','Enter the building'),TL('ไปแท็บ “อาคาร” ใส่กว้าง ยาว สูง และหลังคา','Go to the “Building” tab and enter width, length, height and roof')],
+ ['#b7860b','plot',TL('เช็คที่ดิน','Check the plot'),TL('ไปแท็บ “ที่ดิน” ดู FAR/OSR ระยะร่น และกฎหมาย','Go to the “Plot” tab to see FAR/OSR, setbacks and law')],
+ ['#e0702f','sun',TL('ดูแดดและลม','See sun and wind'),TL('ไปแท็บ “แดด” กด ▶ เพื่อดูดวงอาทิตย์เคลื่อน แล้วดูลมในแท็บ “ลม”','Go to the “Sun” tab and press ▶ to move the sun, then check wind in the “Wind” tab')]];
+ $('#guideBox').innerHTML=`<div class="hero"><div><h2>${TL('วิธีใช้งาน','How to use')}</h2><p>${TL('ทำตาม 3 ขั้นตอนนี้ได้เลย','Follow these 3 steps')}</p><div class="gr" style="margin-top:16px"><a class="btn big pri" href="#design" style="text-decoration:none">${TL('เริ่มใช้งาน →','Start →')}</a><a class="btn big" href="#lang" style="text-decoration:none">${TL('← เปลี่ยนภาษา','← Change language')}</a></div></div></div>
+ <div class="howto">${H.map(([c,ic,h,t],i)=>`<div class="hstep" style="--acc:${c}"><div class="hi"><svg viewBox="0 0 24 24">${HICON[ic]}</svg></div><div><h3><small>${TL('ขั้นที่','Step')} ${i+1}</small>${h}</h3><p style="margin:4px 0 0;color:var(--mut);font-size:15px">${t}</p></div></div>`).join('')}</div>`}
 function startIntro(){intro=true;document.body.classList.add('intro');if(!ctx.boxes.length&&!ctx.trees.length)sample();
  Object.assign(S,{showSun:true,showWind:true,windAnim:true,showShadow:true,showCtx:true,showHours:false,showSeasons:false,showHeat:false,showWall:false});
  buildSunPath();buildWind();vis();updateSun();playing=true;$('#play').textContent='❚❚';
@@ -1118,7 +1118,7 @@ function rebuild(){R=Math.min(70,Math.max(24,Math.max(S.W,S.L,S.H)*1.9));ground.
  ['compass','sun','wind'].forEach(k=>G[k].position.copy(BCW()));renderPlotLaw();save()}
 function vis(){G.ctx.visible=S.showCtx!==false;G.sun.visible=S.showSun;G.wind.visible=S.showWind;G.pan.visible=S.showSolar;G.wall.visible=S.showWall;G.plot.visible=S.showPlot;G.heat.visible=S.showHeat;sunL.castShadow=S.showShadow;
  $$('.tg[data-k]').forEach(b=>b.classList.toggle('on',!!S[b.dataset.k]))}
-function syncUI(){$$('[data-k]').forEach(el=>{if(el.tagName==='INPUT'||el.tagName==='SELECT')el.value=S[el.dataset.k]});
+function syncUI(){S.showHours=false;S.showSeasons=false;S.showImpact=false;S.showHeat=false;$$('[data-k]').forEach(el=>{if(el.tagName==='INPUT'||el.tagName==='SELECT')el.value=S[el.dataset.k]});
  $$('[data-seg]').forEach(g=>g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',S[g.dataset.seg]===b.dataset.v)));
  $('#rotV').textContent=S.rot+'° ('+d16(S.rot)+')';$$('[data-face]').forEach(b=>b.classList.toggle('on',+b.dataset.face===Math.round(S.rot)%360));$('#pitchV').textContent=S.pitch+'°';$('#pminV').textContent=S.panelMin+'%';$('#pitch').disabled=S.roof==='flat';if($('#zone').options.length)$('#zone').value=S.zone;vis();if(window.__wm)updWM()}
 $$('input[data-k],select[data-k]').forEach(el=>el.addEventListener(el.type==='range'?'input':'change',()=>{const k=el.dataset.k;S[k]=el.type==='date'||el.type==='text'?el.value:+el.value;

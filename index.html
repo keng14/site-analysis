@@ -155,6 +155,43 @@ a{color:var(--wind)}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 /* leaflet 1.9.4 core css (BSD-2) */
  .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; } .leaflet-container { overflow: hidden; } .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-user-drag: none; } .leaflet-tile::selection { background: transparent; } .leaflet-safari .leaflet-tile { image-rendering: -webkit-optimize-contrast; } .leaflet-safari .leaflet-tile-container { width: 1600px; height: 1600px; -webkit-transform-origin: 0 0; } .leaflet-marker-icon, .leaflet-marker-shadow { display: block; } .leaflet-container .leaflet-overlay-pane svg { max-width: none !important; max-height: none !important; } .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width: none !important; max-height: none !important; width: auto; padding: 0; } .leaflet-container img.leaflet-tile { mix-blend-mode: plus-lighter; } .leaflet-container.leaflet-touch-zoom { -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; } .leaflet-container.leaflet-touch-drag { -ms-touch-action: pinch-zoom; touch-action: none; touch-action: pinch-zoom; } .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { -ms-touch-action: none; touch-action: none; } .leaflet-container { -webkit-tap-highlight-color: transparent; } .leaflet-container a { -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4); } .leaflet-tile { filter: inherit; visibility: hidden; } .leaflet-tile-loaded { visibility: inherit; } .leaflet-zoom-box { width: 0; height: 0; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 800; } .leaflet-overlay-pane svg { -moz-user-select: none; } .leaflet-pane { z-index: 400; } .leaflet-tile-pane { z-index: 200; } .leaflet-overlay-pane { z-index: 400; } .leaflet-shadow-pane { z-index: 500; } .leaflet-marker-pane { z-index: 600; } .leaflet-tooltip-pane { z-index: 650; } .leaflet-popup-pane { z-index: 700; } .leaflet-map-pane canvas { z-index: 100; } .leaflet-map-pane svg { z-index: 200; } .leaflet-vml-shape { width: 1px; height: 1px; } .leaflet-control { position: relative; z-index: 800; pointer-events: visiblePainted; pointer-events: auto; } .leaflet-top, .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; } .leaflet-top { top: 0; } .leaflet-right { right: 0; } .leaflet-bottom { bottom: 0; } .leaflet-left { left: 0; } .leaflet-control { float: left; clear: both; } .leaflet-right .leaflet-control { float: right; } .leaflet-top .leaflet-control { margin-top: 10px; } .leaflet-bottom .leaflet-control { margin-bottom: 10px; } .leaflet-left .leaflet-control { margin-left: 10px; } .leaflet-right .leaflet-control { margin-right: 10px; } .leaflet-fade-anim .leaflet-popup { opacity: 0; -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; transition: opacity 0.2s linear; } .leaflet-fade-anim .leaflet-map-pane .leaflet-popup { opacity: 1; } .leaflet-zoom-animated { -webkit-transform-origin: 0 0; -ms-transform-origin: 0 0; transform-origin: 0 0; } svg.leaflet-zoom-animated { will-change: transform; } .leaflet-zoom-anim .leaflet-zoom-animated { -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1); -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1); transition: transform 0.25s cubic-bezier(0,0,0.25,1); } .leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile { -webkit-transition: none; -moz-transition: none; transition: none; } .leaflet-zoom-anim .leaflet-zoom-hide { visibility: hidden; } .leaflet-interactive { cursor: pointer; } .leaflet-grab { cursor: -webkit-grab; cursor: -moz-grab; cursor: grab; } .leaflet-crosshair, .leaflet-crosshair .leaflet-interactive { cursor: crosshair; } .leaflet-popup-pane, .leaflet-control { cursor: auto; } .leaflet-dragging .leaflet-grab, .leaflet-dragging .leaflet-grab .leaflet-interactive, .leaflet-dragging .leaflet-marker-draggable { cursor: move; cursor: -webkit-grabbing; cursor: -moz-grabbing; cursor: grabbing; } .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-image-layer, .leaflet-pane > svg path, .leaflet-tile-container { pointer-events: none; } .leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path { pointer-events: visiblePainted; pointer-events: auto; } .leaflet-container { background: #ddd; outline-offset: 1px; } .leaflet-container a { color: #0078A8; } .leaflet-zoom-box { border: 2px dotted #38f; background: rgba(255,255,255,0.5); } .leaflet-container { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; font-size: 12px; font-size: 0.75rem; line-height: 1.5; } .leaflet-bar { box-shadow: 0 1px 5px rgba(0,0,0,0.65); border-radius: 4px; } .leaflet-bar a { background-color: #fff; border-bottom: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; display: block; text-align: center; text-decoration: none; color: black; } .leaflet-bar a, .leaflet-control-layers-toggle { background-position: 50% 50%; background-repeat: no-repeat; display: block; } .leaflet-bar a:hover, .leaflet-bar a:focus { background-color: #f4f4f4; } .leaflet-bar a:first-child { border-top-left-radius: 4px; border-top-right-radius: 4px; } .leaflet-bar a:last-child { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-bottom: none; } .leaflet-bar a.leaflet-disabled { cursor: default; background-color: #f4f4f4; color: #bbb; } .leaflet-touch .leaflet-bar a { width: 30px; height: 30px; line-height: 30px; } .leaflet-touch .leaflet-bar a:first-child { border-top-left-radius: 2px; border-top-right-radius: 2px; } .leaflet-touch .leaflet-bar a:last-child { border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } .leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; } .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out { font-size: 22px; } .leaflet-control-layers { box-shadow: 0 1px 5px rgba(0,0,0,0.4); background: #fff; border-radius: 5px; } .leaflet-touch .leaflet-control-layers-toggle { width: 44px; height: 44px; } .leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle { display: none; } .leaflet-control-layers-expanded .leaflet-control-layers-list { display: block; position: relative; } .leaflet-control-layers-expanded { padding: 6px 10px 6px 6px; color: #333; background: #fff; } .leaflet-control-layers-scrollbar { overflow-y: scroll; overflow-x: hidden; padding-right: 5px; } .leaflet-control-layers-selector { margin-top: 2px; position: relative; top: 1px; } .leaflet-control-layers label { display: block; font-size: 13px; font-size: 1.08333em; } .leaflet-control-layers-separator { height: 0; border-top: 1px solid #ddd; margin: 5px -10px 5px -6px; } .leaflet-container .leaflet-control-attribution { background: #fff; background: rgba(255, 255, 255, 0.8); margin: 0; } .leaflet-control-attribution, .leaflet-control-scale-line { padding: 0 5px; color: #333; line-height: 1.4; } .leaflet-control-attribution a { text-decoration: none; } .leaflet-control-attribution a:hover, .leaflet-control-attribution a:focus { text-decoration: underline; } .leaflet-attribution-flag { display: inline !important; vertical-align: baseline !important; width: 1em; height: 0.6669em; } .leaflet-left .leaflet-control-scale { margin-left: 5px; } .leaflet-bottom .leaflet-control-scale { margin-bottom: 5px; } .leaflet-control-scale-line { border: 2px solid #777; border-top: none; line-height: 1.1; padding: 2px 5px 1px; white-space: nowrap; -moz-box-sizing: border-box; box-sizing: border-box; background: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px #fff; } .leaflet-control-scale-line:not(:first-child) { border-top: 2px solid #777; border-bottom: none; margin-top: -2px; } .leaflet-control-scale-line:not(:first-child):not(:last-child) { border-bottom: 2px solid #777; } .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { box-shadow: none; } .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { border: 2px solid rgba(0,0,0,0.2); background-clip: padding-box; } .leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; } .leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 12px; } .leaflet-popup-content { margin: 13px 24px 13px 20px; line-height: 1.3; font-size: 13px; font-size: 1.08333em; min-height: 1px; } .leaflet-popup-content p { margin: 17px 0; margin: 1.3em 0; } .leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-top: -1px; margin-left: -20px; overflow: hidden; pointer-events: none; } .leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; pointer-events: auto; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); } .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: white; color: #333; box-shadow: 0 3px 14px rgba(0,0,0,0.4); } .leaflet-container a.leaflet-popup-close-button { position: absolute; top: 0; right: 0; border: none; text-align: center; width: 24px; height: 24px; font: 16px/24px Tahoma, Verdana, sans-serif; color: #757575; text-decoration: none; background: transparent; } .leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus { color: #585858; } .leaflet-popup-scrolled { overflow: auto; } .leaflet-oldie .leaflet-popup-content-wrapper { -ms-zoom: 1; } .leaflet-oldie .leaflet-popup-tip { width: 24px; margin: 0 auto; -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)"; filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); } .leaflet-oldie .leaflet-control-zoom, .leaflet-oldie .leaflet-control-layers, .leaflet-oldie .leaflet-popup-content-wrapper, .leaflet-oldie .leaflet-popup-tip { border: 1px solid #999; } .leaflet-div-icon { background: #fff; border: 1px solid #666; } .leaflet-tooltip { position: absolute; padding: 6px; background-color: #fff; border: 1px solid #fff; border-radius: 3px; color: #222; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.4); } .leaflet-tooltip.leaflet-interactive { cursor: pointer; pointer-events: auto; } .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { position: absolute; pointer-events: none; border: 6px solid transparent; background: transparent; content: ""; } .leaflet-tooltip-bottom { margin-top: 6px; } .leaflet-tooltip-top { margin-top: -6px; } .leaflet-tooltip-bottom:before, .leaflet-tooltip-top:before { left: 50%; margin-left: -6px; } .leaflet-tooltip-top:before { bottom: 0; margin-bottom: -12px; border-top-color: #fff; } .leaflet-tooltip-bottom:before { top: 0; margin-top: -12px; margin-left: -6px; border-bottom-color: #fff; } .leaflet-tooltip-left { margin-left: -6px; } .leaflet-tooltip-right { margin-left: 6px; } .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { top: 50%; margin-top: -6px; } .leaflet-tooltip-left:before { right: 0; margin-right: -12px; border-left-color: #fff; } .leaflet-tooltip-right:before { left: 0; margin-left: -12px; border-right-color: #fff; } @media print { .leaflet-control { -webkit-print-color-adjust: exact; print-color-adjust: exact; } } 
+
+/* ===== Design-system refinement (UX audit pass) =====
+   Tokens on an 8px grid, calmer surfaces, clear focus rings, touch-safe targets,
+   tabular numerals for metrics. Markup and behaviour are unchanged. */
+:root{--s1:8px;--s2:16px;--s3:24px;--r-sm:10px;--r-md:14px;--r-lg:20px;
+  --surface:light-dark(#ffffff,#171c20);--surface-2:light-dark(#f7f8f9,#1d2429);
+  --glass:light-dark(rgba(255,255,255,.78),rgba(18,22,25,.72));
+  --elev:0 1px 2px rgba(15,23,42,.06),0 8px 24px -12px rgba(15,23,42,.18);
+  --focus:0 0 0 3px color-mix(in srgb,var(--wind) 45%,transparent)}
+header.top{background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border-bottom-color:transparent;box-shadow:0 1px 0 var(--line)}
+.wrap{padding-top:var(--s3);padding-bottom:var(--s3)}
+.card{border-radius:var(--r-md);box-shadow:var(--elev);background:var(--surface)}
+.btn,.tg,.tab,.seg button,.steps a,.lang button,.lbtn{transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .12s ease,box-shadow .18s ease}
+.btn:active,.tg:active,.seg button:active,.lbtn:active{transform:scale(.97)}
+.btn:hover:not(:disabled){border-color:color-mix(in srgb,var(--ink) 35%,var(--line))}
+:is(button,a,input,select,textarea,summary):focus-visible{outline:none;box-shadow:var(--focus)}
+input,select,textarea{font-variant-numeric:tabular-nums}
+.card,.msg,.note,.law,#sunCard,#windCard,#impCard,#heatCard,#zSide{font-variant-numeric:tabular-nums}
+.tab[aria-selected=true],.tab.on{box-shadow:inset 0 -2px 0 var(--sun)}
+.msg:empty{display:none}
+@media (pointer:coarse){
+  .btn,.tg,.tab,.seg button,.steps a,.lang button,select,input[type=text],input[type=number],input[type=date]{min-height:44px}
+  .tab{min-width:44px;justify-content:center}
+  .seg button,.tg{padding-inline:12px}
+}
+@media (max-width:640px){
+  header.top{padding-block:6px;gap:8px}
+  .brand{font-size:16px}
+  .wrap{padding-inline:max(16px,env(safe-area-inset-left))}
+  .card{padding:var(--s2)}
+  .steps a span{display:none}
+  .steps a.on span{display:inline}
+}
+#plotBanner{position:absolute;left:50%;top:70px;transform:translate(-50%,-8px);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:10;background:rgba(255,255,255,.96);color:#15202b;border-radius:14px;padding:10px 14px;max-width:min(560px,calc(100% - 24px));font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.18)}#plotBanner.show{opacity:1;transform:translate(-50%,0)}
+.notice{background:color-mix(in srgb,var(--wind) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--wind) 25%,transparent);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:var(--s2);font-size:14px;line-height:1.6}.notice:empty{display:none}
+.tour-head small{display:block;color:var(--mut);font-size:13px}.tour-head b{font-size:18px}.tour-dots{margin:8px 0}.tour-dots i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line);margin-right:6px}.tour-dots i.on{background:var(--sun)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
@@ -192,6 +229,7 @@ a{color:var(--wind)}
   </div>
   <div class="mchip" id="mChip" hidden></div>
   <div id="intro"></div>
+  <div id="plotBanner" role="status"></div>
   <button class="compass2" id="compass2" title="หันทิศเหนือขึ้น" aria-label="north up"><svg viewBox="-50 -50 100 100"><circle r="46" fill="rgba(255,255,255,.92)" stroke="#15202b" stroke-width="2"/><g id="cRose"><path d="M0-38 L9 0 L0 6Z" fill="#8f1d14"/><path d="M0-38 L-9 0 L0 6Z" fill="#d7372b"/><path d="M0 38 L9 0 L0-6Z" fill="#c9d1d6"/><path d="M0 38 L-9 0 L0-6Z" fill="#eef2f4"/><path d="M38 0 L0 5 L0-5Z" fill="#9aa3a8"/><path d="M-38 0 L0 5 L0-5Z" fill="#9aa3a8"/></g><text id="cN" x="0" y="-31" text-anchor="middle" font-size="13" font-weight="700" fill="#d7372b" font-family="IBM Plex Sans Thai,sans-serif">N</text></svg></button>
   <button class="law-pill" id="lawPill" hidden aria-live="polite"></button>
   <div class="hud">
@@ -239,7 +277,7 @@ a{color:var(--wind)}
    <label class="f" for="rot">หมุนอาคาร <b id="rotV"></b> (ตามเข็มจากทิศเหนือ · ด้านหน้า = ด้านที่หันไปทิศนี้)</label>
    <input type="range" id="rot" data-k="rot" data-u="b" min="0" max="359.5" step="0.5">
    <div class="gr"><button class="btn" data-rot="-15">−15°</button><button class="btn" data-rot="-1">−1°</button><input type="number" id="rotN" data-k="rot" data-u="b" min="0" max="359.5" step="0.5" style="max-width:110px"><button class="btn" data-rot="1">+1°</button><button class="btn" data-rot="15">+15°</button></div>
-   <label class="f">หน้าอาคารหันไปทาง</label><div class="gr faces" id="faceSeg"><button class="tg" data-face="0">N</button><button class="tg" data-face="45">NE</button><button class="tg" data-face="90">E</button><button class="tg" data-face="135">SE</button><button class="tg" data-face="180">S</button><button class="tg" data-face="225">SW</button><button class="tg" data-face="270">W</button><button class="tg" data-face="315">NW</button></div>
+   <label class="f">หน้าอาคารหันไปทาง</label><div class="gr faces" id="faceSeg"><button class="tg" data-face="0" title="เหนือ" aria-label="หันหน้าไปทางเหนือ">N</button><button class="tg" data-face="45" title="ตะวันออกเฉียงเหนือ" aria-label="หันหน้าไปทางตะวันออกเฉียงเหนือ">NE</button><button class="tg" data-face="90" title="ตะวันออก" aria-label="หันหน้าไปทางตะวันออก">E</button><button class="tg" data-face="135" title="ตะวันออกเฉียงใต้" aria-label="หันหน้าไปทางตะวันออกเฉียงใต้">SE</button><button class="tg" data-face="180" title="ใต้" aria-label="หันหน้าไปทางใต้">S</button><button class="tg" data-face="225" title="ตะวันตกเฉียงใต้" aria-label="หันหน้าไปทางตะวันตกเฉียงใต้">SW</button><button class="tg" data-face="270" title="ตะวันตก" aria-label="หันหน้าไปทางตะวันตก">W</button><button class="tg" data-face="315" title="ตะวันตกเฉียงเหนือ" aria-label="หันหน้าไปทางตะวันตกเฉียงเหนือ">NW</button></div>
    <div class="msg" id="placeMsg"></div>
    <div class="row"><div><label class="f" for="bxI">เลื่อนไปทางตะวันออก (ม.)</label><input type="number" id="bxI" data-k="bx" data-u="b" step="0.5"></div><div><label class="f" for="bnI">เลื่อนไปทางเหนือ (ม.)</label><input type="number" id="bnI" data-k="bn" data-u="b" step="0.5"></div></div>
    <label class="f">หลังคา</label>
@@ -248,9 +286,17 @@ a{color:var(--wind)}
    <input type="range" id="pitch" data-k="pitch" data-u="b" min="5" max="45" step="1">
    <label class="f" for="ovh">ชายคายื่น (ม.)</label>
    <input type="number" id="ovh" data-k="ovh" data-u="b" min="0" max="3" step="0.1">
-   <p class="note">สันหลังคาจั่ววิ่งตามแนวยาว L · หลังคาเพิงสูงด้านซ้าย (−W) ของอาคาร หมุนอาคารเพื่อเปลี่ยนทิศ</p>
+   <label class="f">ปีกอาคาร (รูป L)</label><div class="seg" data-seg="wingOn"><button data-v="no">ไม่มี</button><button data-v="yes">เพิ่มปีก</button></div>
+   <div class="row"><div><label class="f" for="wW">ปีก กว้าง (ม.)</label><input type="number" id="wW" data-k="wW" data-u="b" min="1" step="0.5"></div><div><label class="f" for="wL">ปีก ยาว (ม.)</label><input type="number" id="wL" data-k="wL" data-u="b" min="1" step="0.5"></div></div>
+   <div class="row"><div><label class="f" for="wX">ศูนย์ปีก ห่างแนว W (ม.)</label><input type="number" id="wX" data-k="wX" data-u="b" step="0.5"></div><div><label class="f" for="wZ">ศูนย์ปีก ห่างแนว L (ม.)</label><input type="number" id="wZ" data-k="wZ" data-u="b" step="0.5"></div></div>
+   <p class="note">ปีกใช้หลังคา Flat slab และ H เดียวกับตัวอาคาร · ใช้ได้กับแปลงสี่เหลี่ยม</p>
+   <label class="f">ระเบียง/กันสาด</label><div class="seg" data-seg="cnpT"><button data-v="none">ไม่มี</button><button data-v="balc">ระเบียง</button><button data-v="canopy">กันสาด</button></div>
+   <label class="f">ติดด้าน</label><div class="seg" data-seg="cnpF"><button data-v="pz">หน้า</button><button data-v="nz">หลัง</button><button data-v="nx">ซ้าย</button><button data-v="px">ขวา</button></div>
+   <div class="row"><div><label class="f" for="cnpD">ยื่นออก (ม.)</label><input type="number" id="cnpD" data-k="cnpD" data-u="b" min="0" max="6" step="0.1"></div><div><label class="f" for="cnpY">สูงใต้ท้องพื้น (ม.)</label><input type="number" id="cnpY" data-k="cnpY" data-u="b" min="1.5" max="30" step="0.1"></div></div>
+   <p class="note">ระเบียงและกันสาดจะบังแดดและนับเป็นส่วนยื่นในระยะร่น · สันหลังคาจั่ววิ่งตามแนวยาว L · หลังคาเพิงสูงด้านซ้าย (−W) ของอาคาร หมุนอาคารเพื่อเปลี่ยนทิศ</p>
   </div>
   <div class="pane" id="p-plot">
+   <div class="notice" id="plotNotice"></div>
    <div class="rstbar"><button class="btn" data-reset="plot">↺ คืนค่าเริ่มต้น</button></div>
    <h2>ขอบเขตที่ดินและระยะร่น</h2>
    <p class="note">แปลงที่ดินวางขนานกับอาคาร (หมุนตามอาคาร) ตรวจเบื้องต้นตามกฎกระทรวงฉบับที่ 55 (พ.ศ. 2543) ข้อ 33, 41, 50</p>
@@ -274,6 +320,7 @@ a{color:var(--wind)}
    <div class="row"><div><label class="f" for="far">FAR (เท่า)</label><input type="number" id="far" data-k="FAR" data-u="plot" min="0" step="0.5"></div><div><label class="f" for="osr">OSR (%)</label><input type="number" id="osr" data-k="OSR" data-u="plot" min="0" step="0.5"></div><div><label class="f" for="flr">จำนวนชั้น</label><input type="number" id="flr" data-k="floors" data-u="plot" min="1" step="1"></div></div>
    <p class="note">ตรวจรหัสสีของแปลงจริงได้จากแอป “Check ผังเมือง กทม.” หรือสำนักการวางผังและพัฒนาเมือง · นอกกรุงเทพฯ ใช้ผังเมืองรวมจังหวัด/เมือง ให้เลือก “กำหนดเอง” แล้วกรอกค่าตามข้อกำหนดของพื้นที่</p>
    <label class="f">ประเภทอาคาร</label>
+   <div class="row"><div><label class="f" for="park">ที่จอดรถ (คัน)</label><input type="number" id="park" data-k="park" data-u="plot" min="0" step="1"></div><div><label class="f">พื้นที่จอด</label><p class="note" style="margin:6px 0">ประมาณ 25 ตร.ม. ต่อคัน หักออกจากที่ว่าง</p></div></div>
    <div class="seg" data-seg="use"><button data-v="home">อยู่อาศัย (ที่ว่าง 30%)</button><button data-v="other">พาณิชย์/อื่นๆ (10%)</button></div>
    <div id="plotCard"></div>
    <p class="note">ความสูงวัดถึงยอดผนัง (ชายคา) · เป็นการตรวจเบื้องต้นเท่านั้น ต้องตรวจข้อบัญญัติท้องถิ่น (เช่น ข้อบัญญัติ กทม.) ผังเมืองรวม และกฎหมายเฉพาะพื้นที่เพิ่มเติม ก่อนยื่นขออนุญาตควรให้สถาปนิก/วิศวกรผู้มีใบอนุญาตตรวจสอบ</p>
@@ -366,8 +413,8 @@ const ABBR=[["ตร.ม.", "m²"], ["ตร.ว.", "sq.wa"], ["ม./วิ", "m
 
 const today=new Date(Date.now()+7*36e5).toISOString().slice(0,10);
 const S={lat:13.732468,lng:100.5799,tz:7,W:10,L:16,H:6,rot:90,roof:'gable',pitch:25,ovh:0.8,date:today,min:600,
- showSun:true,showWind:true,showShadow:true,showCtx:true,rW:8,rH:12,showSolar:true,showHours:true,showSeasons:true,panelMin:85,ctxR:150,
- hideExisting:true,bx:0,bn:0,poly:null,polyBak:null,pid:'',showImpact:false,showHeat:false,showPlot:true,pname:'',PW:16,PL:24,offX:0,offZ:0,sideT:{nz:'road',px:'nb',pz:'nb',nx:'nb'},sideW:{nz:6,px:6,pz:6,nx:6},lang:'th',flow:'',zone:'ย.3',FAR:2.5,OSR:12.5,floors:2,use:'home',solid:{px:false,nx:false,pz:false,nz:false},wmonth:0,showWall:true,winH:1.5,windAnim:!matchMedia('(prefers-reduced-motion: reduce)').matches,season:'all',mode:'none',cW:10,cL:12,cH:9,cam:'3d'};
+ showSun:true,showWind:true,showShadow:false,showCtx:false,rW:8,rH:12,showSolar:false,showHours:true,showSeasons:true,panelMin:85,ctxR:150,
+ hideExisting:true,bx:0,bn:0,poly:null,polyBak:null,pid:'',showImpact:false,showHeat:false,showPlot:false,pname:'',PW:16,PL:24,offX:0,offZ:0,sideT:{nz:'road',px:'nb',pz:'nb',nx:'nb'},sideW:{nz:6,px:6,pz:6,nx:6},lang:'th',flow:'',zone:'ย.3',FAR:2.5,OSR:12.5,floors:2,use:'home',park:0,cnpT:'none',cnpF:'pz',cnpD:1.5,cnpY:3.2,wingOn:'no',wW:6,wL:8,wX:8,wZ:-4,solid:{px:false,nx:false,pz:false,nz:false},wmonth:0,showWall:false,winH:1.5,windAnim:false,season:'all',mode:'none',cW:10,cL:12,cH:9,cam:'3d'};
 let ctx={boxes:[],trees:[],src:''};
 const DEF=JSON.parse(JSON.stringify(S));
 try{Object.assign(S,JSON.parse(localStorage.getItem('sa-state')||'{}'));const c=JSON.parse(localStorage.getItem('sa-ctx')||'null');if(c)ctx=c}catch(e){}
@@ -407,7 +454,7 @@ scene.add(new THREE.HemisphereLight(0xe3f0ff,0xc9bba4,0.62));
 const skyProbe=document.createElement('i');skyProbe.style.cssText='position:absolute;width:0;height:0;color:var(--sky2)';document.body.appendChild(skyProbe);
 function setFog(){const c=getComputedStyle(skyProbe).color;scene.fog=S.cam==='2d'?null:new THREE.Fog(new THREE.Color(c),Math.max(180,R*5),Math.max(520,R*14))}
 const amb=new THREE.AmbientLight(0xffffff,0.15);scene.add(amb);
-const sunL=new THREE.DirectionalLight(0xfff3e0,0.9);sunL.castShadow=true;sunL.shadow.mapSize.set(2048,2048);sunL.shadow.bias=-0.0004;sunL.shadow.normalBias=0.04;
+const sunL=new THREE.DirectionalLight(0xfff3e0,0.9);sunL.castShadow=true;const SMAP=innerWidth>900?4096:2048;sunL.shadow.mapSize.set(SMAP,SMAP);sunL.shadow.bias=-0.0004;sunL.shadow.normalBias=0.04;sunL.shadow.radius=3;
 scene.add(sunL,sunL.target);
 const ground=new THREE.Mesh(new THREE.CircleGeometry(1,96).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0xeeece6,roughness:1}));
 ground.receiveShadow=true;scene.add(ground);
@@ -475,12 +522,14 @@ function annual(n,P=null,occ=null,coarse=false){const cb=n.y;let sum=0;for(const
 function occluders(){const fp=mainFoot(),boxes=[],trees=[];
  ctx.boxes.forEach(b=>{if(S.hideExisting&&(pip(+S.bx||0,+S.bn||0,b.p)||fp.some(q=>pip(q[0],q[1],b.p))))return;const p=b.p.map(([e,n])=>[e,-n]),xs=p.map(q=>q[0]),zs=p.map(q=>q[1]);
   const bb={p,h:b.h,x0:Math.min(...xs),x1:Math.max(...xs),z0:Math.min(...zs),z1:Math.max(...zs)};if(Math.hypot((bb.x0+bb.x1)/2-(+S.bx||0),(bb.z0+bb.z1)/2+(+S.bn||0))<130)boxes.push(bb)});
- ctx.trees.forEach(t=>{if(Math.hypot(t.e-(+S.bx||0),t.n-(+S.bn||0))<60)trees.push({x:t.e,y:t.h*0.62,z:-t.n,r:t.r})});return{boxes,trees}}
+ ctx.trees.forEach(t=>{if(Math.hypot(t.e-(+S.bx||0),t.n-(+S.bn||0))<60)trees.push({x:t.e,y:t.h*0.62,z:-t.n,r:t.r})});
+ const cb=cnpBox();if(cb){const pts=[[cb.x0,cb.z0],[cb.x1,cb.z0],[cb.x1,cb.z1],[cb.x0,cb.z1]].map(([x,z])=>{const v=toW(x,0,z);return[v.x,v.z]});const xs=pts.map(q=>q[0]),zs=pts.map(q=>q[1]);boxes.push({p:pts,h:cb.y1,y0:cb.y0,x0:Math.min(...xs),x1:Math.max(...xs),z0:Math.min(...zs),z1:Math.max(...zs)})}
+ return{boxes,trees}}
 function segX(ax,az,bx,bz,cx,cz,dx,dz){const d=(bx-ax)*(dz-cz)-(bz-az)*(dx-cx);if(!d)return false;const t=((cx-ax)*(dz-cz)-(cz-az)*(dx-cx))/d,u=((cx-ax)*(bz-az)-(cz-az)*(bx-ax))/d;return t>=0&&t<=1&&u>=0&&u<=1}
 function trans(P,e,o){let tr=1;
  for(const t of o.trees){const dx=t.x-P.x,dy=t.y-P.y,dz=t.z-P.z,b=dx*e.x+dy*e.y+dz*e.z;if(b<=0)continue;if(dx*dx+dy*dy+dz*dz-b*b<t.r*t.r*0.8){tr*=0.25;if(tr<0.07)return tr}}
  const hx=e.x/e.y,hz=e.z/e.y;
- for(const b of o.boxes){const tm=b.h-P.y;if(tm<=0)continue;const ex=P.x+hx*tm,ez=P.z+hz*tm;
+ for(const b of o.boxes){let tm;if(b.y0!=null){if(P.y>=b.y0)continue;tm=b.y0-P.y}else{tm=b.h-P.y;if(tm<=0)continue}const ex=P.x+hx*tm,ez=P.z+hz*tm;
   if(Math.max(P.x,ex)<b.x0||Math.min(P.x,ex)>b.x1||Math.max(P.z,ez)<b.z0||Math.min(P.z,ez)>b.z1)continue;
   if(pip(ex,ez,b.p))return 0;const p=b.p;for(let i=0,j=p.length-1;i<p.length;j=i++)if(segX(P.x,P.z,ex,ez,p[j][0],p[j][1],p[i][0],p[i][1]))return 0}
  return tr}
@@ -546,16 +595,20 @@ function sideReq(k,H){const t=(S.sideT||{})[k]||'nb',w=+((S.sideW||{})[k])||0,bi
  if(t==='water')return{t,w,req:w<10?3:6,why:`แหล่งน้ำกว้าง ${w} ม. (ข้อ 42)`};
  if(t==='lake')return{t,w,req:12,why:'บึง ทะเลสาบ ทะเล (ข้อ 42)'};
  return{t,w,req:S.solid[k]?0.5:op,why:S.solid[k]?'ผนังทึบ (ข้อ 50)':`มีช่องเปิด อาคารสูง${H<=9?'ไม่เกิน':'เกิน'} 9 ม. (ข้อ 50)`}}
+const wingRect=()=>{if(S.wingOn!=='yes'||isPoly())return null;const w=+S.wW||0,l=+S.wL||0;if(w<=0||l<=0)return null;const x=+S.wX||0,z=+S.wZ||0;return{x0:x-w/2,x1:x+w/2,z0:z-l/2,z1:z+l/2,w,l}};
+function footBBox(){const W=S.W,L=S.L,r=wingRect();let X0=-W/2,X1=W/2,Z0=-L/2,Z1=L/2;if(r){X0=Math.min(X0,r.x0);X1=Math.max(X1,r.x1);Z0=Math.min(Z0,r.z0);Z1=Math.max(Z1,r.z1)}return{X0,X1,Z0,Z1}}
+function footArea(){const W=S.W,L=S.L,r=wingRect();let a=W*L;if(r){const ox=Math.max(0,Math.min(W/2,r.x1)-Math.max(-W/2,r.x0)),oz=Math.max(0,Math.min(L/2,r.z1)-Math.max(-L/2,r.z0));a+=r.w*r.l-ox*oz}return a}
 function setback(){const{W,L,H,PW:pw,PL:pl,offX:ox,offZ:oz}=S;let d,area;
  if(isPoly()){const F=mainFoot();d={};area=Math.abs(sarea(S.poly));
   sideKeys().forEach(k=>{const E=edgeOf(k);let m=Math.min(...F.map(q=>segD(q[0],q[1],E.a[0],E.a[1],E.b[0],E.b[1])));
    for(let i=0;i<4;i++){const p1=F[i],p2=F[(i+1)%4];m=Math.min(m,segD(E.a[0],E.a[1],p1[0],p1[1],p2[0],p2[1]),segD(E.b[0],E.b[1],p1[0],p1[1],p2[0],p2[1]))}
    d[k]=F.some(q=>(q[0]-E.a[0])*E.ne+(q[1]-E.a[1])*E.nn>0)?-m:m})}
- else{d={px:pw/2-ox-W/2,nx:pw/2+ox-W/2,pz:pl/2-oz-L/2,nz:pl/2+oz-L/2};area=pw*pl}
+ else{const bb=footBBox();d={px:pw/2-ox-bb.X1,nx:pw/2+ox+bb.X0,pz:pl/2-oz-bb.Z1,nz:pl/2+oz+bb.Z0};area=pw*pl}
+ {const cb=isPoly()?null:cnpBox();if(cb)d[cb.f]-=cb.d}
  const sides=sideKeys().map(k=>{const q=sideReq(k,H);return{k,b:sideB(k),d:d[k],req:q.req,t:q.t,w:q.w,ok:d[k]>=q.req-1e-6,eave:d[k]-S.ovh>=-1e-6,road:q.t==='road',why:q.why}});
- const cover=(W+2*S.ovh)*(L+2*S.ovh),open=area-cover,need=(S.use==='home'?0.3:0.1)*W*L;
- const fl=Math.max(1,Math.round(S.floors)),gfa=W*L*fl,far=gfa/area,farOk=!S.FAR||far<=S.FAR+1e-9,osr=open/gfa*100,osrOk=!S.OSR||osr>=S.OSR-1e-9;
- const fFar=S.FAR?Math.floor(S.FAR*area/(W*L)+1e-9):Infinity,fOsr=S.OSR?Math.floor(open/(S.OSR/100*W*L)+1e-9):Infinity,maxF=Math.min(fFar,fOsr);
+ const FP=footArea(),wr=wingRect(),cover=wr?FP+S.ovh*2*(footBBox().X1-footBBox().X0+footBBox().Z1-footBBox().Z0):(W+2*S.ovh)*(L+2*S.ovh),open=area-cover-Math.max(0,+S.park||0)*25,need=(S.use==='home'?0.3:0.1)*FP;
+ const fl=Math.max(1,Math.round(S.floors)),gfa=FP*fl,far=gfa/area,farOk=!S.FAR||far<=S.FAR+1e-9,osr=open/gfa*100,osrOk=!S.OSR||osr>=S.OSR-1e-9;
+ const fFar=S.FAR?Math.floor(S.FAR*area/FP+1e-9):Infinity,fOsr=S.OSR?Math.floor(open/(S.OSR/100*FP)+1e-9):Infinity,maxF=Math.min(fFar,fOsr);
  const wide=sides.some(x=>x.t==='road'&&x.w>=10);
  return{sides,area,cover,open,need,openOk:open>=need,hi:H>=23,wide,fl,gfa,far,farOk,osr,osrOk,maxF,fFar,fOsr,ftf:H/fl,
   all:sides.every(x=>x.ok&&x.eave)&&open>=need&&farOk&&osrOk&&!(H>=23&&!wide)}}
@@ -572,7 +625,7 @@ function lawIssues(r){const out=[],f1=v=>v.toFixed(1),nm=k=>`${k[0]==='e'?TL('�
  if(r.hi&&!r.wide)out.push(TL(`สูง ${S.H} ม. เป็นอาคารสูง แต่ไม่มีถนนกว้าง 10 ม. ติดแปลง — ลดให้ต่ำกว่า 23 ม.`,`${S.H} m makes this a high-rise, but no 10 m road adjoins the plot — keep it under 23 m`));
  if(r.ftf<2.6)out.push(TL(`ความสูงต่อชั้นเฉลี่ย ${r.ftf.toFixed(2)} ม. ต่ำเกินจริง — ตรวจจำนวนชั้นกับความสูง`,`Average floor height ${r.ftf.toFixed(2)} m is unrealistic — check floors vs height`));
  return out}
-function updateAlerts(r){$('#flHint')&&($('#flHint').textContent=`≈ ${r.fl} ${TL('ชั้น','fl')}`);const iss=lawIssues(r),pill=$('#lawPill'),n=iss.length;
+function updateAlerts(r){$('#flHint')&&($('#flHint').textContent=`≈ ${r.fl} ${TL('ชั้น','fl')}`);if(!S.showPlot){const pl=$('#lawPill');pl.hidden=true;pl.innerHTML='';$('#bldAlert').innerHTML='';if(wallMat)wallMat.color.set(0xfbfbf9);return}const iss=lawIssues(r),pill=$('#lawPill'),n=iss.length;
  if(wallMat)wallMat.color.set(n?0xffd9d2:0xfbfbf9);
  pill.hidden=false;pill.classList.toggle('ok',!n);
  pill.innerHTML=n?`⚠ ${TL(`ผิดระยะร่น/ผังเมือง ${n} ข้อ`,`${n} setback/zoning issue${n>1?'s':''}`)} ${lawOpen?'▴':'▾'}${lawOpen?`<ul>${iss.map(t=>`<li>${t}</li>`).join('')}</ul>`:''}`:`✓ ${TL('ผ่านระยะร่นและผังเมือง (เบื้องต้น)','Setbacks & zoning OK (preliminary)')}`;
@@ -707,6 +760,10 @@ function computeHeat(){computeImpact();G.heat.visible=S.showHeat;if(!S.showHeat)
 
 /* ---------- building ---------- */
 let faces=[];
+function cnpBox(){const d=Math.max(0,+S.cnpD||0);if(!d||!S.cnpT||S.cnpT==='none')return null;const W=S.W,L=S.L,y0=Math.max(1.5,+S.cnpY||3.2),f=S.cnpF||'pz',balc=S.cnpT==='balc';
+ let x0=-W/2,x1=W/2,z0=-L/2,z1=L/2;
+ if(f==='pz'){z0=L/2;z1=L/2+d}else if(f==='nz'){z1=-L/2;z0=-L/2-d}else if(f==='px'){x0=W/2;x1=W/2+d}else{x1=-W/2;x0=-W/2-d}
+ return{x0,x1,z0,z1,y0,th:balc?0.18:0.1,y1:y0+(balc?0.18:0.1),f,balc,d}}
 function buildBuilding(){clear(G.bld);clear(G.roof);clear(G.pan);
  const{W,L,H,ovh:o}=S,t=Math.tan(S.pitch*D2R);G.bld.rotation.y=-S.rot*D2R;G.bld.position.copy(BCW());
  const wallM=wallMat=new THREE.MeshStandardMaterial({color:0xfbfbf9,roughness:.85}),edgeM=lineM(0x15202b,0.75);
@@ -716,6 +773,14 @@ function buildBuilding(){clear(G.bld);clear(G.roof);clear(G.pan);
   geo=new THREE.ExtrudeGeometry(sh,{depth:L,bevelEnabled:false});geo.translate(0,0,-L/2)}
  else{geo=new THREE.BoxGeometry(W,H,L);geo.translate(0,H/2,0)}
  const wm=new THREE.Mesh(geo,wallM);wm.castShadow=wm.receiveShadow=true;G.bld.add(wm,new THREE.LineSegments(new THREE.EdgesGeometry(geo,20),edgeM));
+ const cb=cnpBox();if(cb){const bw=cb.x1-cb.x0,bd=cb.z1-cb.z0,mx=(cb.x0+cb.x1)/2,mz=(cb.z0+cb.z1)/2;
+  const sl=new THREE.BoxGeometry(bw,cb.th,bd);sl.translate(mx,cb.y0+cb.th/2,mz);const sm=new THREE.Mesh(sl,new THREE.MeshStandardMaterial({color:cb.balc?0xd9d9d6:0xc9b99a,roughness:.8}));sm.castShadow=sm.receiveShadow=true;G.bld.add(sm,new THREE.LineSegments(new THREE.EdgesGeometry(sl),edgeM));
+  if(cb.balc){const rg=cb.f[0]==='p'&&cb.f[1]==='z'||cb.f==='nz'?null:null;const zf=cb.f==='pz'||cb.f==='nz';
+   const rl=zf?new THREE.BoxGeometry(bw,1,0.05).translate(mx,cb.y1+0.5,cb.f==='pz'?cb.z1:cb.z0):new THREE.BoxGeometry(0.05,1,bd).translate(cb.f==='px'?cb.x1:cb.x0,cb.y1+0.5,mz);
+   G.bld.add(new THREE.Mesh(rl,new THREE.MeshStandardMaterial({color:0x8a9aa6,roughness:.6})),new THREE.LineSegments(new THREE.EdgesGeometry(rl),edgeM))}}
+ const wr=wingRect();if(wr){const ww=wr.x1-wr.x0,wl=wr.z1-wr.z0,wx=(wr.x0+wr.x1)/2,wz=(wr.z0+wr.z1)/2;
+  const wg=new THREE.BoxGeometry(ww,H,wl);wg.translate(wx,H/2,wz);G.bld.add(new THREE.Mesh(wg,wallM),new THREE.LineSegments(new THREE.EdgesGeometry(wg),edgeM));
+  const ws=new THREE.BoxGeometry(ww+2*o,0.25,wl+2*o);ws.translate(wx,H+0.125,wz);const wsm=new THREE.Mesh(ws,new THREE.MeshStandardMaterial({color:0xd9d9d6}));wsm.castShadow=wsm.receiveShadow=true;G.bld.add(wsm,new THREE.LineSegments(new THREE.EdgesGeometry(ws),edgeM))}
  const a=W/2+o,b=L/2+o,ye=H-o*t,V=(x,y,z)=>toW(x,y,z);let F=[];
  if(S.roof==='flat'){const sl=new THREE.BoxGeometry(W+2*o,0.25,L+2*o);sl.translate(0,H+0.125,0);const m=new THREE.Mesh(sl,new THREE.MeshStandardMaterial({color:0xd9d9d6}));m.castShadow=m.receiveShadow=true;G.bld.add(m,new THREE.LineSegments(new THREE.EdgesGeometry(sl),edgeM));
   F=[{name:'พื้นดาดฟ้า',pts:[V(-a,H+0.26,-b),V(a,H+0.26,-b),V(a,H+0.26,b),V(-a,H+0.26,b)]}]}
@@ -1072,27 +1137,42 @@ function heroSVG(){return`<svg viewBox="0 0 520 380" aria-hidden="true"><defs><l
 const HICON={"site": "<path d=\"M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "plot": "<path d=\"M4 6l7-2 9 4-2 12-14-2z\"/>", "bld": "<path d=\"M4 21V9l8-5 8 5v12\"/><path d=\"M9 21v-6h6v6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "save": "<path d=\"M5 3h11l3 3v15H5z\"/><path d=\"M8 3v6h8V3M8 21v-7h8v7\"/>"};
 function renderLang(){$('#langBox').innerHTML=`<div class="langpick"><div><div style="width:min(260px,70vw);margin:0 auto">${heroSVG()}</div><h1>Site Analysis</h1><p>เลือกภาษา · Choose your language</p>
  <div class="lgrid"><button class="lbtn${S.lang==='th'?' on':''}" data-pick-lang="th"><b>ไทย</b><span>ภาษาไทย</span></button><button class="lbtn${S.lang==='en'?' on':''}" data-pick-lang="en"><b>English</b><span>อังกฤษ</span></button></div></div></div>`}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-pick-lang]');if(!b)return;if(S.lang!==b.dataset.pickLang)setLang(b.dataset.pickLang);location.hash='design'});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pick-lang]');if(!b)return;if(S.lang!==b.dataset.pickLang)setLang(b.dataset.pickLang);wantIntro=true;location.hash='design'});
 function renderGuide(){const H=[
  ['#2e7d4f','bld',TL('กรอกอาคาร','Enter the building'),TL('ไปแท็บ “อาคาร” ใส่กว้าง ยาว สูง และหลังคา','Go to the “Building” tab and enter width, length, height and roof')],
- ['#b7860b','plot',TL('เช็คที่ดิน','Check the plot'),TL('ไปแท็บ “ที่ดิน” ดู FAR/OSR ระยะร่น และกฎหมาย','Go to the “Plot” tab to see FAR/OSR, setbacks and law')],
+ ['#b7860b','plot',TL('เช็คที่ดิน','Check the plot'),TL('เปิดปุ่ม “ที่ดิน” แล้วไปแท็บ “ที่ดิน” ดู FAR/OSR ระยะร่น และกฎหมาย (ถ้าปิดที่ดินจะไม่คำนวณ)','Turn on “Plot”, then open the “Plot” tab for FAR/OSR, setbacks and law (nothing is calculated while Plot is off)')],
  ['#e0702f','sun',TL('ดูแดดและลม','See sun and wind'),TL('ไปแท็บ “แดด” กด ▶ เพื่อดูดวงอาทิตย์เคลื่อน แล้วดูลมในแท็บ “ลม”','Go to the “Sun” tab and press ▶ to move the sun, then check wind in the “Wind” tab')]];
- $('#guideBox').innerHTML=`<div class="hero"><div><h2>${TL('วิธีใช้งาน','How to use')}</h2><p>${TL('ทำตาม 3 ขั้นตอนนี้ได้เลย','Follow these 3 steps')}</p><div class="gr" style="margin-top:16px"><a class="btn big pri" href="#design" style="text-decoration:none">${TL('เริ่มใช้งาน →','Start →')}</a><a class="btn big" href="#lang" style="text-decoration:none">${TL('← เปลี่ยนภาษา','← Change language')}</a></div></div></div>
+ $('#guideBox').innerHTML=`<div class="hero"><div><h2>${TL('วิธีใช้งาน','How to use')}</h2><p>${TL('ทำตาม 3 ขั้นตอนนี้ได้เลย','Follow these 3 steps')}</p><div class="gr" style="margin-top:16px"><button class="btn big" id="tourAgain">${TL('ดูทัวร์อีกครั้ง','Replay tour')}</button><a class="btn big pri" href="#design" style="text-decoration:none">${TL('เริ่มใช้งาน →','Start →')}</a><a class="btn big" href="#lang" style="text-decoration:none">${TL('← เปลี่ยนภาษา','← Change language')}</a></div></div></div>
  <div class="howto">${H.map(([c,ic,h,t],i)=>`<div class="hstep" style="--acc:${c}"><div class="hi"><svg viewBox="0 0 24 24">${HICON[ic]}</svg></div><div><h3><small>${TL('ขั้นที่','Step')} ${i+1}</small>${h}</h3><p style="margin:4px 0 0;color:var(--mut);font-size:15px">${t}</p></div></div>`).join('')}</div>`}
-function startIntro(){intro=true;document.body.classList.add('intro');if(!ctx.boxes.length&&!ctx.trees.length)sample();
- Object.assign(S,{showSun:true,showWind:true,windAnim:true,showShadow:true,showCtx:true,showHours:false,showSeasons:false,showHeat:false,showWall:false});
- buildSunPath();buildWind();vis();updateSun();playing=true;$('#play').textContent='❚❚';
- $('#intro').innerHTML=`<b>${TL('ดูตัวอย่างการวิเคราะห์','Quick preview')}</b><p>${TL('อาคาร เส้นทางดวงอาทิตย์ เงา ลม และลมไหล · ปุ่ม “บริบท” เปิดปิดอาคารรอบข้าง','Building, sun path, shadows, wind and wind flow · the “Context” button shows or hides neighbouring buildings')}</p><div class="gr"><button class="btn pri" id="introGo">${TL('เริ่มใช้งาน →','Start →')}</button></div>`;
- $('#introGo').onclick=()=>{endIntro();setFocus(false)};
- setFocus(true)}
+const NORMAL={showSun:true,showWind:true,windAnim:false,showShadow:false,showCtx:false,showSolar:false,showWall:false,showPlot:false,showHeat:false,showImpact:false};
+const TOUR=[
+ {t:()=>TL('อาคาร','Building'),x:()=>TL('นี่คืออาคารที่ออกแบบ ปรับกว้าง ยาว สูง และหลังคาได้ในแท็บ “อาคาร”','This is the building. Adjust width, length, height and roof in the “Building” tab'),L:{showSun:false,showWind:false}},
+ {t:()=>TL('แดด','Sun'),x:()=>TL('เส้นทางดวงอาทิตย์และแดดที่ตกกระทบอาคาร กด ▶ เพื่อดูดวงอาทิตย์เคลื่อน','The sun path and sunlight on the building. Press ▶ to move the sun'),L:{showSun:true,showWind:false}},
+ {t:()=>TL('ลม','Wind'),x:()=>TL('ทิศและความเร็วลมรอบอาคาร ปรับเวลาและวันได้ในแถบควบคุม','Wind direction and speed around the building. Change time and date in the control bar'),L:{showSun:true,showWind:true}},
+ {t:()=>TL('ที่ดิน','Plot'),x:()=>TL('ขอบเขตที่ดินและระยะร่น ระบบจะคำนวณ FAR/OSR ตามผังเมืองรวม (ผังสี) ร่วมกับกฎหมาย พ.ร.บ.ควบคุมอาคาร และระยะร่นต่างๆ ให้อัตโนมัติ เฉพาะตอนเปิดปุ่ม “ที่ดิน” อยู่ ถ้าปิดจะไม่คำนวณกฎหมายและระยะร่น','Plot boundary and setbacks. FAR/OSR are calculated from the comprehensive zoning map (colour plan) together with the Building Control Act and setback rules, automatically. This only runs while the “Plot” layer is on; if it is off, no law or setback checks are calculated'),L:{showSun:true,showWind:true,showPlot:true}},
+ {t:()=>TL('ลมไหล','Wind flow'),x:()=>TL('ภาพลมไหลผ่านอาคาร ช่วยดูว่าลมไปทางไหนและอาคารบังลมตรงไหน','Animated wind flowing past the building, showing where air goes and where the building blocks it'),L:{showSun:true,showWind:true,windAnim:true,showPlot:true}},
+ {t:()=>TL('บริบท','Context'),x:()=>TL('อาคาร ต้นไม้ และถนนรอบข้าง ปิดเปิดได้ด้วยปุ่ม “บริบท”','Neighbouring buildings, trees and roads. Show or hide with the “Context” button'),L:{showSun:true,showWind:true,windAnim:true,showPlot:true,showCtx:true}}
+];
+let tourI=0;
+function setLayers(o){Object.assign(S,o);vis();syncUI()}
+function flashPlotNotice(){const el=$('#plotBanner');if(!el)return;el.textContent=TL('ที่ดินเปิดใช้งาน: ระบบจะคำนวณ FAR/OSR ตามผังเมืองรวม (ผังสี) ร่วมกับกฎหมาย พ.ร.บ.ควบคุมอาคารและระยะร่นต่างๆ','Plot on: FAR/OSR are calculated from the comprehensive zoning map (colour plan) together with the Building Control Act and setbacks');el.classList.add('show');clearTimeout(flashPlotNotice.t);flashPlotNotice.t=setTimeout(()=>el.classList.remove('show'),7000)}
+function tourShow(){const st=TOUR[tourI];setLayers(st.L);if(st.L.showPlot)flashPlotNotice();
+ $('#intro').innerHTML=`<div class="tour-head"><small>${TL('ขั้นที่','Step')} ${tourI+1}/${TOUR.length}</small><b>${st.t()}</b></div><p>${st.x()}</p><div class="tour-dots">${TOUR.map((_,k)=>`<i class="${k===tourI?'on':''}"></i>`).join('')}</div><div class="gr"><button class="btn" id="tourPrev"${tourI?'':' disabled'}>${TL('ก่อนหน้า','Back')}</button><button class="btn pri" id="tourNext">${tourI===TOUR.length-1?TL('เริ่มใช้งาน →','Start →'):TL('ถัดไป →','Next →')}</button><button class="btn" id="tourSkip">${TL('ข้าม','Skip')}</button></div>`;
+ $('#tourPrev').onclick=()=>{if(tourI>0){tourI--;tourShow()}};
+ $('#tourNext').onclick=()=>{if(tourI<TOUR.length-1){tourI++;tourShow()}else endTour()};
+ $('#tourSkip').onclick=endTour}
+function startIntro(){intro=true;tourI=0;document.body.classList.add('intro');if(!ctx.boxes.length&&!ctx.trees.length)sample();playing=true;$('#play').textContent='❚❚';tourShow();setFocus(true)}
 function endIntro(){if(!intro)return;intro=false;document.body.classList.remove('intro');playing=false;$('#play').textContent='▶'}
+function endTour(){setLayers(NORMAL);endIntro();setFocus(false)}
+document.addEventListener('click',e=>{if(e.target.closest('#tourAgain')){wantIntro=true;location.hash='design'}});
+$$('.tg[data-k=showPlot]').forEach(b=>b.addEventListener('click',()=>{if(S.showPlot)flashPlotNotice()}));
 
 /* ---------- router & language ---------- */
 const PAGES=['lang','guide','design'];let wantIntro=false,intro=false;
 function route(){if(document.body.classList.contains('focus')&&location.hash!=='#design')setFocus(false);let h=location.hash.slice(1);if(!PAGES.includes(h))h='lang';PAGES.forEach(p=>{$('#pg-'+p).hidden=p!==h});document.body.classList.toggle('p-lang',h==='lang');$$('.steps a').forEach(a=>a.classList.toggle('on',a.dataset.p===h));
  if(h==='lang')renderLang();if(h==='guide')renderGuide();if(h==='zoning')renderZoning();if(h==='design'){requestAnimationFrame(()=>{resize();map&&map.invalidateSize()});if(wantIntro){wantIntro=false;startIntro()}}window.scrollTo(0,0)}
 function setLang(l){S.lang=l;document.documentElement.lang=l;$$('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));save();
- if(l==='en')trNode(document.body);else untr();renderZoneOptions();renderLang();renderGuide();if(location.hash==='#zoning')renderZoning();siteCard();rebuild();sunPanel();updWM();if(l==='en')trNode(document.body)}
+ if(l==='en')trNode(document.body);else untr();renderZoneOptions();renderLang();renderGuide();renderPlotLaw();if(location.hash==='#zoning')renderZoning();siteCard();rebuild();sunPanel();updWM();if(l==='en')trNode(document.body)}
 $$('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
 addEventListener('hashchange',route);
 /* ---------- full-screen model view ---------- */
@@ -1112,7 +1192,7 @@ try{if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hos
 
 /* ---------- orchestration ---------- */
 function shadowCam(){const c=sunL.shadow.camera,e=Math.max(R*1.6,70);c.left=c.bottom=-e;c.right=c.top=e;c.near=1;c.far=900;c.updateProjectionMatrix()}
-function renderPlotLaw(){const el=$('#plotLaw');if(!el)return;const env=envelope();el.innerHTML=`<h2 style="margin-top:18px">${TL('กฎหมายที่เกี่ยวข้องคร่าวๆ','Key rules (summary)')}</h2><ul class="law">${lawList(env,env.best).join('')}</ul>`}
+function renderPlotLaw(){const nt=$('#plotNotice');if(nt)nt.innerHTML=TL('ระบบจะคำนวณ <b>FAR</b> และ <b>OSR</b> ตาม<b>ผังเมืองรวม (ผังสี)</b> ประกอบกับ<b>กฎหมาย พ.ร.บ.ควบคุมอาคาร</b>และ<b>ระยะร่น</b>ต่างๆ โดยอัตโนมัติ','FAR and OSR are calculated from the <b>comprehensive zoning map (colour plan)</b>, together with the <b>Building Control Act</b> and <b>setback</b> rules, automatically')+(S.showPlot?'':TL('<br><b class="fail">ตอนนี้ปิดที่ดินอยู่ จึงยังไม่คำนวณ — เปิดปุ่ม “ที่ดิน” ก่อน</b>','<br><b class="fail">The Plot layer is off, so nothing is calculated yet — turn on “Plot”</b>'));const el=$('#plotLaw');if(!el)return;const env=envelope();el.innerHTML=`<h2 style="margin-top:18px">${TL('กฎหมายที่เกี่ยวข้องคร่าวๆ','Key rules (summary)')}</h2><ul class="law">${lawList(env,env.best).join('')}</ul>`}
 function rebuild(){R=Math.min(70,Math.max(24,Math.max(S.W,S.L,S.H)*1.9));ground.scale.setScalar(Math.max(+S.ctxR*1.4,R*3,220));
  buildCompass();buildSunPath();updateSun();sunPanel();buildBuilding();buildWind();buildCtx();buildPlot();shadowCam();updateMap();computeHeat();
  ['compass','sun','wind'].forEach(k=>G[k].position.copy(BCW()));renderPlotLaw();save()}
@@ -1124,7 +1204,7 @@ function syncUI(){S.showHours=false;S.showSeasons=false;S.showImpact=false;S.sho
 $$('input[data-k],select[data-k]').forEach(el=>el.addEventListener(el.type==='range'?'input':'change',()=>{const k=el.dataset.k;S[k]=el.type==='date'||el.type==='text'?el.value:+el.value;
  if(k==='date'&&!S.date)S.date=today;if((k==='PW'||k==='PL')&&isPoly()){S.polyBak=S.poly;S.poly=null}if(k==='H')S.floors=Math.max(1,Math.round(S.H/3.2));syncUI();const u=el.dataset.u;if(u==='b')rebuild();else if(u==='plot'){buildPlot();save()}else if(u==='date'){buildSunPath();updateSun();sunPanel();buildBuilding();computeHeat();save()}else save()}));
 $$('[data-seg]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[g.dataset.seg]=b.dataset.v;syncUI();
- if(g.dataset.seg==='roof')rebuild();else if(g.dataset.seg==='season'){S.wmonth=0;updWM();buildWind();save()}else if(g.dataset.seg==='roadSide'||g.dataset.seg==='use'){buildPlot();save()}}));
+ if(g.dataset.seg==='roof'||g.dataset.seg==='cnpT'||g.dataset.seg==='cnpF'||g.dataset.seg==='wingOn')rebuild();else if(g.dataset.seg==='season'){S.wmonth=0;updWM();buildWind();save()}else if(g.dataset.seg==='roadSide'||g.dataset.seg==='use'){buildPlot();save()}}));
 $$('.tg[data-k]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;S[k]=!S[k];vis();if(k==='showSolar')buildBuilding();if(k==='showHours'||k==='showSeasons'){buildSunPath();updateSun()}if(k==='hideExisting'||k==='showImpact')buildCtx();if(k==='showHeat'||k==='hideExisting'||k==='showImpact')computeHeat();save()}));
 $$('.tab').forEach(t=>t.addEventListener('click',()=>{$$('.tab').forEach(x=>x.classList.toggle('on',x===t));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t.dataset.tab));if(t.dataset.tab==='site'){initMap();map&&map.invalidateSize()}}));
 $$('[data-layer]').forEach(b=>b.addEventListener('click',()=>{$$('[data-layer]').forEach(x=>x.classList.toggle('on',x===b));if(!map)return;Object.values(layers).forEach(l=>map.removeLayer(l));layers[b.dataset.layer].addTo(map)}));
@@ -1183,10 +1263,10 @@ async function exportSheet(){const btn=$('#sheetBtn');btn.disabled=true;btn.text
  const kv=(k,v)=>{c.font=F(400,25);c.fillStyle='#5b6873';c.fillText(k,rx,ry);c.font=F(500,27);c.fillStyle='#15202b';ry=wrapT(c,v,rx+250,ry,rw-250,36)+6};
  const head=t=>{c.font=F(600,32);c.fillStyle='#15202b';c.fillText(t,rx,ry+6);ry+=52};
  head('ข้อมูลโครงการ');
- kv('อาคาร',`${S.W} × ${S.L} ม. สูง ${S.H} ม. (ถึงชายคา)`);kv('หลังคา',`${{flat:'Flat slab',gable:'จั่ว',hip:'ปั้นหยา',shed:'เพิงหมาแหงน'}[S.roof]}${S.roof==='flat'?'':` ลาด ${S.pitch}°`} · ชายคา ${S.ovh} ม.`);
+ if(wingRect())kv('ปีกอาคาร',`${S.wW}×${S.wL} ม. ที่ ${S.wX}, ${S.wZ} ม.`);if(S.cnpT&&S.cnpT!=='none')kv('ระเบียง/กันสาด',`${S.cnpT==='balc'?'ระเบียง':'กันสาด'} ยื่น ${S.cnpD} ม. ด้าน${({pz:'หน้า',nz:'หลัง',nx:'ซ้าย',px:'ขวา'})[S.cnpF]}`);kv('อาคาร',`${S.W} × ${S.L} ม. สูง ${S.H} ม. (ถึงชายคา)`);kv('หลังคา',`${{flat:'Flat slab',gable:'จั่ว',hip:'ปั้นหยา',shed:'เพิงหมาแหงน'}[S.roof]}${S.roof==='flat'?'':` ลาด ${S.pitch}°`} · ชายคา ${S.ovh} ม.`);
  kv('การวางอาคาร',`หมุน ${S.rot}° จากทิศเหนือ`);kv('ที่ดิน',isPoly()?`รูปทรงอิสระ ${S.poly.length} มุม · ${Math.abs(sarea(S.poly)).toFixed(0)} ตร.ม. (${(Math.abs(sarea(S.poly))/4).toFixed(1)} ตร.ว.)`:`${S.PW} × ${S.PL} ม. (${(S.PW*S.PL/4).toFixed(1)} ตร.ว.)`);
- if(sbRes)kv('ผังเมือง',`${S.zone==='custom'?'กำหนดเอง':S.zone} · FAR ${sbRes.far.toFixed(2)}${S.FAR?'/'+S.FAR:''} ${sbRes.farOk?'✓':'✗'} · OSR ${sbRes.osr.toFixed(1)}%${S.OSR?'/'+S.OSR+'%':''} ${sbRes.osrOk?'✓':'✗'} · ${sbRes.fl} ชั้น ${sbRes.gfa.toFixed(0)} ตร.ม.`);
- kv('ระยะร่น',sbRes?(sbRes.all?'ผ่านเบื้องต้น (กฎกระทรวง 55)':'ยังไม่ผ่าน: '+sbRes.sides.filter(x=>!x.ok).map(x=>`ทิศ${th8(x.b)} ${x.d.toFixed(1)}/${x.req.toFixed(1)} ม.`).join(', ')+(sbRes.openOk?'':' · ที่ว่างไม่พอ')+(sbRes.farOk?'':' · FAR เกิน')+(sbRes.osrOk?'':' · OSR ไม่ถึง')):'—');
+ if(sbRes&&S.showPlot)kv('ผังเมือง',`${S.zone==='custom'?'กำหนดเอง':S.zone} · FAR ${sbRes.far.toFixed(2)}${S.FAR?'/'+S.FAR:''} ${sbRes.farOk?'✓':'✗'} · OSR ${sbRes.osr.toFixed(1)}%${S.OSR?'/'+S.OSR+'%':''} ${sbRes.osrOk?'✓':'✗'} · ${sbRes.fl} ชั้น ${sbRes.gfa.toFixed(0)} ตร.ม.`);
+ kv('ระยะร่น',sbRes&&S.showPlot?(sbRes.all?'ผ่านเบื้องต้น (กฎกระทรวง 55)':'ยังไม่ผ่าน: '+sbRes.sides.filter(x=>!x.ok).map(x=>`ทิศ${th8(x.b)} ${x.d.toFixed(1)}/${x.req.toFixed(1)} ม.`).join(', ')+(sbRes.openOk?'':' · ที่ว่างไม่พอ')+(sbRes.farOk?'':' · FAR เกิน')+(sbRes.osrOk?'':' · OSR ไม่ถึง')):'—');
  ry+=16;head('ดวงอาทิตย์');
  kv('21 มิ.ย.',`ขึ้น ${hm(tJ.rise)} ตก ${hm(tJ.set)} · สูงสุด ${tJ.max.toFixed(0)}°`);kv('21 ธ.ค.',`ขึ้น ${hm(tD.rise)} ตก ${hm(tD.set)} · สูงสุด ${tD.max.toFixed(0)}°`);
  ry+=16;head('ผังลม (ทั้งปี)');
